@@ -1,0 +1,29 @@
+extends layout
+
+block content
+
+  //- p=JSON.stringify(players)
+
+  each player in players
+    //- p=JSON.stringify(player)
+    if player.numLogins 
+      h3.page-header #{player.name}
+      p Number of Logins - #{player.numLogins}
+      if player.lastLogin != null
+        p Last Login #{new Date(player.lastLogin)}
+      if player.lastLogout != null
+        p Last Logout #{new Date(player.lastLogout)}
+      p
+        form(action='#later', method='GET')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='script', value='web')
+          //- input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+          button.btn.btn-success(type='submit')
+            i.fa.fa-lock
+            | Set Password
+          button.btn.btn-warning(type='submit', style='margin-left: 15px')
+            i.fa.fa-exclamation
+            | Report Behavior
+          button.btn.btn-danger(type='submit', style='margin-left: 15px')
+            i.fa.fa-ban
+            | Ban Player

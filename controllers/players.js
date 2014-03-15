@@ -10,22 +10,22 @@ var User = require('../models/User');
  * Home page.
  */
 
-exports.viewWorlds = function(req, res) {
+exports.viewPlayers = function(req, res) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
     api.dropletGet( req.user.servers[0] , function (err, droplet) {
       if (err) return err;
       if( _.contains( user.servers, parseInt( req.user.servers[0] ) ) ) {
-        var commandstar = 'http://' + droplet.ip_address + '/server/worlds';
+        var commandstar = 'http://' + droplet.ip_address + '/server/players';
         if( droplet.id === 1216418 ) {
-          commandstar = 'http://' + droplet.ip_address + '/status/server/worlds';
+          commandstar = 'http://' + droplet.ip_address + '/status/server/players';
         }
         request( commandstar, function (error, response, body) {
           if (!error && response.statusCode == 200) {
-            var worlds = _.sortBy(JSON.parse(body), function(o) { return o.numLoads; }).reverse();
-            res.render('worlds', {
-              title: 'Manage Worlds ' + droplet.ip_address,
-              worlds: worlds
+            var players = _.sortBy(JSON.parse(body), function(o) { return o.numLogins; }).reverse();
+            res.render('players', {
+              title: 'Manage Players ' + droplet.ip_address,
+              players: players
             });
           }
         });

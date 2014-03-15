@@ -19,6 +19,7 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 
+var playerManager  = require('./controllers/players');
 var worldManager  = require('./controllers/worlds');
 
 // var gumhookController = require('./controllers/gumhook');
@@ -134,6 +135,7 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 
 
 app.get('/server/:id/worlds', passportConf.isAuthenticated, worldManager.viewWorlds);
+app.get('/server/:id/players', passportConf.isAuthenticated, playerManager.viewPlayers);
 
 app.post('/server/boot', passportConf.isAuthenticated, doMakeServer.postMakeServer);
 app.get('/server/:id', passportConf.isAuthenticated, serverController.getServer);
