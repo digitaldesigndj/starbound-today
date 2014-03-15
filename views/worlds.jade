@@ -1,0 +1,32 @@
+extends layout
+
+block content
+
+  //- p=JSON.stringify(worlds)
+
+  each world in worlds
+    //- p=JSON.stringify(world)
+    h3.page-header World - #{world._id}
+    p Coordinates: #{world.sector}, x:#{world.x}, y:#{world.y}, z:#{world.z}, planet #{world.planet}
+      if world.satellite != null
+        span , satellite #{world.satellite}
+    if world.lastUnloaded != null
+      p Last Unloaded #{new Date(world.lastUnloaded)}
+    if world.lastLoaded != null
+      p Last Loaded - #{new Date(world.lastLoaded)}
+    if world.numLoads != null
+      p Number of Loads - #{world.numLoads}
+    p
+      form(action='#later', method='GET')
+        input(type='hidden', name='_csrf', value=token)
+        input(type='hidden', name='script', value='web')
+        //- input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+        button.btn.btn-success(type='submit')
+          i.fa.fa-download
+          | Download Planet
+        button.btn.btn-info(type='submit', style='margin-left: 15px')
+          i.fa.fa-save
+          | Backup Planet
+        button.btn.btn-warning(type='submit', style='margin-left: 15px')
+          i.fa.fa-undo
+          | Restore Planet
