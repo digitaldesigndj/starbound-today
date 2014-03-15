@@ -13,7 +13,11 @@ exports.getServer = function(req, res) {
       if (err) return err;
       if( _.contains( user.servers, parseInt( req.params.id ) ) ) {
         if( droplet.status === 'active' ) {
-          request( 'http://' + droplet.ip_address + '/server/status', function (error, response, body) {
+          var commandstar = 'http://' + droplet.ip_address + '/server/status';
+          if( droplet.id === '1216418' ) {
+            commandstar = 'http://' + droplet.ip_address + '/status/server/status';
+          }
+          request( commandstar, function (error, response, body) {
             if (!error && response.statusCode == 200) {
               console.log(body) // Print the google web page.
               res.render('server', {
