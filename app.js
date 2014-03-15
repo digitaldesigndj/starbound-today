@@ -19,6 +19,8 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 
+var pricingController = require('./controllers/pricing');
+
 var playerManager  = require('./controllers/players');
 var worldManager  = require('./controllers/worlds');
 
@@ -114,6 +116,7 @@ app.use(express.errorHandler());
  * Application routes.
  */
 
+app.get('/pricing', pricingController.getPricing);
 
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);

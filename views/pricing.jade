@@ -1,0 +1,55 @@
+extends layout
+
+block content
+
+  if sizes
+    h2.page-header Transparent Pricing
+    p All of our servers are 
+      a(href='http://digitalocean.com/pricing') Digital Ocean Based
+      | . We charge thier rate +25% for our StarBound servers.
+    p We tested many VPS hosts including GoDaddy, Linode and DigitalOcean. We Found DigitalOcean has the best performance/cost balance.
+    each size in sizes
+      if size.id == '62' || size.id == '65' || size.id == '61'
+        .col-sm-4
+          p
+          //- p=size.id
+          //- p=JSON.stringify(size)
+          if size.id == '62'
+            h2.page-header Dual Core
+          if size.id == '65'
+            h2.page-header Quad Core
+          if size.id == '61'
+            h2.page-header Octo Core
+          ul
+            if size.id == '62'
+              li Good for 4+ players
+            if size.id == '65'
+              li Good for 10+ players
+            if size.id == '61'
+              li Good for 20+ players
+            li #{size.name} memory
+            li #{size.cpu} cores
+            li #{size.disk}GB SSD
+            li Per Hour: $#{Math.round(1000*((size.cost_per_hour*0.25)+ +size.cost_per_hour))/1000}
+            li Per Month: $#{Math.round(1000*((size.cost_per_month*0.25)+ +size.cost_per_month))/1000}
+            li #{size.cpu} Server Image Slots (coming soon)
+          p
+            form(action='#later', method='GET')
+              button.btn.btn-success(type='submit')
+                i.fa.fa-keyboard-o
+                | Start this server
+    p.col-sm-12
+    p.col-sm-12
+    p.col-sm-12
+    p.col-sm-12
+    p
+    h2.page-header Easy to use tools
+    p We have worked hard to create the best starbound web management enviornment out there.
+    p We also have experienced StarBound Server Administrators behind our images.
+    p Our servers have been battle tested, we currently run #2 Starbound Server Boundstar on our Octo Core plan.
+    p For Developers, We can offer root access to your server, including SFTP.
+    p Free Custom DNS Setup. Many thanks are due 
+      a(href='https://github.com/seriallos') seriallos
+      |  for creating 
+      a(href='https://github.com/seriallos/CommandStar') CommandStar
+      | .
