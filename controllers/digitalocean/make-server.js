@@ -19,7 +19,7 @@ exports.postMakeServer = function (req, res) {
   console.log("Creating Server");
   // size_id 66 = 512MB, 62 = 2GB
   // res.send( req.body );
-  var image = req.body.image || '2629230';
+  var image = req.body.image || '2661158';
   api.dropletNew( req.user.email.replace('@','-at-'), 62, image, 4, {'ssh_key_ids': '87061,69732,93888'}, function ( err, response ){
     if( err ) { console.log( err ); res.send( err ); }
     api.eventGet(response.event_id, function ( error, event ) {
