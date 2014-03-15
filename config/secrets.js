@@ -3,13 +3,25 @@ module.exports = {
 
   sessionSecret: process.env.SESSION_SECRET || 'Awesome Your Session Secret goes here',
 
-  localAuth: true,
+  server_script_path: '/Users/taylor/Sites/starbound-today/scripts',
 
-  mailgun: {
-    login: process.env.MAILGUN_LOGIN || 'Your Mailgun SMTP Username',
-    password: process.env.MAILGUN_PASSWORD || 'Your Mailgun SMTP Password'
+  gumroad: {
+    seller_id: 'QrnHvi4GB1_lXWah50QkEA==',
+    api_key:''
   },
 
+  digitalocean: {
+    client_id: '8a1228dd2a3e79f1885b7cf280b485db',
+    api_key: '4ade03f8abc0bc16267adb22b63d79c4'
+  },
+
+  mailgun: {
+    login: 'postmaster@mg.starbound.today',
+    password: '75-imgjndxx5'
+  },
+  
+  localAuth: true,
+  
   facebookAuth: false,
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'Your App ID',

@@ -1,0 +1,195 @@
+extends layout
+
+block content
+  //- if user
+  //-   if droplet
+
+  //- h2.page-header #{title}
+  //- p
+
+  if droplet.locked
+    h2 The Server is locked because an event is processing. Please be patient.
+    p shutdowns take about 10 seconds
+    p boots take about 30 seconds
+    //- p taking a server image takes 2-10 min
+    p starting a new server takes 1-2 min
+    p this page checks every 5 seconds for you
+    style body{ background: url(/img/crazy_loop.gif); } .middle.container { background: rgba(255,255,255,0.7); }
+    script.
+      window.setInterval(function(){
+        location.reload();
+      }, 5000);
+  else
+    if droplet && droplet.status == 'off'
+      h2.page-header Server Inactive... Still using tokens
+      p 
+        //- strong #{stats.tokens} Tokens Remaining
+      p Still consuming tokens! - Destroy the server to stop using tokens.
+      p In the near future there will be options here to save your server here before destroying it.
+      p
+        form(action='/server/#{droplet.id}/poweron', method='GET')
+          button.btn.btn-success(type='submit')
+            i.fa.fa-lightbulb-o
+            | Power On Server
+      h2
+      p
+        form(action='/server/#{droplet.id}/destroy', method='GET')
+          button.btn.btn-danger(type='submit')
+            i.fa.fa-fire
+            | Destroy Server
+
+    if droplet && droplet.status == 'active'
+      h2.page-header Server Active - #{droplet.ip_address}
+      p Go login! - #{droplet.ip_address}
+      p Created At - #{droplet.created_at}
+      p Hardware - 2GB, 2x2GHz Intel
+      p Burn Rate - 1 Token/hr
+      //- p
+        //- strong #{stats.tokens} Tokens Remaining
+      br
+      p
+        a(href='/server/#{droplet.id}/poweroff')
+          button.btn.btn-info 
+            i.fa.fa-caret-square-o-down 
+            | Shut Down Server
+
+      h2.page-header Password
+      p Make your friends type something in.
+      p This sets your server password, leave blank to make public, this will restart StarBound.
+        form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='script', value='password')
+          input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+          .form-group
+            label.col-sm-4.control-label(for='starbound_password') Starbound Server Password
+            .col-sm-4
+              input.form-control(name='starbound_password', value='#{user.starbound_password}')
+          .form-group
+            .col-sm-offset-4.col-sm-4
+              button.btn.btn-success(type='submit')
+                i.fa.fa-cogs
+                | Set Password
+      if status
+        h2.page-header Server Monitor
+        //- p=JSON.stringify(status)
+        p Looks like your server is UP
+        p #{status.playersSeen} players have explored #{status.worldsExplored} worlds
+        //- p Check out the Worlds $SERVER/status/server/worlds
+      else 
+        h2.page-header Server Monitor
+        p
+          form(action='/server/#{droplet.id}/runscript', method='POST')
+            input(type='hidden', name='_csrf', value=token)
+            input(type='hidden', name='script', value='web')
+            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+            button.btn.btn-info(type='submit')
+              i.fa.fa-repeat
+              | Start CommandStar
+
+      h2.page-header Troubleshoot
+      p Restart StarBound first, then try doing the Hardware Reboot.
+      p Step 1
+      p
+        form(action='/server/#{droplet.id}/runscript', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='script', value='restart')
+          input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+          button.btn.btn-info(type='submit')
+            i.fa.fa-repeat
+            | Restart Starbound Process
+
+      if droplet && droplet.status == 'active'
+        p Step 2
+        p
+          a(href='/server/#{droplet.id}/powercycle')
+            button.btn.btn-warning
+              i.fa.fa-undo
+              |  Hardware Reboot
+
+
+    //- if droplet
+    //-   h2.page-header Server Image (Your Backup Slot)
+    //- if user.server.image
+    //-   p Your Image Number Is: #{user.server.image}
+    //- if image
+    //-   p=JSON.stringify(image)
+    //-   p You need to shutdown the server before you can take a new image.
+
+
+    //- p
+      form(action='/server/#{droplet.id}/snapshot', method='POST')
+        input(type='hidden', name='_csrf', value=token)
+        //- input(type='hidden', name='name', value='#{user.profile.name}')
+        //- input(type='hidden', name='image', value='#{user.server.image}')
+        button.btn.btn-info(type='submit')
+          i.fa.fa-save
+          | Take A New Image
+    //- if user.server.image != '2629230'
+      .page-header
+        h2 You have a saved server image (beta)
+            .page-header
+        h2 Restore Your Server Image - #{user.server.image}
+      form(action='/server/#{droplet.id}/boot', method='POST')
+        input(type='hidden', name='_csrf', value=token)
+        input(type='hidden', name='name', value='#{user.profile.domain}')
+        input(type='hidden', name='image', value='#{user.server.image}')
+        button.btn.btn-primary(type='submit')
+          i.fa.fa-cogs
+          |  Restore Server
+
+  //- if !droplet && user.server.image
+  //- if user.server.image === '' && user.server.id !== '' && droplet.status == 'off'    
+    p You have to take your first server image before you can destory your droplet and stop spending tokens.
+    P Taking an image will bring your server back up. Just shut it down again.
+
+
+
+  //- if !droplet && user.server.image
+
+
+    //- .page-header
+      h2 Start A Brand New Image on a Brand New Server
+    //- form(action='/server/#{droplet.id}/boot', method='POST')
+      input(type='hidden', name='_csrf', value=token)
+      input(type='hidden', name='name', value='#{user.profile.domain}')
+      button.btn.btn-primary(type='submit')
+        i.fa.fa-cogs
+        |  Start New Server
+
+    br
+    br
+
+
+    //- if droplet && droplet.status == 'off' && JSON.stringify(user.server.snapshots) != '[]'
+    //-   p
+    //-     a(href='/server/#{droplet.id}/boot')
+    //-       button.btn.btn-primary Restore Server
+    //-   p imageId
+    //-   p
+    //-     a(href='/server/#{droplet.id}/rebuild')
+    //-       button.btn.btn-primary Rebuild Server
+    //-   p imageId
+      //- p
+      //-   a(href='/server/#{droplet.id}/shutdown')
+      //-     button.btn.btn-primary Power Cycle Server
+
+
+    //- if secrets.localAuth
+    //-   .page-header
+    //-     h2 Change DNS!
+
+    //-   form.form-horizontal(action='/account/password', method='POST')
+    //-     input(type='hidden', name='_csrf', value=token)
+    //-     .form-group
+    //-       label.col-sm-3.control-label(for='password') Hostname
+    //-       .col-sm-4
+    //-         input.form-control(type='password', name='password', id='password')
+    //-     .form-group
+    //-       label.col-sm-3.control-label(for='confirmPassword') IP Address
+    //-       .col-sm-4
+    //-         input.form-control(type='password', name='confirmPassword', id='confirmPassword')
+    //-     .form-group
+    //-       .col-sm-offset-3.col-sm-4
+    //-         button.btn.btn.btn-primary(type='submit')
+    //-           i.fa.fa-keyboard-o
+    //-           | Change DNS Record

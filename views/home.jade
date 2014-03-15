@@ -1,10 +1,45 @@
 extends layout
 
 block content
-  h1 Bootstrap starter template
-  p.lead
-    | Use this document as a way to quickly start any new project.
-    br
-    | All you get is this text and a mostly barebones HTML document.
 
-  img(src="/img/StarboundToday.svg")
+  //- if user
+    p user
+    p=JSON.stringify(user)
+
+    //- if !user.servers
+    each server in user.servers
+      p=JSON.stringify(server)
+      h2 
+        a(href='/server/#{server}') Welcome, Manage Your Server
+      //- p
+        strong You Have #{user.server_tokens} Server Tokens
+      //- a(href='/server/#{user.server_id}') Manage Your Server #{user.server_ip_address}
+  if !user
+    h1 Coming Soon
+    img(src="/img/StarboundToday.svg" style="max-width:96%;")
+    br
+    br
+    h1 On Demand Starbound Servers
+  else
+    if !user.servers
+      h2.page-header To Get Started, Create a Server.
+      p 
+        //- strong #{stats.tokens} Tokens Remaining
+        form(action='/server/boot', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          button.btn.btn-primary(type='submit')
+            i.fa.fa-gamepad
+            |  Vanilla Starbound
+            i.fa.fa-circle-o(style='margin-left: 10px;')
+            |  2x2GHz, 2GB
+            i.fa.fa-circle-o(style='margin-left: 10px;')
+            |  1 Token to Start
+            i.fa.fa-circle-o(style='margin-left: 10px;')
+            |  1 Token/Hr
+            i.fa.fa-circle-o(style='margin-left: 10px;')
+      p Creating a server usually takes 55-70 seconds.
+    else
+      p http://localhost:3000/server/#{user.servers[0]}
+      //- script.
+        window.location = 'http://localhost:3000/server/#{user.servers[0]}';
+

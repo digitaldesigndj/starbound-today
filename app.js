@@ -19,6 +19,16 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
 
+// var gumhookController = require('./controllers/gumhook');
+var scriptController  = require('./controllers/script');
+var serverController  = require('./controllers/server');
+
+// var doEvents  = require('./controllers/digitalocean/events');
+// var doInfo  = require('./controllers/digitalocean/info');
+var doMakeServer  = require('./controllers/digitalocean/make-server');
+// var doMakeImage  = require('./controllers/digitalocean/make-image');
+var doManageServer  = require('./controllers/digitalocean/manage-server');
+
 /**
  * API keys + Passport configuration.
  */
@@ -101,6 +111,7 @@ app.use(express.errorHandler());
  * Application routes.
  */
 
+
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
@@ -118,6 +129,23 @@ app.post('/account/profile', passportConf.isAuthenticated, userController.postUp
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
+
+
+app.post('/server/boot', passportConf.isAuthenticated, doMakeServer.postMakeServer);
+app.get('/server/:id', passportConf.isAuthenticated, serverController.getServer);
+app.get('/server/:id/poweroff', passportConf.isAuthenticated, doManageServer.dropletPowerOff);
+
+app.post('/server/:id/runscript', passportConf.isAuthenticated, scriptController.postScript);
+app.get('/server/:id/powercycle', passportConf.isAuthenticated, doManageServer.dropletPowerCycle);
+// app.get('/server/:id/shutdown', passportConf.isAuthenticated, doManageServer.dropletShutdown);
+
+app.get('/server/:id/poweron', passportConf.isAuthenticated, doManageServer.dropletPowerOn);
+app.post('/server/:id/snapshot', passportConf.isAuthenticated, doManageServer.dropletSnapshot);
+// app.get('/server/:id/restore', passportConf.isAuthenticated, doManageServer.dropletRestore);
+// app.post('/server/rebuild', passportConf.isAuthenticated, doManageServer.dropletRestore);
+app.get('/server/:id/rebuild', passportConf.isAuthenticated, doManageServer.selectImage);
+// app.post('/server/rebuild', passportConf.isAuthenticated, doManageServer.dropletRebuild);
+app.get('/server/:id/destroy', passportConf.isAuthenticated, doManageServer.dropletDestroy);
 
 /**
  * OAuth routes for sign-in.
