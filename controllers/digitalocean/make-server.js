@@ -20,6 +20,9 @@ exports.postMakeServer = function (req, res) {
   // size_id 66 = 512MB, 62 = 2GB
   // res.send( req.body );
   var image = req.body.image || '2661158';
+  // 62 = 2GB
+  // 65 = 8GB
+  // 61 = 16GB
   api.dropletNew( req.user.email.replace('@','-at-'), 62, image, 4, {'ssh_key_ids': '87061,69732,93888'}, function ( err, response ){
     if( err ) { console.log( err ); res.send( err ); }
     api.eventGet(response.event_id, function ( error, event ) {
@@ -43,19 +46,3 @@ exports.postMakeServer = function (req, res) {
     });
   });
 };
-
-    // Create DNS Record
-    // For Later
-    // api.domainRecordNew( '152674', 'A', new_server.ip_address, { 'name': req.body.name }, function ( err, domain_reponse ) {
-    //   if( err ) { res.send( err ); }
-    //   console.log( domain_reponse );
-    //   req.flash('success', { msg: req.body.name + ' created at ' + new_server.ip_address + ', will be ready in ~5 Min ' });
-    //   req.flash('success', { msg: JSON.stringify(event) });
-    //   res.redirect('/hosting/event?id='+event.id);
-    // });
-
-    // Get Droplet Info
-    // api.dropletGetAll( function ( error, data ) {
-    //   if( err ) { res.send( err ); }
-    //   var new_server = _.findWhere( data, { name: req.body.name + '.starbound.today' });
-    //   console.log( new_server );
