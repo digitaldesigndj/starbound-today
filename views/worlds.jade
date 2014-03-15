@@ -7,26 +7,36 @@ block content
   each world in worlds
     //- p=JSON.stringify(world)
     if world.numLoads 
-      h3.page-header World - #{world._id}
-      p Number of Loads - #{world.numLoads}
+      if world.satellite != null
+        h3.page-header #{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world
+      else
+        h3.page-header #{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world
+
+      p Number of Loads: #{world.numLoads}
       p Coordinates: #{world.sector}, x:#{world.x}, y:#{world.y}, z:#{world.z}, planet #{world.planet}
         if world.satellite != null
           span , satellite #{world.satellite}
       if world.lastUnloaded != null
-        p Last Unloaded #{new Date(world.lastUnloaded)}
+        p Last Unloaded: #{new Date(world.lastUnloaded)}
       if world.lastLoaded != null
-        p Last Loaded - #{new Date(world.lastLoaded)}
+        p Last Loaded: #{new Date(world.lastLoaded)}
       p
-        form(action='#later', method='GET')
+        form(action='/server/#{user.servers[0].id}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
-          input(type='hidden', name='script', value='web')
-          //- input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+          input(type='hidden', name='script', value='download_world')
+          if world.satellite != null
+            input(type='hidden', name='worldfile', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+          else
+            input(type='hidden', name='worldfile', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
           button.btn.btn-success(type='submit')
             i.fa.fa-download
             | Download Planet
-          button.btn.btn-info(type='submit', style='margin-left: 15px')
-            i.fa.fa-save
-            | Backup Planet
-          button.btn.btn-warning(type='submit', style='margin-left: 15px')
-            i.fa.fa-undo
-            | Restore Planet
+        //- button.btn.btn-info(type='submit', style='margin-left: 15px')
+          i.fa.fa-save
+          | Backup Planet
+        //- button.btn.btn-warning(type='submit', style='margin-left: 15px')
+          i.fa.fa-undo
+          | Restore Planet
+
+
+          
