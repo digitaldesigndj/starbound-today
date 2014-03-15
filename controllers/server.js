@@ -17,7 +17,7 @@ exports.getServer = function(req, res) {
           if( droplet.id === 1216418 ) {
             commandstar = 'http://' + droplet.ip_address + '/status/server/status';
           }
-          request( commandstar, function (error, response, body) {
+          request( { url: commandstar, timeout: 500 } , function (error, response, body) {
             if (!error && response.statusCode == 200) {
               res.render('server', {
                 title: 'Manage Server ' + droplet.ip_address,

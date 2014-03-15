@@ -41,22 +41,42 @@ block content
       p If you download a planet with people on it, it will be corrupt, which is very bad.
     else
       h2.page-header To Get Started, Create a Server.
+      //- p
+        strong #{stats.tokens} Tokens Remaining
       p 
-        //- strong #{stats.tokens} Tokens Remaining
         form(action='/server/boot', method='POST')
           input(type='hidden', name='_csrf', value=token)
-          input(type='hidden', name='image', value='2661158')
+          input(type='hidden', name='size', value='62')
           button.btn.btn-primary(type='submit')
-            i.fa.fa-gamepad
-            |  Vanilla Starbound
-            i.fa.fa-circle-o(style='margin-left: 10px;')
-            |  2x2GHz, 2GB
-            i.fa.fa-circle-o(style='margin-left: 10px;')
-            |  1 Token to Start
-            i.fa.fa-circle-o(style='margin-left: 10px;')
-            |  1 Token/Hr
-            i.fa.fa-circle-o(style='margin-left: 10px;')
-      p Creating a server usually takes 55-90 seconds.
+            i.fa.fa-road
+            | 2 Core
+            i.fa.fa-tachometer(style='margin-left: 7px')
+            | 2GB Memory
+            i.fa.fa-users(style='margin-left: 7px')
+            | ~4 Players
+      p 
+        form(action='/server/boot', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='size', value='65')
+          button.btn.btn-primary(type='submit')
+            i.fa.fa-road
+            | 4 Core
+            i.fa.fa-tachometer(style='margin-left: 7px')
+            | 8GB Memory
+            i.fa.fa-users(style='margin-left: 7px')
+            | ~8 Players
+      p 
+        form(action='/server/boot', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='size', value='61')
+          button.btn.btn-primary(type='submit')
+            i.fa.fa-road
+            | 8 Core
+            i.fa.fa-tachometer(style='margin-left: 7px')
+            | 16GB Memory
+            i.fa.fa-users(style='margin-left: 7px')
+            | ~16 Players
+      p Creating a server takes 55-90 seconds.
 
 
       //- p http://localhost:3000/server/#{user.servers[0]}

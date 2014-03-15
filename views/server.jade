@@ -72,10 +72,19 @@ block content
               i.fa.fa-repeat
               | Start CommandStar (5-10s)
 
-
+      // p=JSON.stringify(droplet)
       p Created At - #{droplet.created_at}
-      p Hardware - 2GB, 2x2GHz Intel
+      if droplet.size_id === 62 
+         p 2 Core, 2GB RAM, SSD
+      if droplet.size_id === 65 
+         p 4 Core, 8GB RAM, SSD
+      if droplet.size_id === 61 
+         p 8 Core, 16GB RAM, SSD
       p Burn Rate - 1 Token/hr
+
+      if droplet.image === 2661158
+        p Image: Starbound/CommandStar 15.04.2015
+
       //- p
         //- strong #{stats.tokens} Tokens Remaining
 
