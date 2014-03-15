@@ -9,8 +9,9 @@
       a.navbar-brand(href='/', style='width: 170px;') 
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        li(class=title=='Home'?'active':undefined)
-          a(href='/server/#{user.servers[0]}') Server
+        if user
+          li(class=title=='Server'?'active':undefined)
+            a(href='/server/#{user.servers[0]}') Server
         li(class=title=='Contact'?'active':undefined)
           a(href='/contact') Contact
       ul.nav.navbar-nav.navbar-right

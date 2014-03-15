@@ -46,7 +46,7 @@ exports.postScript = function (req, res) {
   }
   if( script === 'web' ) {
     // forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee
-    command =  'ssh root@' + req.body.ip_address + ' "export PATH=$PATH:/root/.nvm/v0.10.16/bin;cd /root/commandstar;forever stopall;forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee;sleep 1"';
+    command =  'ssh root@' + req.body.ip_address + ' "export PATH=$PATH:/root/.nvm/v0.10.16/bin;cd /root/commandstar;forever stopall;forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee;sleep 2"';
     // console.log( command );
     exec(command, function (error, stdout, stderr) { 
       if (error !== null) {
