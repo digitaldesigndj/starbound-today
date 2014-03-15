@@ -11,6 +11,6 @@ exports.index = function(req, res) {
   //   res.redirect('/server/'+req.user.servers[0]);
   // }
   // else {
-    res.render('home');
+    res.render('home',{title: 'Coming Soon' });
   // }
 };
