@@ -39,7 +39,11 @@ exports.postScript = function (req, res) {
       if( script === 'download_world' ) {
         command = "bash " + secrets.server_script_path + "/remote.sh root@" + droplet.ip_address + " 'cp /root/starbound/universe/"+req.body.worldfile+" /root/commandstar/public/css'";
         exec(command, function (error, stdout, stderr) { 
-          res.redirect("http://"+droplet.ip_address+"/css/"+req.body.worldfile);
+          if( droplet.id === 1216418 ) {
+            res.redirect("http://"+droplet.ip_address+"/status/css/"+req.body.worldfile);
+          }else{
+            res.redirect("http://"+droplet.ip_address+"/css/"+req.body.worldfile);
+          }
         });
       }
 
