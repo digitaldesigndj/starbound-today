@@ -16,12 +16,16 @@ exports.viewWorlds = function(req, res) {
     api.dropletGet( req.user.servers[0] , function (err, droplet) {
       if (err) return err;
       if( _.contains( user.servers, parseInt( req.user.servers[0] ) ) ) {
-        request( 'http://' + droplet.ip_address + '/server/worlds', function (error, response, body) {
+        var commandstar = 'http://' + droplet.ip_address + '/server/worlds';
+        if( droplet.id === 1216418 ) {
+          commandstar = 'http://' + droplet.ip_address + '/status/server/worlds';
+        }
+        request( commandstar, function (error, response, body) {
           if (!error && response.statusCode == 200) {
-            console.log(body) // Print the google web page.
+            var worlds = _.sortBy(JSON.parse(body), function(o) { return o.numLoads; }).reverse();
             res.render('worlds', {
               title: 'Manage Server ' + droplet.ip_address,
-              worlds: JSON.parse(body)
+              worlds: worlds
             });
           }
         });
