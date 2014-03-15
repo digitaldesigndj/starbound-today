@@ -92,12 +92,13 @@ exports.dropletDestroy = function(req, res) {
       var server_lifetime =  current_time - created_time;
       console.log( 'Server Destroyed' );
       console.log( created_time, current_time, server_lifetime );
-      var index = user.servers.indexOf(req.params.id);
-      console.log( index );
-      if (index > -1) {
-          user.servers = array.splice(index, 1);
-      }
-      console.log( user.servers );
+      // var index = user.servers.indexOf(req.params.id);
+      // console.log( index );
+      // if (index > -1) {
+      //     user.servers = array.splice(index, 1);
+      // }
+      // console.log( user.servers );
+      user.servers = [];
       api.dropletDestroy( req.params.id, function (err, event) {
         if (err) return err;
         req.params.id = '';

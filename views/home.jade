@@ -21,23 +21,28 @@ block content
     br
     h1 On Demand Starbound Servers
   else
-    h2.page-header To Get Started, Create a Server.
-    p 
-      //- strong #{stats.tokens} Tokens Remaining
-      form(action='/server/boot', method='POST')
-        input(type='hidden', name='_csrf', value=token)
-        input(type='hidden', name='image', value='2661158')
-        button.btn.btn-primary(type='submit')
-          i.fa.fa-gamepad
-          |  Vanilla Starbound
-          i.fa.fa-circle-o(style='margin-left: 10px;')
-          |  2x2GHz, 2GB
-          i.fa.fa-circle-o(style='margin-left: 10px;')
-          |  1 Token to Start
-          i.fa.fa-circle-o(style='margin-left: 10px;')
-          |  1 Token/Hr
-          i.fa.fa-circle-o(style='margin-left: 10px;')
-    p Creating a server usually takes 55-70 seconds.
+    if user.servers[0]
+      h1 Starbound Today - Preview Period
+      p manage your server here 
+        a(href='http://localhost:3000/server/#{user.servers[0]}') http://localhost:3000/server/#{user.servers[0]}
+    else
+      h2.page-header To Get Started, Create a Server.
+      p 
+        //- strong #{stats.tokens} Tokens Remaining
+        form(action='/server/boot', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='image', value='2661158')
+          button.btn.btn-primary(type='submit')
+            i.fa.fa-gamepad
+            |  Vanilla Starbound
+            i.fa.fa-circle-o(style='margin-left: 10px;')
+            |  2x2GHz, 2GB
+            i.fa.fa-circle-o(style='margin-left: 10px;')
+            |  1 Token to Start
+            i.fa.fa-circle-o(style='margin-left: 10px;')
+            |  1 Token/Hr
+            i.fa.fa-circle-o(style='margin-left: 10px;')
+      p Creating a server usually takes 55-70 seconds.
 
       //- p http://localhost:3000/server/#{user.servers[0]}
       //- script.
