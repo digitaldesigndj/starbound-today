@@ -4,11 +4,11 @@ block content
   //- if user
   //-   if droplet
 
-  //- h2.page-header #{title}
+  //- h3.page-header #{title}
   //- p
 
   if droplet.locked
-    h2 The Server is locked because an event is processing. Please be patient.
+    h3 The Server is locked because an event is processing. Please be patient.
     p shutdowns take about 10 seconds
     p boots take about 30 seconds
     //- p taking a server image takes 2-10 min
@@ -21,17 +21,23 @@ block content
       }, 5000);
   else
     if droplet && droplet.status == 'off'
-      h2.page-header Server Inactive... Still using tokens
+      h3.page-header Server Inactive... Still using tokens
       p 
         //- strong #{stats.tokens} Tokens Remaining
-      p Still consuming tokens! - Destroy the server to stop using tokens.
-      p In the near future there will be options here to save your server here before destroying it.
+      p The Server Image Option Is Not Available Yet
+      p
+        form(action='#later', method='GET')
+          button.btn.btn-warning(type='submit')
+            i.fa.fa-lightbulb-o
+            | Take Server Image (3-5+min)
       p
         form(action='/server/#{droplet.id}/poweron', method='GET')
           button.btn.btn-success(type='submit')
             i.fa.fa-lightbulb-o
             | Power On Server
-      h2
+      
+      h3
+      p Still consuming tokens! - Destroy the server to stop using tokens.
       p
         form(action='/server/#{droplet.id}/destroy', method='GET')
           button.btn.btn-danger(type='submit')
@@ -39,22 +45,41 @@ block content
             | Destroy Server
 
     if droplet && droplet.status == 'active'
-      h2.page-header Server Active - #{droplet.ip_address}
-      p Go login! - #{droplet.ip_address}
+
+
+      if status 
+        h3.page-header 
+          a(href='http://#{droplet.ip_address}') Your Server is UP - #{droplet.ip_address}
+        //- p=JSON.stringify(status)
+        p Looks like your server is UP, go play some StarBound!
+        p 
+          a(href='/server/#{user.servers[0]}/worlds') World Manager (Preview)
+
+        p btw, this site works great on your phone!
+        p #{status.playersSeen} players have explored #{status.worldsExplored} worlds
+        //- p Check out the Worlds $SERVER/status/server/worlds
+      else 
+        h3.page-header Start CommandStar Web API - #{droplet.ip_address}
+        p Then you can save and download your Planets!
+        p
+          form(action='/server/#{droplet.id}/runscript', method='POST')
+            input(type='hidden', name='_csrf', value=token)
+            input(type='hidden', name='script', value='web')
+            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+            button.btn.btn-success(type='submit')
+              i.fa.fa-repeat
+              | Start CommandStar (5-10s)
+
+
       p Created At - #{droplet.created_at}
       p Hardware - 2GB, 2x2GHz Intel
       p Burn Rate - 1 Token/hr
       //- p
         //- strong #{stats.tokens} Tokens Remaining
-      br
-      p
-        a(href='/server/#{droplet.id}/poweroff')
-          button.btn.btn-info 
-            i.fa.fa-caret-square-o-down 
-            | Shut Down Server
 
-      h2.page-header Password
+      h3.page-header Password
       p Make your friends type something in.
+      p Only 1 server password for now. Option for more to be added later.
       p This sets your server password, leave blank to make public, this will restart StarBound.
         form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
@@ -69,24 +94,8 @@ block content
               button.btn.btn-success(type='submit')
                 i.fa.fa-cogs
                 | Set Password
-      if status
-        h2.page-header Server Monitor
-        //- p=JSON.stringify(status)
-        p Looks like your server is UP
-        p #{status.playersSeen} players have explored #{status.worldsExplored} worlds
-        //- p Check out the Worlds $SERVER/status/server/worlds
-      else 
-        h2.page-header Server Monitor
-        p
-          form(action='/server/#{droplet.id}/runscript', method='POST')
-            input(type='hidden', name='_csrf', value=token)
-            input(type='hidden', name='script', value='web')
-            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
-            button.btn.btn-info(type='submit')
-              i.fa.fa-repeat
-              | Start CommandStar
 
-      h2.page-header Troubleshoot
+      h3.page-header Troubleshoot
       p Restart StarBound first, then try doing the Hardware Reboot.
       p Step 1
       p
@@ -107,8 +116,16 @@ block content
               |  Hardware Reboot
 
 
+      h3.page-header Image or Stop the Server
+      p There are some things that can only be done after the server has been powered off.
+      p
+        a(href='/server/#{droplet.id}/poweroff')
+          button.btn.btn-info 
+            i.fa.fa-caret-square-o-down 
+            | Power Off Server
+
     //- if droplet
-    //-   h2.page-header Server Image (Your Backup Slot)
+    //-   h3.page-header Server Image (Your Backup Slot)
     //- if user.server.image
     //-   p Your Image Number Is: #{user.server.image}
     //- if image
@@ -126,9 +143,9 @@ block content
           | Take A New Image
     //- if user.server.image != '2629230'
       .page-header
-        h2 You have a saved server image (beta)
+        h3 You have a saved server image (beta)
             .page-header
-        h2 Restore Your Server Image - #{user.server.image}
+        h3 Restore Your Server Image - #{user.server.image}
       form(action='/server/#{droplet.id}/boot', method='POST')
         input(type='hidden', name='_csrf', value=token)
         input(type='hidden', name='name', value='#{user.profile.domain}')
@@ -148,7 +165,7 @@ block content
 
 
     //- .page-header
-      h2 Start A Brand New Image on a Brand New Server
+      h3 Start A Brand New Image on a Brand New Server
     //- form(action='/server/#{droplet.id}/boot', method='POST')
       input(type='hidden', name='_csrf', value=token)
       input(type='hidden', name='name', value='#{user.profile.domain}')
@@ -176,7 +193,7 @@ block content
 
     //- if secrets.localAuth
     //-   .page-header
-    //-     h2 Change DNS!
+    //-     h3 Change DNS!
 
     //-   form.form-horizontal(action='/account/password', method='POST')
     //-     input(type='hidden', name='_csrf', value=token)

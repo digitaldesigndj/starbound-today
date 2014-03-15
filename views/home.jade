@@ -22,9 +22,23 @@ block content
     h1 On Demand Starbound Servers
   else
     if user.servers[0]
-      h1 Starbound Today - Preview Period
-      p manage your server here 
-        a(href='/server/#{user.servers[0]}') http://starbound.today/server/#{user.servers[0]}
+      h2.page-header Starbound Today Alpha Preview
+      form(action='/server/#{user.servers[0]}', method='GET')
+        button.btn.btn-primary(type='submit') manage your server here
+      br
+      p Good job creating that server. Right now, if you look at the management console, you are going to see a cool loading effect background and a bit of information. Be Patient! It takes 55 - 90 seconds to create a server.
+      p We want to create a StarBound Meta Universe of Planets!
+      
+      h4 Server States
+      ul
+        li Nothing (Destroyed)
+        li Powered Off
+        li Taking Server Image
+        li Server Powered On
+        li Starbound Running
+        li CommandStar Running
+      p With the CommandStar API Running, we can add planets to the encyclopedia.
+      p If you download a planet with people on it, it will be corrupt, which is very bad.
     else
       h2.page-header To Get Started, Create a Server.
       p 
@@ -42,7 +56,8 @@ block content
             i.fa.fa-circle-o(style='margin-left: 10px;')
             |  1 Token/Hr
             i.fa.fa-circle-o(style='margin-left: 10px;')
-      p Creating a server usually takes 55-70 seconds.
+      p Creating a server usually takes 55-90 seconds.
+
 
       //- p http://localhost:3000/server/#{user.servers[0]}
       //- script.

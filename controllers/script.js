@@ -34,27 +34,28 @@ exports.postScript = function (req, res) {
     console.log( command );
     exec(command, function (error, stdout, stderr) { 
       if (error !== null) {
-        req.flash('errors', { msg: 'exec error: ' + error });
+        // req.flash('errors', { msg: 'exec error: ' + error });
       }
       if (stderr !== '') {
         // req.flash('errors', { msg: 'stderr: ' + stderr });
       }
-      req.flash('success', { msg: 'stdout: ' + stdout });
+      // req.flash('success', { msg: 'stdout: ' + stdout });
+      req.flash('success', { msg: 'Starbound Restarted' });
       res.redirect('/server/'+req.params.id);
     });
   }
   if( script === 'web' ) {
     // forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee
-    command =  'ssh root@' + req.body.ip_address + ' "export PATH=$PATH:/root/.nvm/v0.10.16/bin;cd /root/commandstar;forever stopall;forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee;sleep 2"';
-    console.log( command );
+    command =  'ssh root@' + req.body.ip_address + ' "export PATH=$PATH:/root/.nvm/v0.10.16/bin;cd /root/commandstar;forever stopall;forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee;sleep 1"';
+    // console.log( command );
     exec(command, function (error, stdout, stderr) { 
       if (error !== null) {
-        req.flash('errors', { msg: 'exec error: ' + error });
+        // req.flash('errors', { msg: 'exec error: ' + error });
       }
       if (stderr !== '') {
         // req.flash('errors', { msg: 'stderr: ' + stderr });
       }
-      req.flash('success', { msg: 'stdout: ' + stdout });
+      req.flash('success', { msg: 'Command Star Started!' });
       res.redirect('/server/'+req.params.id);
     });
   }
@@ -70,12 +71,13 @@ exports.postScript = function (req, res) {
         if (err) return next(err);
         exec(command, function (error, stdout, stderr) { 
           if (error !== null) {
-            req.flash('errors', { msg: 'exec error: ' + error });
+            //req.flash('errors', { msg: 'exec error: ' + error });
           }
           if (stderr !== '') {
             //req.flash('errors', { msg: 'stderr: ' + stderr });
           }
-          req.flash('success', { msg: 'stdout: ' + stdout });
+          //req.flash('success', { msg: 'stdout: ' + stdout });
+          req.flash('success', { msg: 'password set, starbound restarted' });
           res.redirect('/server/'+req.params.id);
         });
       });
