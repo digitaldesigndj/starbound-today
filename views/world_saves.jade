@@ -9,13 +9,15 @@ block content
     each save, index in world.saves
       //- p=JSON.stringify(save)
       p 
-        form(action='/server/#{user.servers[0]}/saveworld', method='POST')
+        form(action='/server/#{user.servers[0]}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='script', value='restore_world')
+          input(type='hidden', name='timestamp', value=save.timestamp)
           if world.satellite != null
              input(type='hidden', name='world_coords', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
           else
              input(type='hidden', name='world_coords', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
-          button.btn.btn-success(type='submit' disabled)
+          button.btn.btn-success(type='submit')
             i.fa.fa-download
             | Restore Planet Save #{new Date(save.timestamp*1000)}
   else
