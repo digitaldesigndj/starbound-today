@@ -1,0 +1,26 @@
+extends layout
+
+block content
+
+  //- p=JSON.stringify(worlds)
+  a(href='/server/#{user.servers[0]}/worlds') &laquo; Return to World Manager
+
+  h1=title
+
+  h2 Send a world from StarryDex into the Server Universe
+  p From: #{params.world_coords}
+  p To world:
+  p
+    each world in worlds
+      if world.numLoads
+        p
+          if world.satellite != null
+            a(href='/server/#{user.servers[0]}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+              button.btn.btn-primary
+                i.fa.fa-eye
+                | #{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world
+          else
+            a(href='/server/#{user.servers[0]}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+              button.btn.btn-primary
+                i.fa.fa-eye
+                | #{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world

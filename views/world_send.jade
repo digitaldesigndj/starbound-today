@@ -5,7 +5,9 @@ block content
   a(href='/server/#{user.servers[0]}/worlds') &laquo; Return to All Worlds
   if world
     //- p=JSON.stringify(world, null, 2)
-    h2 Here's all the saves we have for world #{world.world_coords}
+    //- h2 Here's all the saves we have for world #{world.world_coords}
+    h2 Send a world from StarryDex into the Server Universe
+    p From: #{params.world_coords}
     each save, index in world.saves
       //- p=JSON.stringify(save)
       p 
@@ -20,5 +22,7 @@ block content
           button.btn.btn-success(type='submit')
             i.fa.fa-download
             | Restore Planet Save #{new Date(save.timestamp*1000)}
+    p To: #{params.target_world_coords}
   else
-    h2 This world has never been saved
+    h2 This world has never been saved into StarryDex
+    p There's saved world in StarryDex to send o.O
