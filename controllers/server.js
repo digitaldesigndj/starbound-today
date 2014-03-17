@@ -8,7 +8,7 @@ var User = require('../models/User');
 exports.getServer = function(req, res) {
   console.log( req.params.id );
   User.findById(req.user.id, function (err, user) {
-    if (err) return next(err);
+    if (err) return err;
     api.dropletGet( req.params.id , function (err, droplet) {
       if (err) return err;
       if( _.contains( user.servers, parseInt( req.params.id ) ) ) {
@@ -19,11 +19,20 @@ exports.getServer = function(req, res) {
           }
           request( { url: commandstar, timeout: 500 } , function (error, response, body) {
             if (!error && response.statusCode == 200) {
+              var stats = {};
+              var current_time = new Date().getTime()/1000;
+              var created_time = new Date(droplet.created_at).getTime()/1000;
+              stats.life = Math.round(current_time - created_time);
+              stats.spent = Math.round(100*(Math.round(100*( stats.life/3600 ) )/100 )*0.0372)/100;
+              // stats.tokens = Math.round(100*(current_use - stats.spent))/100;
+              console.log( stats.life, stats.spent );
+              //, stats.tokens, stats );
               res.render('server', {
                 title: 'Manage Server ' + droplet.ip_address,
                 droplet: droplet,
                 user: req.user,
-                status: JSON.parse(body)
+                status: JSON.parse(body),
+                stats: stats
               });
             }
             else{

@@ -7,6 +7,7 @@ block content
   //- h3.page-header #{title}
   //- p
 
+  //- p=JSON.stringify(droplet)
   if droplet.locked
     h3 The Server is locked because an event is processing. Please be patient.
     p shutdowns take about 10 seconds
@@ -20,8 +21,11 @@ block content
         location.reload();
       }, 5000);
   else
+    
     if droplet && droplet.status == 'off'
       h3.page-header Server Inactive... Still using tokens
+      if stats
+        p Total Spent So Far: $#{stats.spent}
       p 
         //- strong #{stats.tokens} Tokens Remaining
       p The Server Image Option Is Not Available Yet
@@ -51,14 +55,28 @@ block content
         h3.page-header 
           a(href='http://#{droplet.ip_address}') Your Server is UP - #{droplet.ip_address}
         //- p=JSON.stringify(status)
-        p Looks like your server is UP, go play some StarBound!
-        p 
-          a(href='/server/#{user.servers[0]}/worlds') World Manager (Preview)
-        p 
-          a(href='/server/#{user.servers[0]}/players') Player Manager (Preview)
+        if stats
+          p Total Spent So Far: $#{stats.spent}
+        if droplet.size_id === 62 
+          p 2 Core, 2GB RAM, SSD Server Created #{new Date(droplet.created_at)}
+        if droplet.size_id === 65 
+          p 4 Core, 8GB RAM, SSD Server Created #{new Date(droplet.created_at)}
+        if droplet.size_id === 61 
+          p 8 Core, 16GB RAM, SSD Server Created #{new Date(droplet.created_at)}
 
-        p btw, this site works great on your phone!
-        p #{status.playersSeen} players have explored #{status.worldsExplored} worlds
+        if droplet.image_id === 2661158
+          p Image: Starbound/CommandStar 15.04.2015
+        if droplet.image_id === 2629230
+          p Image: Starbound with htop 13.04.2015 (CommandStar Upgrade)
+
+        p 
+          a(href='/server/#{user.servers[0]}/players') #{status.playersSeen} Players
+          |  have explored 
+          a(href='/server/#{user.servers[0]}/worlds') #{status.worldsExplored} Worlds
+          | .
+
+        p Looks like your server is UP, go play some StarBound!
+
         //- p Check out the Worlds $SERVER/status/server/worlds
       else 
         h3.page-header Start CommandStar Web API - #{droplet.ip_address}
@@ -73,17 +91,7 @@ block content
               | Start CommandStar (5-10s)
 
       // p=JSON.stringify(droplet)
-      p Created At - #{droplet.created_at}
-      if droplet.size_id === 62 
-         p 2 Core, 2GB RAM, SSD
-      if droplet.size_id === 65 
-         p 4 Core, 8GB RAM, SSD
-      if droplet.size_id === 61 
-         p 8 Core, 16GB RAM, SSD
-      p Burn Rate - 1 Token/hr
 
-      if droplet.image === 2661158
-        p Image: Starbound/CommandStar 15.04.2015
 
       //- p
         //- strong #{stats.tokens} Tokens Remaining
