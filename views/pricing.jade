@@ -3,11 +3,10 @@ extends layout
 block content
 
   if sizes
-    h2.page-header Transparent Pricing
-    p All of our servers are 
-      a(href='http://digitalocean.com/pricing') Digital Ocean Based
-      | . We charge thier rate +25% for our StarBound servers.
-    p We tested many VPS hosts including GoDaddy, Linode and DigitalOcean. We Found DigitalOcean has the best performance/cost balance.
+    h2.page-header Starbound Today Alpha Version
+    p Welcome to the alpha version of Starbound.today! We have big aspirations for this site, but right now we want to get people playing StarBound ASAP! We have Vanilla Starbound Servers with password process and hardware management panels. We also offer a world downloader, universe browser, and commandstar website/api. 
+    p We are offering $1 of server credit to anyone that creates an account to try our service. Get connected to your own VPS in under 5 min! We have lots more features in mind if we can generate some interest and/or more free time.
+    p 
     each size in sizes
       if size.id == '62' || size.id == '65' || size.id == '61'
         .col-sm-4
@@ -31,25 +30,70 @@ block content
             li #{size.cpu} cores
             li #{size.disk}GB SSD
             li Per Hour: $#{Math.round(1000*((size.cost_per_hour*0.25)+ +size.cost_per_hour))/1000}
-            li Per Month: $#{Math.round(1000*((size.cost_per_month*0.25)+ +size.cost_per_month))/1000}
-            li #{size.cpu} Server Image Slots (coming soon)
+            li Minimum Charge: $#{(Math.round(1000*((size.cost_per_month*0.25)+ +size.cost_per_month))/1000)/100}
+            //- li Per Month: $#{Math.round(1000*((size.cost_per_month*0.25)+ +size.cost_per_month))/1000}
+              ul
+                li #{size.cpu} Server Image Slots
+                li (coming soon)
           p
-            form(action='#later', method='GET')
-              button.btn.btn-success(type='submit')
-                i.fa.fa-keyboard-o
-                | Start this server
+            form(action='/server/boot', method='POST')
+              if size.id == '65' || size.id == '61'
+                button.btn.btn-success(type='submit' disabled)
+                  i.fa.fa-keyboard-o
+                  | Coming Soon
+              else
+                input(type='hidden', name='_csrf', value=token)
+                input(type='hidden', name='size', value='62')
+                button.btn.btn-success(type='submit')
+                  i.fa.fa-keyboard-o
+                  | Start this server
+
     p.col-sm-12
     p.col-sm-12
     p.col-sm-12
     p.col-sm-12
-    p
-    h2.page-header Easy to use tools
-    p We have worked hard to create the best starbound web management enviornment out there.
-    p We also have experienced StarBound Server Administrators behind our images.
-    p Our servers have been battle tested, we currently run #2 Starbound Server Boundstar on our Octo Core plan.
-    p For Developers, We can offer root access to your server, including SFTP.
-    p Free Custom DNS Setup. Many thanks are due 
-      a(href='https://github.com/seriallos') seriallos
-      |  for creating 
-      a(href='https://github.com/seriallos/CommandStar') CommandStar
-      | .
+
+    .col-sm-4
+      h2.page-header Easy server tools
+      p We have worked hard to create the best starbound web management enviornment out there.
+      p One click lets you perform all the essential server tasks.
+      ul
+        li hard restart
+        li restart StarBound
+        li powerdown
+        li destroy
+        li and more...
+        //- li backupUniverse
+    .col-sm-4
+      h2.page-header Starbound Tools
+      p
+        a(href='http://162.243.198.139/') CommandStar 
+        | is pre-installed on all of our servers and 1 click launchable. Thanks go to
+        a(href='https://github.com/seriallos') seriallos
+        |  for creating 
+        a(href='https://github.com/seriallos/CommandStar') CommandStar
+        | .
+      ul
+        li 
+          a(href='http://http://162.243.198.139/') CommandStar
+        //- li
+          a(href='http://http://162.243.198.139:8081') Universe Browser
+      p We also have an exclusive player viewer and world downloader that allows you to back up your creations for later.
+    .col-sm-4
+      h2.page-header Experienced Admins
+      p Our servers have been battle tested, we currently run 
+        a(href='http://boundstar.com') #2 Starbound Server Boundstar 
+        | on our Octo Core plan.
+      p We have experienced StarBound Server Administrators, Hackers and Developers behind our servers.
+      p Free Custom DNS Setup.
+
+
+    p.col-sm-12
+    h2.page-header(style='clear:both') Fair Transparent Pricing
+    p All of our servers are 
+      a(href='http://digitalocean.com/pricing') Digital Ocean Based
+      | . We charge thier rate +25% for our StarBound servers.
+    p We tested many VPS hosts including GoDaddy, Linode and DigitalOcean. We Found DigitalOcean has the best performance/cost balance.
+    p We offer Hourly subscriptions! Get a large server for you and your friends. You just have to turn it off when you're done.
+    p For example, create a great Quad Core server for a 6 hour play session for $1!
+     
