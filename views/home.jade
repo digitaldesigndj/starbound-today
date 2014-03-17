@@ -2,18 +2,6 @@ extends layout
 
 block content
 
-  //- if user
-    p user
-    p=JSON.stringify(user)
-
-    //- if !user.servers
-    each server in user.servers
-      p=JSON.stringify(server)
-      h2 
-        a(href='/server/#{server}') Welcome, Manage Your Server
-      //- p
-        strong You Have #{user.server_tokens} Server Tokens
-      //- a(href='/server/#{user.server_id}') Manage Your Server #{user.server_ip_address}
   if !user
     h1 Coming Soon
     img(src="/img/StarboundToday.svg" style="max-width:96%;")
@@ -27,18 +15,15 @@ block content
         button.btn.btn-primary(type='submit') manage your server here
       br
       p Good job creating that server. Right now, if you look at the management console, you are going to see a cool loading effect background and a bit of information. Be Patient! It takes 55 - 90 seconds to create a server.
-      p We want to create a StarBound Meta Universe of Planets!
-      
-      h4 Server States
+
+      p Free BYOD DNS Setup, Free Sub-Domains
       ul
-        li Nothing (Destroyed)
-        li Powered Off
-        li Taking Server Image
-        li Server Powered On
-        li Starbound Running
-        li CommandStar Running
-      p With the CommandStar API Running, we can add planets to the encyclopedia.
-      p If you download a planet with people on it, it will be corrupt, which is very bad.
+        li {domain}.starbound.today
+        li {domain}.collegiate.bike
+        li {domain}.boundstar.com
+        li {domain}.hyprtext.com
+        li {domain}.starboundtoday.com
+
     else
       h2.page-header To Get Started, Create a Server.
       //- p
@@ -54,7 +39,7 @@ block content
             | 2GB Memory
             i.fa.fa-users(style='margin-left: 7px')
             | ~4 Players
-      p 
+      //- p 
         form(action='/server/boot', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='size', value='65')
@@ -65,7 +50,7 @@ block content
             | 8GB Memory
             i.fa.fa-users(style='margin-left: 7px')
             | ~8 Players
-      p 
+      //- p 
         form(action='/server/boot', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='size', value='61')
