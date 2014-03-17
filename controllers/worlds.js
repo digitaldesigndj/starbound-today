@@ -5,8 +5,7 @@ var _ = require('underscore');
 var request = require('request');
 var User = require('../models/User');
 var World = require('../models/World');
-var bcrypt = require('bcrypt-nodejs');
-
+var exec = require('child_process').exec;
 
 exports.viewWorldSaves = function(req, res, next) {
   console.log( req.params );
@@ -30,30 +29,43 @@ exports.saveWorld = function(req, res, next) {
       verified:false
     }]
   });
-  new_world.save(function(err) {
-    if (err) {
-      if (err.code === 11000) {
-        World.findOne({ world_coords: req.body.world_coords }, function(err, world) {
-          if (err) return next(err);
-          // console.log( world );
-          world.saves.push({
-            timestamp:Math.round(new Date().getTime() / 1000),
-            verified:false
-          });
-          world.save(function(err) {
+  api.dropletGet( req.user.servers[0] , function (err, droplet) {
+    if (err) return err;
+    var timestamp = Math.round(new Date().getTime() / 1000);
+    var command = 'scp root@'+droplet.ip_address+':/root/starbound/universe/'+req.body.world_coords+' /var/www/starrydex/public/'+timestamp+'_'+req.body.world_coords;
+    new_world.save(function(err) {
+      if (err) {
+        if (err.code === 11000) {
+          World.findOne({ world_coords: req.body.world_coords }, function(err, world) {
             if (err) return next(err);
-            req.flash('info', { msg: 'World Saved' });
+            console.log( command )
+            exec(command, function (error, stdout, stderr) {
+              console.log( stdout );
+              world.saves.push({
+                timestamp:timestamp,
+                verified:false
+              });
+              world.save(function(err) {
+                if (err) return next(err);
+                req.flash('info', { msg: 'World Saved' });
+                return res.redirect('/server/'+req.user.servers[0]+'/world/'+req.body.world_coords);
+              });
+            });
+          });
+        }else{
+          req.flash('errors', { msg: 'Error: '+err });
+          return res.redirect('/server/'+req.user.servers[0]+'/worlds');
+        }
+      }else{
+        exec(command, function (error, stdout, stderr) {
+          console.log( stdout );
+          new_world.save(function(err) {
+            req.flash('success', { msg: 'World Save Record Created' });
             return res.redirect('/server/'+req.user.servers[0]+'/world/'+req.body.world_coords);
           });
         });
-      }else{
-        req.flash('errors', { msg: 'Error: '+err });
-        return res.redirect('/server/'+req.user.servers[0]+'/worlds');
       }
-    }else{
-      req.flash('success', { msg: 'World Save Record Created' });
-      return res.redirect('/server/'+req.user.servers[0]+'/worlds');
-    }
+    });
   });
 };
 
