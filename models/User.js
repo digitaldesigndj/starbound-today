@@ -13,6 +13,7 @@ var userSchema = new mongoose.Schema({
   linkedin: String,
   tokens: Array,
   servers: Array,
+  purchases: Array,
 
   server_tokens: { type: Number, default: 5 },
   billed_seconds: { type: Number, default: 0 },
