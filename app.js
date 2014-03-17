@@ -138,6 +138,8 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 
 
 app.get('/server/:id/worlds', passportConf.isAuthenticated, worldManager.viewWorlds);
+app.get('/server/:id/world/:world_coords', passportConf.isAuthenticated, worldManager.viewWorldSaves);
+app.post('/server/:id/saveworld', passportConf.isAuthenticated, worldManager.saveWorld);
 app.get('/server/:id/players', passportConf.isAuthenticated, playerManager.viewPlayers);
 
 app.post('/server/boot', passportConf.isAuthenticated, doMakeServer.postMakeServer);

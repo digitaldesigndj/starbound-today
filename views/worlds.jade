@@ -3,7 +3,7 @@ extends layout
 block content
 
   //- p=JSON.stringify(worlds)
-
+  a(href='/server/#{user.servers[0]}') &laquo; Return to Server Manager
   each world in worlds
     //- p=JSON.stringify(world)
     if world.numLoads 
@@ -11,7 +11,6 @@ block content
         h3.page-header #{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world
       else
         h3.page-header #{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world
-
       p Number of Loads: #{world.numLoads}
       p Coordinates: #{world.sector}, x:#{world.x}, y:#{world.y}, z:#{world.z}, planet #{world.planet}
         if world.satellite != null
@@ -20,8 +19,28 @@ block content
         p Last Unloaded: #{new Date(world.lastUnloaded)}
       if world.lastLoaded != null
         p Last Loaded: #{new Date(world.lastLoaded)}
+      if world.satellite != null
+        a(href='/server/#{user.servers[0]}/world/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+          button.btn.btn-info
+            i.fa.fa-eye
+            | View Saves
+      else
+        a(href='/server/#{user.servers[0]}/world/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          button.btn.btn-info
+            i.fa.fa-eye
+            | View Saves
       p
-        form(action='/server/#{user.servers[0].id}/runscript', method='POST')
+        form(action='/server/#{user.servers[0]}/saveworld', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          if world.satellite != null
+             input(type='hidden', name='world_coords', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+          else
+             input(type='hidden', name='world_coords', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          button.btn.btn-success(type='submit')
+            i.fa.fa-save
+            | Save Planet
+      p
+        form(action='/server/#{user.servers[0]}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='download_world')
           if world.satellite != null

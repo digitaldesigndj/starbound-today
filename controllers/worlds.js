@@ -4,6 +4,58 @@ var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitaloce
 var _ = require('underscore');
 var request = require('request');
 var User = require('../models/User');
+var World = require('../models/World');
+var bcrypt = require('bcrypt-nodejs');
+
+
+exports.viewWorldSaves = function(req, res, next) {
+  console.log( req.params );
+  World.findOne({ world_coords: req.params.world_coords }, function(err, world) {
+    console.log( world );
+    res.render('world_saves', {
+      title: 'World Saves',
+      world: world
+    });
+  });
+};
+
+exports.saveWorld = function(req, res, next) {
+  console.log( req.body.world_coords );
+  var new_world = new World({
+    email: req.user.email,
+    server: req.user.servers[0],
+    world_coords: req.body.world_coords,
+    saves:[{
+      timestamp:Math.round(new Date().getTime() / 1000),
+      verified:false
+    }]
+  });
+  new_world.save(function(err) {
+    if (err) {
+      if (err.code === 11000) {
+        World.findOne({ world_coords: req.body.world_coords }, function(err, world) {
+          if (err) return next(err);
+          // console.log( world );
+          world.saves.push({
+            timestamp:Math.round(new Date().getTime() / 1000),
+            verified:false
+          });
+          world.save(function(err) {
+            if (err) return next(err);
+            req.flash('info', { msg: 'World Saved' });
+            return res.redirect('/server/'+req.user.servers[0]+'/world/'+req.body.world_coords);
+          });
+        });
+      }else{
+        req.flash('errors', { msg: 'Error: '+err });
+        return res.redirect('/server/'+req.user.servers[0]+'/worlds');
+      }
+    }else{
+      req.flash('success', { msg: 'World Save Record Created' });
+      return res.redirect('/server/'+req.user.servers[0]+'/worlds');
+    }
+  });
+};
 
 /**
  * GET /
