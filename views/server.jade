@@ -56,6 +56,14 @@ block content
           a(href='http://#{droplet.ip_address}') Your Server is UP - #{droplet.ip_address}
         //- p=JSON.stringify(status)
         if stats
+          p Tokens: #{user.server_tokens-stats.spent} 
+            a(href="http://gum.co/sbtokens") Get more here
+          if droplet.size_id === 62 
+            p Time Left: #{(user.server_tokens-stats.spent)*12} Hours
+          if droplet.size_id === 65 
+            p Time Left: #{(user.server_tokens-stats.spent)*3} Hours
+          if droplet.size_id === 61 
+            p Time Left: #{(user.server_tokens-stats.spent)*1.5} Hours
           p Tokens Used so far: #{stats.spent}
         if droplet.size_id === 62 
           p 2 Core, 2GB RAM, SSD Server Created #{new Date(droplet.created_at)}
