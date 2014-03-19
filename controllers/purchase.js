@@ -1,4 +1,5 @@
 var Purchase = require('../models/Purchase');
+var User = require('../models/User');
 module.exports = function( req, res ) {
   Purchase.findOne({ url_hash: req.params.hash }, function(err, purchase) {
     if (err) return next(err);
