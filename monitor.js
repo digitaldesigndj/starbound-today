@@ -28,14 +28,14 @@ var checkServers = function () {
     api.dropletGetAll(function(err,droplets){
       if (err) return err;
       _.each(droplets, function(droplet,i) {
-        if( _.contains( starbound_servers, droplet.id ) ) {          
+        if( _.contains( starbound_servers, droplet.id ) ) { 
           console.log( droplet.name, droplet.id );
           // starbound.today Droplets
           var data = getDropletStats( droplet );
           data.name = droplet.name;
           data.id = droplet.id;
           data.time = new Date();
-          fs.appendFile('./server-monitor.log', data, function (err) {
+          fs.appendFile('./server-monitor.log', JSON.stringify(data)+"\n", function (err) {
             console.log( 'Ran 15 min check' );
           });
         }
