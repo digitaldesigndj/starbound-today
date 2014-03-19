@@ -23,15 +23,15 @@ block content
   else
     
     if droplet && droplet.status == 'off'
-      h3.page-header Server Inactive... Still using tokens
+      h3.page-header Server Powered Off, Still provisioned &amp; billing.
       if stats
-        p Total Spent So Far: $#{stats.spent}
+        p Tokens Used so far: #{stats.spent}
       p 
         //- strong #{stats.tokens} Tokens Remaining
       p The Server Image Option Is Not Available Yet
       p
         form(action='#later', method='GET')
-          button.btn.btn-warning(type='submit')
+          button.btn.btn-warning(type='submit', disabled)
             i.fa.fa-lightbulb-o
             | Take Server Image (3-5+min)
       p
@@ -56,7 +56,7 @@ block content
           a(href='http://#{droplet.ip_address}') Your Server is UP - #{droplet.ip_address}
         //- p=JSON.stringify(status)
         if stats
-          p Total Spent So Far: $#{stats.spent}
+          p Tokens Used so far: #{stats.spent}
         if droplet.size_id === 62 
           p 2 Core, 2GB RAM, SSD Server Created #{new Date(droplet.created_at)}
         if droplet.size_id === 65 
@@ -139,7 +139,7 @@ block content
       p There are some things that can only be done after the server has been powered off.
       p
         a(href='/server/#{droplet.id}/poweroff')
-          button.btn.btn-info 
+          button.btn.btn-warning 
             i.fa.fa-caret-square-o-down 
             | Power Off Server
 

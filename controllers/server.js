@@ -1,9 +1,10 @@
 var secrets = require('../config/secrets');
+var getDropletStats = require('../droplet_stats')
+var User = require('../models/User');
 var DigitalOceanAPI = require('digitalocean-api');
 var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitalocean.api_key);
 var _ = require('underscore');
 var request = require('request');
-var User = require('../models/User');
 
 exports.getServer = function(req, res) {
   console.log( req.params.id );
@@ -19,20 +20,12 @@ exports.getServer = function(req, res) {
           }
           request( { url: commandstar, timeout: 500 } , function (error, response, body) {
             if (!error && response.statusCode == 200) {
-              var stats = {};
-              var current_time = new Date().getTime()/1000;
-              var created_time = new Date(droplet.created_at).getTime()/1000;
-              stats.life = Math.round(current_time - created_time);
-              stats.spent = Math.round(100*(Math.round(100*( stats.life/3600 ) )/100 )*0.0372)/100;
-              // stats.tokens = Math.round(100*(current_use - stats.spent))/100;
-              console.log( stats.life, stats.spent );
-              //, stats.tokens, stats );
               res.render('server', {
                 title: 'Manage Server ' + droplet.ip_address,
                 droplet: droplet,
                 user: req.user,
                 status: JSON.parse(body),
-                stats: stats
+                stats: getDropletStats(droplet)
               });
             }
             else{
