@@ -8,6 +8,7 @@ mongoose.connect(secrets.db);
 var DigitalOceanAPI = require('digitalocean-api');
 var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitalocean.api_key);
 
+var fs = require('fs');
 var _ = require('underscore');
 
 var checkServers = function () {
@@ -30,7 +31,13 @@ var checkServers = function () {
         if( _.contains( starbound_servers, droplet.id ) ) {          
           console.log( droplet.name, droplet.id );
           // starbound.today Droplets
-          getDropletStats( droplet );
+          var data = getDropletStats( droplet );
+          data.name = droplet.name;
+          data.id = droplet.id;
+          data.time = new Date();
+          fs.appendFile('./server-monitor.log', data, function (err) {
+            console.log( 'Ran 15 min check' );
+          });
         }
       });
     });
