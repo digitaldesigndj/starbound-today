@@ -37,8 +37,11 @@ var checkServers = function () {
           user.server = 0;
           console.log( 'Destroying a droplet' );
           api.dropletDestroy( droplet.id, function ( err, event ) {
-            fs.appendFile('./server-monitor.log', "SERVER_DESTROYED "+JSON.stringify(event)+"\n", function (err) {
-              console.log( 'log written' );
+            user.save( function(err) {
+              if (err) return err;)
+              fs.appendFile('./server-monitor.log', "SERVER_DESTROYED "+JSON.stringify(event)+"\n", function (err) {
+                console.log( 'log written' );
+              });
             });
           });
         }else{
