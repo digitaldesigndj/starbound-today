@@ -13,11 +13,11 @@
 @gray-light:             #888;   // #999
 @gray-lighter:           #ADAFAE; // #eee
 
-@brand-primary:         #334D5C;//Blue
-@brand-success:         #45B29D;//Green
-@brand-info:            #EFC94C;//Yellow
-@brand-warning:         #E27A3F;//Orange
-@brand-danger:          #DF5A49;//Red
+@brand-primary:         #45B29D;
+@brand-success:         #334D5C;
+@brand-info:            #E27A3F;
+@brand-warning:         #DF5A49;
+@brand-danger:          #EFC94C;
 
 
 //== Scaffolding
@@ -30,7 +30,7 @@
 @text-color:            @gray-light;
 
 //** Global textual link color.
-@link-color:            @brand-success;
+@link-color:            @brand-primary;
 //** Link hover color set via `darken()` function.
 @link-hover-color:      @link-color;
 
@@ -39,7 +39,7 @@
 //
 //## Font, line-height, and color for body text, headings, and more.
 
-@font-family-sans-serif:  "Droid Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family-sans-serif: 'Montserrat', 'Montserrat Alternates', sans-serif;
 @font-family-serif:       Georgia, "Times New Roman", Times, serif;
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -62,7 +62,7 @@
 @line-height-computed:    floor((@font-size-base * @line-height-base)); // ~20px
 
 //** By default, this inherits from the `<body>`.
-@headings-font-family:    @font-family-base;
+@headings-font-family:    'Montserrat Alternates';
 @headings-font-weight:    500;
 @headings-line-height:    1.1;
 @headings-color:          #fff;
@@ -833,7 +833,7 @@
 // Bootswatch
 // -----------------------------------------------------
 
-@import url("//fonts.googleapis.com/css?family=Droid+Sans:400,700");
+@import url("//fonts.googleapis.com/css?family=Montserrat+Alternates:400,700|Montserrat");
 
 // Navbar =====================================================================
 
