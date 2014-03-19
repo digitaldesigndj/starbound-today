@@ -68,7 +68,8 @@ exports.logout = function(req, res) {
 exports.getSignup = function(req, res) {
   if (req.user) return res.redirect('/');
   res.render('account/signup', {
-    title: 'Create Account'
+    title: 'Create Account',
+    query: req.query
   });
 };
 
@@ -93,7 +94,8 @@ exports.postSignup = function(req, res, next) {
 
   var user = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    name: req.body.name
   });
 
   user.save(function(err) {
