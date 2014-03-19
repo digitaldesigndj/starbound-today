@@ -54,30 +54,6 @@ block content
       if status 
         h3.page-header 
           a(href='http://#{droplet.ip_address}') Your Server is UP - #{droplet.ip_address}
-        //- p=JSON.stringify(status)
-        if stats
-          p=JSON.stringify(stats)
-          p Tokens: #{user.server_tokens-stats.spent} 
-            a(href="http://gum.co/sbtokens") Get more here
-          if droplet.size_id === 62 
-            p Time Left: #{(user.server_tokens-stats.spent)*12} Hours
-          if droplet.size_id === 65 
-            p Time Left: #{(user.server_tokens-stats.spent)*3} Hours
-          if droplet.size_id === 61 
-            p Time Left: #{(user.server_tokens-stats.spent)*1.5} Hours
-          p Tokens Used so far: #{stats.spent}
-        if droplet.size_id === 62 
-          p 2 Core, 2GB RAM, SSD Server Created #{new Date(droplet.created_at)}
-        if droplet.size_id === 65 
-          p 4 Core, 8GB RAM, SSD Server Created #{new Date(droplet.created_at)}
-        if droplet.size_id === 61 
-          p 8 Core, 16GB RAM, SSD Server Created #{new Date(droplet.created_at)}
-
-        if droplet.image_id === 2661158
-          p Image: Starbound/CommandStar 15.04.2015
-        if droplet.image_id === 2629230
-          p Image: Starbound with htop 13.04.2015 (CommandStar Upgrade)
-
         p 
           a(href='/server/#{user.server}/players') #{status.playersSeen} Players
           |  have explored 
@@ -98,11 +74,27 @@ block content
             button.btn.btn-success(type='submit')
               i.fa.fa-repeat
               | Start CommandStar (5-10s)
-      //- p=JSON.stringify(droplet)
-
-
-      p
-        strong #{user.server_tokens} Total Tokens
+      if stats
+        //- p=JSON.stringify(stats)
+        p Tokens: #{user.server_tokens-stats.spent} 
+          a(href="http://gum.co/sbtokens") Get more here
+        if droplet.size_id === 62
+          p Time Left: #{Math.round(1000*((user.server_tokens-stats.spent)*12))/1000} Hours
+        if droplet.size_id === 65 
+          p Time Left: #{Math.round(1000*((user.server_tokens-stats.spent)*3))/1000} Hours
+        if droplet.size_id === 61 
+          p Time Left: #{Math.round(1000*((user.server_tokens-stats.spent)*1.5))/1000} Hours
+        p Tokens Used so far: #{stats.spent}
+        if droplet.size_id === 62 
+          p 2 Core, 2GB RAM, SSD Server Created #{new Date(droplet.created_at)}
+        if droplet.size_id === 65 
+          p 4 Core, 8GB RAM, SSD Server Created #{new Date(droplet.created_at)}
+        if droplet.size_id === 61 
+          p 8 Core, 16GB RAM, SSD Server Created #{new Date(droplet.created_at)}
+        if droplet.image_id === 2661158
+          p Image: Starbound/CommandStar 15.04.2015
+        if droplet.image_id === 2629230
+          p Image: Starbound with htop 13.04.2015 (CommandStar Upgrade)
 
       h3.page-header Password
       p Make your friends type something in.

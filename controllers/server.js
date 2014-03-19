@@ -33,7 +33,8 @@ exports.getServer = function(req, res) {
                 title: 'Manage Server ' + droplet.ip_address,
                 droplet: droplet,
                 user: req.user,
-                status: false
+                status: false,
+                stats: getDropletStats(droplet)
               });
             }
           });
