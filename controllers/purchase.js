@@ -20,8 +20,8 @@ module.exports = function( req, res ) {
             purchase.save(function(err) {
               if (err) { return err; }
               console.log( 'purchase claimed' );
-              req.flash('success', { msg: 'Redeemed tokens to account' + purchase.email + '. Thanks!'});
-              res.redirect('/server');
+              req.flash('success', { msg: 'Redeemed '+( +purchase.price / 50 )+' tokens to account' + purchase.email + '. Thanks!'});
+              res.redirect('/');
             });
           });
         });
