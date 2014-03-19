@@ -56,6 +56,7 @@ block content
           a(href='http://#{droplet.ip_address}') Your Server is UP - #{droplet.ip_address}
         //- p=JSON.stringify(status)
         if stats
+          p=JSON.stringify(stats)
           p Tokens: #{user.server_tokens-stats.spent} 
             a(href="http://gum.co/sbtokens") Get more here
           if droplet.size_id === 62 
@@ -97,12 +98,11 @@ block content
             button.btn.btn-success(type='submit')
               i.fa.fa-repeat
               | Start CommandStar (5-10s)
-
       //- p=JSON.stringify(droplet)
 
 
-      //- p
-        //- strong #{stats.tokens} Tokens Remaining
+      p
+        strong #{user.server_tokens} Total Tokens
 
       h3.page-header Password
       p Make your friends type something in.

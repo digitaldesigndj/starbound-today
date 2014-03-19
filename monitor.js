@@ -13,35 +13,42 @@ var _ = require('underscore');
 
 var checkServers = function () {
   console.log( '| Doing Server Check' );
-  User.find( '', function(err,users) {
+  User.find(  { server: { $gt: 1 } }, function(err,users) {
     if (err) return err;
-    var starbound_servers = [];
-    _.each(users, function(user,i) {
-      if( user.server != 0 ) {
-        starbound_servers.push(user.server)
-      }
-      return false;
-    });
-    console.log( '| Servers', starbound_servers );
-    api.dropletGetAll( function(err,droplets) {
-      if (err) return err;
-      _.each(droplets, function(droplet,i) {
-        // console.log(droplet);
-        if( _.contains( starbound_servers, droplet.id ) ) {
-          console.log( droplet.name, droplet.id, _.findWhere(users, {servers: [droplet.id]}) );
-          // starbound.today Droplets
-          var data = getDropletStats( droplet );
-          data.name = droplet.name;
-          data.id = droplet.id;
-          data.time = new Date();
+    _.each( users, function( user ) {
+      api.dropletGet( user.server, function ( err, droplet ) {
+        if (err) return err;
+        console.log( droplet.name, droplet.id, user.server_tokens);
+        var data = getDropletStats( droplet );
+        data.current = Math.round(100*(user.server_tokens-data.tokens))/100;;
+        data.name = droplet.name;
+        data.id = droplet.id;
+        data.time = new Date();
+        console.log( data );
+        if( data.current < 0 ) {
+          // Save a billing entry here -- and delete in manage-server js too...
+          var created_time = new Date(droplet.created_at).getTime()/1000;
+          var current_time = new Date().getTime()/1000;
+          var server_lifetime =  current_time - created_time;
+          console.log( 'Server Destroyed' );
+          console.log( created_time, current_time, server_lifetime );
+          user.destoryed_servers.push(user.server);
+          user.billed_seconds = +user.billed_seconds + server_lifetime;
+          user.server = 0;
+          console.log( 'Destroying a droplet' );
+          api.dropletDestroy( droplet.id, function ( err, event ) {
+            fs.appendFile('./server-monitor.log', "SERVER_DESTROYED "+JSON.stringify(event)+"\n", function (err) {
+              console.log( 'log written' );
+            });
+          });
+        }else{
           fs.appendFile('./server-monitor.log', JSON.stringify(data)+"\n", function (err) {
-            console.log( 'Ran 15 min check' );
+            console.log( 'log written' );
           });
         }
+
       });
     });
-
   });
 }
-
-setInterval( checkServers(), 15 * 60 * 1000 );
+setInterval( checkServers(), 15 * ( 60 * 1000 ) );

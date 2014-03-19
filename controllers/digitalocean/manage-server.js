@@ -86,13 +86,15 @@ exports.dropletDestroy = function(req, res) {
     if (err) return next(err);
     api.dropletGet( req.params.id, function (err, droplet) {
       if (err) return err;
-      // Save a billing entry here
+      // Save a billing entry here -- and monitor js too...
       var created_time = new Date(droplet.created_at).getTime()/1000;
       var current_time = new Date().getTime()/1000;
       var server_lifetime =  current_time - created_time;
       console.log( 'Server Destroyed' );
       console.log( created_time, current_time, server_lifetime );
       user.destoryed_servers.push(user.server);
+      user.destoryed_servers.push(user.server);
+      user.billed_seconds = +user.billed_seconds + server_lifetime;
       user.server = 0;
       api.dropletDestroy( req.params.id, function (err, event) {
         if (err) return err;
