@@ -6,9 +6,11 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var crypto = require('crypto');
 
 var secrets = require('./config/secrets');
-var crypto = require('crypto');
+var mongoose = require('mongoose');
+mongoose.connect(secrets.db);
 var nodemailer = require("nodemailer");
 var smtpTransport = nodemailer.createTransport('SMTP', {
   service: 'Mailgun',
@@ -17,6 +19,7 @@ var smtpTransport = nodemailer.createTransport('SMTP', {
     pass: secrets.mailgun.password
   }
 });
+
 var Purchase = require('./models/Purchase');
 var User = require('./models/User');
 
