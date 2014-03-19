@@ -9,10 +9,10 @@ block content
     br
     h1 On Demand Starbound Servers
   else
-    if user.servers[0]
+    if user.server
       h2.page-header Starbound Today Alpha Preview
       p You have 1 server
-      form(action='/server/#{user.servers[0]}', method='GET')
+      form(action='/server/#{user.server}', method='GET')
         button.btn.btn-primary(type='submit') manage your server here
       br
       //- p Good job creating that server. Right now, if you look at the management console, you are going to see a cool loading effect background and a bit of information. Be Patient! It takes 55 - 90 seconds to create a server.
@@ -75,7 +75,7 @@ block content
           a(href='http://gum.co/sbtokens') Get more tokens
 
 
-      //- p http://localhost:3000/server/#{user.servers[0]}
+      //- p http://localhost:3000/server/#{user.server}
       //- script.
-        window.location = 'http://localhost:3000/server/#{user.servers[0]}';
+        window.location = 'http://localhost:3000/server/#{user.server}';
 
