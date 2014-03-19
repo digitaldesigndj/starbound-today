@@ -16,25 +16,30 @@ exports.getMakeServer = function (req, res) {
 };
 
 exports.postMakeServer = function (req, res) {
-  console.log("Creating Server");
-  // size_id 66 = 512MB, 62 = 2GB
-  // res.send( req.body );
-  var image = req.body.image || '2661158';
-  var size = req.body.size || '62';
-  // 62 = 2GB
-  // 65 = 8GB
-  // 61 = 16GB
-  api.dropletNew( req.user.email.replace('@','-at-'), size, image, 4, {'ssh_key_ids': '87061,69732,93888'}, function ( err, response ){
-    if( err ) { console.log( err ); res.send( err ); }
-    api.eventGet(response.event_id, function ( error, event ) {
-      if( err ) { res.send( err ); }
-      api.dropletGet( event.droplet_id, function (err, droplet) {
+  User.findById(req.user.id, function (err, user) {
+    if (err) return next(err);
+    // 1 Server Per User for Now
+    console.log( user.servers )
+    if( user.servers != [] ) {
+      req.flash('error', { msg: 'You already have a server... ' });
+      res.redirect('/');
+    }
+    console.log("Creating Server");
+    // size_id 66 = 512MB, 62 = 2GB
+    // res.send( req.body );
+    var image = req.body.image || '2661158';
+    var size = req.body.size || '62';
+    // 62 = 2GB
+    // 65 = 8GB
+    // 61 = 16GB
+    api.dropletNew( req.user.email.replace('@','-at-'), 66 /*size*/, image, 4, {'ssh_key_ids': '87061,69732,93888'}, function ( err, response ){
+      if( err ) { console.log( err ); res.send( err ); }
+      api.eventGet(response.event_id, function ( error, event ) {
         if( err ) { res.send( err ); }
-        console.log( droplet );
-        User.findById(req.user.id, function (err, user) {
-          if (err) return next(err);
-          // 1 Server Per User for Now
-          user.servers = [];
+        api.dropletGet( event.droplet_id, function (err, droplet) {
+          if( err ) { res.send( err ); }
+          console.log( droplet );
+
           user.servers.push(droplet.id);
           user.save(function (err) {
             if (err) return next(err);
