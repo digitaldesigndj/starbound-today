@@ -94,13 +94,9 @@ app.post('/gumroad', function( req, res ) {
             console.log( 'purchase saved' );
             user.save(function(err) {
               console.log( 'user bought server tokens' );
-              // 'You bought server tokens! They have been added to your account:'
               smtpTransport.sendMail(mailOptions, function(err) {
-                if (err) {
-                  req.flash('errors', { msg: err.message });
-                  return res.redirect('/server');
-                }
-                res.redirect('/server');
+                if (err) { return err; }
+                res.redirect('/');
               });
             });
         });
@@ -116,12 +112,8 @@ app.post('/gumroad', function( req, res ) {
               text: 'You bought server tokens! Register, then claim them with this url: http://starbound.today/purchase/' + hash
             };
             smtpTransport.sendMail(mailOptions, function(err) {
-              if (err) {
-                req.flash('errors', { msg: err.message });
-                return res.redirect('/server');
-              }
-              req.flash('success', { msg: 'Email has been sent successfully!' });
-              res.redirect('/server');
+              if (err) { return err; }
+              res.redirect('/');
             });
         });
       }
