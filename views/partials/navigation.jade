@@ -13,6 +13,8 @@
           if JSON.stringify(user.servers) != '[]'
             li(class=title=='Server'?'active':undefined)
               a(href='/server/#{user.servers[0]}') Server
+        li(class=title=='Arcade Pricing'?'active':undefined)
+          a(href='/arcade') Arcade Pricing
         li(class=title=='Contact'?'active':undefined)
           a(href='/contact') Contact
       ul.nav.navbar-nav.navbar-right
