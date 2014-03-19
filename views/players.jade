@@ -3,7 +3,7 @@ extends layout
 block content
 
   //- p=JSON.stringify(players)
-
+  a(href='/server/#{user.server}') &laquo; Return to Server Manager
   each player in players
     //- p=JSON.stringify(player)
     if player.numLogins 

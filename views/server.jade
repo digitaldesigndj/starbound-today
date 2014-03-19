@@ -53,7 +53,7 @@ block content
 
       if status 
         h3.page-header 
-          a(href='http://#{droplet.ip_address}') Your Server is UP - #{droplet.ip_address}
+          a(href='http://#{droplet.ip_address}', target="_blank") Your Server is UP - #{droplet.ip_address}
         p 
           a(href='/server/#{user.server}/players') #{status.playersSeen} Players
           |  have explored 
@@ -77,7 +77,7 @@ block content
       if stats
         //- p=JSON.stringify(stats)
         p Tokens: #{user.server_tokens-stats.spent} 
-          a(href="http://gum.co/sbtokens") Get more here
+          a(href="http://gum.co/sbtokens", target="_blank") Get more here
         if droplet.size_id === 62
           p Time Left: #{Math.round(1000*((user.server_tokens-stats.spent)*12))/1000} Hours
         if droplet.size_id === 65 
