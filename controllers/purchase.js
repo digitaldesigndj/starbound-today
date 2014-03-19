@@ -13,7 +13,7 @@ module.exports = function( req, res ) {
         User.findById(req.user.id, function (err, user) {
           if (err) return next(err);
           // Give 5 Tokens
-          user.server.tokens = +user.server.tokens + ( +purchase.price / 50 );
+          user.server_tokens = +user.server_tokens + ( +purchase.price / 50 );
           user.save(function (err) {
             if (err) return next(err);
             purchase.claimed = true;
