@@ -1,0 +1,106 @@
+# Routes
+
+### Marketing & Communication
+
+ * `/`                              
+ * `/pricing`                       API Integration
+ * `/contact`                       The RequestForm
+ * `/servers/:server_id/ssh`        SSH RequestForm
+ * `/servers/:server_id/dns/custom` DNS RequestForm
+
+### Servers
+ * `/`                              serverController.listServers
+ * `/server/:id`                    serverController.getServer
+
+### Hardware
+
+ * `/server/:id/powercycle`         doManageServer.dropletPowerCycle
+ * `/server/:id/poweron`            doManageServer.dropletPowerOn
+ * `/server/:id/poweroff`           doManageServer.dropletPowerOff
+ * `/server/:id/destroy`            doManageServer.dropletDestroy
+ * `/server/:id/shutdown`           @todomabey SoftwareRestart
+ * `/server/:id/restart`            @todomabey GracefulPowerdown
+
+### Snapshots
+
+ * `/server/boot`                   doMakeServer.postMakeServer
+ * `/server/:id/snapshots`          doManageServer.viewServersSnapshots
+ * `/server/:id/snapshots/:slot`    doManageServer.viewSnapshot
+ * `/server/:id/snapshots/make`     doManageServer.makeSnapshot
+ * `/server/:id/snapshots/delete`   doManageServer.destroySnapshot
+ * `/server/:id/rebuild`            doManageServer.selectSnapshot
+
+### DNS
+
+ * `/servers/:server_id/dns`        Subdomain DNS Management
+ * `/servers/:server_id/dns/add`    Add A Record
+ * `/servers/:server_id/dns/remove` Remove A Record
+
+### Script Manager
+
+ * `/server/:id/runscript`          scriptController.postScript
+
+  Module/Plugin Format
+  `ls -la`
+  `website start`
+
+
+
+
+### StarBound Specific
+
+ * `/server/:id/:slug`                   setPasswordForm
+ * `/server/:id/:slug/worlds`            sbWorldManager.viewWorlds
+ * `/server/:id/:slug/worlds/save`       sbWorldManager.saveWorld
+ * `/server/:id/:slug/players`           sbPlayerManager.viewPlayers
+ * `/server/:id/:slug/players/profile`   sbPlayerManager.editPlayerProfile
+
+StarryPy, StarryBound Manager
+
+### Node Application Server
+
+ * `/server/:id/:slug/node`              Restart,View Data,Edit Secrets?
+
+
+# Other Apps
+
+ * RoboMongo App
+ * DigitalOcean
+ * GumRoad
+ * GoogleAnalytics
+ * Google OAuth2
+
+## Gumroad
+
+ * `/allpurchases`                          purchaseHistory
+ * `/thanks`                                webhook
+ * `/purchaseCallback/:secret/:product_id`  addCredit
+
+## Admin
+
+ * `/allservers`                    administrationRoute.allDroplets
+ * `/allusers`                      administrationRoute.allDroplets
+
+
+## StarryDex
+
+### Player Manager
+
+ * `/players`                   
+ * `/players/rating`            
+ * `/players/logins`            
+ * `/players/:id`               
+ * `/players/:id/upvote`        
+ * `/players/:id/report`        
+ * `/players/:id/edit`          
+
+### World Manager
+
+ * `/worlds`                    
+ * `/worlds/size`               
+ * `/worlds/rating`             
+ * `/worlds/visits`             
+ * `/worlds/:id`                
+ * `/worlds/:id/upvote`         
+ * `/worlds/:id/report`         
+ * `/worlds/:id/edit`           
