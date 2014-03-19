@@ -87,20 +87,19 @@ app.post('/gumroad', function( req, res ) {
         console.log( 'User being credited' );
         console.log(req.body.full_name);
         // user.profile.name = req.body.full_name;
-        user.server_tokens = parseFloat(Math.round(10*user.server_tokens)/10)+10;
+        user.server_tokens = parseFloat(Math.round(10*user.server_tokens)/10)+(req.body.price/50);
         purchase.claimed = true;
         purchase.save(function(err) {
           if (err) { return err; }
             console.log( 'purchase saved' );
             user.save(function(err) {
-              console.log( 'user saved');
+              console.log( 'user bought server tokens' );
               // 'You bought server tokens! They have been added to your account:'
               smtpTransport.sendMail(mailOptions, function(err) {
                 if (err) {
                   req.flash('errors', { msg: err.message });
                   return res.redirect('/server');
                 }
-                req.flash('success', { msg: 'Email has been sent successfully!' });
                 res.redirect('/server');
               });
             });
