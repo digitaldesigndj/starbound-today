@@ -24,7 +24,6 @@ var pricingController = require('./controllers/pricing');
 var playerManager  = require('./controllers/players');
 var worldManager  = require('./controllers/worlds');
 
-var gumhookController = require('./controllers/gumhook');
 var scriptController  = require('./controllers/script');
 var serverController  = require('./controllers/server');
 
@@ -86,7 +85,7 @@ app.use(express.session({
     auto_reconnect: true
   })
 }));
-
+  
 app.use(express.csrf());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -144,6 +143,7 @@ app.post('/account/password', passportConf.isAuthenticated, userController.postU
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 
+app.get('/purchase/:hash', require('./controllers/purchase.js') );
 
 app.get('/server/:id/worlds', passportConf.isAuthenticated, worldManager.viewWorlds);
 app.get('/server/:id/worlds/send/:world_coords', passportConf.isAuthenticated, worldManager.viewTargetWorlds);
@@ -168,9 +168,7 @@ app.get('/server/:id/rebuild', passportConf.isAuthenticated, doManageServer.sele
 // app.post('/server/rebuild', passportConf.isAuthenticated, doManageServer.dropletRebuild);
 app.get('/server/:id/destroy', passportConf.isAuthenticated, doManageServer.dropletDestroy);
 
-app.post('/gumroad', gumhookController.gumroadPurchaseCallback);
-app.post('/secret', gumhookController.gumroadWebhook);
-app.get('/purchase/:hash', passportConf.isAuthenticated, gumhookController.purchase);
+
 
 /**
  * OAuth routes for sign-in.

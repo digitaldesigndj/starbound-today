@@ -1,4 +1,13 @@
-var secrets = require('../config/secrets');
+/**
+ * Module dependencies.
+ * Responds to purchase webhook and creates products on notification
+ */
+
+var express = require('express');
+var http = require('http');
+var path = require('path');
+
+var secrets = require('./config/secrets');
 var crypto = require('crypto');
 var nodemailer = require("nodemailer");
 var smtpTransport = nodemailer.createTransport('SMTP', {
@@ -8,51 +17,37 @@ var smtpTransport = nodemailer.createTransport('SMTP', {
     pass: secrets.mailgun.password
   }
 });
-var Purchase = require('../models/Purchase');
-var User = require('../models/User');
+var Purchase = require('./models/Purchase');
+var User = require('./models/User');
 
+var app = express();
 
-exports.gumroadWebhook = function( req, res ) {
+// all environments
+app.set('port', 3002);
+app.use(express.favicon());
+app.use(express.logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.methodOverride());
+app.use(app.router);
+
+// development only
+if ('development' == app.get('env')) {
+  app.use(express.errorHandler());
+}
+
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
+
+app.post('/secret', function( req, res ) {
   console.log( 'Webhook!', req.body );
-  if (req.user) return res.redirect('/thanks');
   res.set('Content-Type', 'text/plain');
-  return res.send("http://" + req.header('host') + "/signup?email=" + req.body.email );//+ "&name=" + req.body.full_name);
-}
+  //" + req.header('host') + "
+  return res.send("http://starbound.today/signup?email=" + req.body.email + "&name=" + req.body.full_name);
+});
 
-exports.purchase = function( req, res ) {
-  Purchase.findOne({ url_hash: req.params.hash }, function(err, purchase) {
-    if (err) return next(err);
-    if( purchase != null ) {
-      console.log( purchase );
-      console.log( purchase.claimed );
-      if( purchase.claimed ) {
-        res.send('This purchased has been redeemed to ' + purchase.email + '. Thanks!');
-      }
-      else{
-        User.findById(req.user.id, function (err, user) {
-          if (err) return next(err);
-          // Give 5 Tokens
-          user.server.tokens = +user.server.tokens + 5;
-          user.save(function (err) {
-            if (err) return next(err);
-            purchase.claimed = true;
-            purchase.save(function(err) {
-              if (err) { return err; }
-              console.log( 'purchase claimed' );
-              req.flash('success', { msg: 'Redeemed tokens to account' + purchase.email + '. Thanks!'});
-              res.redirect('/server');
-            });
-          });
-        });
-      }
-    }
-    else {
-      res.send( 'Can\'t find it...' );
-    }
-  });
-}
-
-exports.gumroadPurchaseCallback = function( req, res ) {
+app.post('/gumroad', function( req, res ) {
   console.log( req.body );  
   if ( req.body.test ) {
     console.log( 'this was a test' );
@@ -131,4 +126,4 @@ exports.gumroadPurchaseCallback = function( req, res ) {
   else {
     return res.send("go away, seller_id did not match.");
   }
-}
+});
