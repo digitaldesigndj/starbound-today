@@ -79,9 +79,11 @@ app.post('/gumroad', function( req, res ) {
 
     User.findOne({ email: req.body.email }, function(err, user) {
       if (err) return next(err);
+      console.log(user);
       if( user != null ) {
-        console.log(user);
-        user.profile.name = req.body.full_name;
+        console.log( 'User being credited' );
+        console.log(req.body.full_name);
+        // user.profile.name = req.body.full_name;
         user.server.tokens = parseFloat(Math.round(10*user.server.tokens)/10)+10;
         purchase.claimed = true;
         purchase.save(function(err) {
@@ -101,7 +103,7 @@ app.post('/gumroad', function( req, res ) {
             });
         });
       }else{
-        // EMailed Waiting to be claimed
+        console.log( 'EMailed Waiting to be claimed' );
         purchase.save(function(err) {
           if (err) { return err; }
             console.log( 'purchase saved' );
