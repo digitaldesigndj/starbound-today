@@ -3,7 +3,7 @@ extends layout
 block content
 
   //- p=JSON.stringify(worlds)
-  a(href='/server/#{user.servers[0]}') &laquo; Return to Server Manager
+  a(href='/server/#{user.server}') &laquo; Return to Server Manager
   each world in worlds
     //- p=JSON.stringify(world)
     if world.numLoads 
@@ -21,39 +21,39 @@ block content
         p Last Loaded: #{new Date(world.lastLoaded)}
       p
         if world.satellite != null
-          a(href='/server/#{user.servers[0]}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+          a(href='/server/#{user.server}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
             button.btn.btn-primary
               i.fa.fa-eye
               | View World Saves/Restore Old Version
         else
-          a(href='/server/#{user.servers[0]}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          a(href='/server/#{user.server}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
             button.btn.btn-primary
               i.fa.fa-eye
               | View World Saves/Restore Old Version
       p
         if world.satellite != null
-          a(href='/server/#{user.servers[0]}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+          a(href='/server/#{user.server}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
             button.btn.btn-warning
               i.fa.fa-crosshairs
               | Target Restore (Clone) StarryDex World Save
         else
-          a(href='/server/#{user.servers[0]}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          a(href='/server/#{user.server}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
             button.btn.btn-warning
               i.fa.fa-crosshairs
               | Target Restore (Clone) StarryDex World Save
       p
         if world.satellite != null
-          a(href='/server/#{user.servers[0]}/worlds/save/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+          a(href='/server/#{user.server}/worlds/save/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
             button.btn.btn-success
               i.fa.fa-save
               | Save World to StarryDex
         else
-          a(href='/server/#{user.servers[0]}/worlds/save/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          a(href='/server/#{user.server}/worlds/save/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
             button.btn.btn-success
               i.fa.fa-save
               | Save World to StarryDex
       p
-        form(action='/server/#{user.servers[0]}/runscript', method='POST')
+        form(action='/server/#{user.server}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='download_world')
           if world.satellite != null
@@ -64,7 +64,7 @@ block content
             i.fa.fa-download
             | Download World
       p
-        form(action='/server/#{user.servers[0]}/destory', method='POST')
+        form(action='/server/#{user.server}/destory', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='download_world')
           if world.satellite != null

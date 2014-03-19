@@ -32,7 +32,7 @@ exports.postScript = function (req, res) {
   // req.flash('success', { msg: 'You selected this script: ' + script });
   console.log( 'running script', script)
 
-  api.dropletGet( req.user.servers[0], function (err, droplet) {
+  api.dropletGet( req.user.server, function (err, droplet) {
     if( err ) { res.send( err ); }
     console.log( droplet );
     User.findById(req.user.id, function (err, user) {

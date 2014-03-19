@@ -12,7 +12,7 @@ exports.getServer = function(req, res) {
     if (err) return err;
     api.dropletGet( req.params.id , function (err, droplet) {
       if (err) return err;
-      if( _.contains( user.servers, parseInt( req.params.id ) ) ) {
+      if( user.server != 0 ) {
         if( droplet.status === 'active' ) {
           var commandstar = 'http://' + droplet.ip_address + '/server/status';
           if( droplet.id === 1216418 ) {

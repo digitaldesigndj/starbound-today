@@ -13,9 +13,9 @@ var User = require('../models/User');
 exports.viewPlayers = function(req, res) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
-    api.dropletGet( req.user.servers[0] , function (err, droplet) {
+    api.dropletGet( req.user.server , function (err, droplet) {
       if (err) return err;
-      if( _.contains( user.servers, parseInt( req.user.servers[0] ) ) ) {
+      if( user.server == parseInt( req.user.server ) ) {
         var commandstar = 'http://' + droplet.ip_address + '/server/players';
         if( droplet.id === 1216418 ) {
           commandstar = 'http://' + droplet.ip_address + '/status/server/players';

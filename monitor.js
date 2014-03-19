@@ -17,19 +17,18 @@ var checkServers = function () {
     if (err) return err;
     var starbound_servers = [];
     _.each(users, function(user,i) {
-      // console.log(user);
-      if( user.servers[0] != undefined ) {
-        starbound_servers.push( user.servers[0] );
+      if( user.server != 0 ) {
+        starbound_servers.push(user.server)
       }
       return false;
     });
-    console.log( '| Servers' );
-
-    api.dropletGetAll(function(err,droplets){
+    console.log( '| Servers', starbound_servers );
+    api.dropletGetAll( function(err,droplets) {
       if (err) return err;
       _.each(droplets, function(droplet,i) {
-        if( _.contains( starbound_servers, droplet.id ) ) { 
-          console.log( droplet.name, droplet.id );
+        // console.log(droplet);
+        if( _.contains( starbound_servers, droplet.id ) ) {
+          console.log( droplet.name, droplet.id, _.findWhere(users, {servers: [droplet.id]}) );
           // starbound.today Droplets
           var data = getDropletStats( droplet );
           data.name = droplet.name;

@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-  a(href='/server/#{user.servers[0]}/worlds') &laquo; Return to All Worlds
+  a(href='/server/#{user.server}/worlds') &laquo; Return to All Worlds
   if world
     //- p=JSON.stringify(world, null, 2)
     //- h2 Here's all the saves we have for world #{world.world_coords}
@@ -11,7 +11,7 @@ block content
     each save, index in world.saves
       //- p=JSON.stringify(save)
       p 
-        form(action='/server/#{user.servers[0]}/runscript', method='POST')
+        form(action='/server/#{user.server}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='restore_world')
           input(type='hidden', name='timestamp', value=save.timestamp)

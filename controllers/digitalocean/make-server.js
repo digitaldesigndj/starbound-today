@@ -19,8 +19,8 @@ exports.postMakeServer = function (req, res) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
     // 1 Server Per User for Now
-    console.log( user.servers )
-    if( user.servers != [] ) {
+    console.log( user.server )
+    if( user.server != 0 ) {
       req.flash('error', { msg: 'You already have a server... ' });
       res.redirect('/');
     }
@@ -39,8 +39,7 @@ exports.postMakeServer = function (req, res) {
         api.dropletGet( event.droplet_id, function (err, droplet) {
           if( err ) { res.send( err ); }
           console.log( droplet );
-
-          user.servers.push(droplet.id);
+          user.server = droplet.id;
           user.save(function (err) {
             if (err) return next(err);
             console.log("Made Server", droplet.ip_address);

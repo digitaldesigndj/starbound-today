@@ -10,9 +10,9 @@
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         if user
-          if JSON.stringify(user.servers) != '[]'
+          if user.server != 0
             li(class=title=='Server'?'active':undefined)
-              a(href='/server/#{user.servers[0]}') Server
+              a(href='/server/#{user.server}') Server
         li(class=title=='Arcade Pricing'?'active':undefined)
           a(href='/arcade') Arcade Pricing
         li(class=title=='Contact'?'active':undefined)

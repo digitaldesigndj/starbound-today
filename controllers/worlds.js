@@ -11,14 +11,14 @@ exports.saveWorld = function(req, res, next) {
   console.log( req.params.world_coords );
   var new_world = new World({
     email: req.user.email,
-    server: req.user.servers[0],
+    server: req.user.server,
     world_coords: req.params.world_coords,
     saves:[{
       timestamp:Math.round(new Date().getTime() / 1000),
       verified:false
     }]
   });
-  api.dropletGet( req.user.servers[0] , function (err, droplet) {
+  api.dropletGet( req.user.server , function (err, droplet) {
     if (err) return err;
     var timestamp = Math.round(new Date().getTime() / 1000);
     var command = 'scp root@'+droplet.ip_address+':/root/starbound/universe/'+req.params.world_coords+' /var/www/starrydex/public/'+timestamp+'_'+req.params.world_coords;
@@ -37,20 +37,20 @@ exports.saveWorld = function(req, res, next) {
               world.save(function(err) {
                 if (err) return next(err);
                 req.flash('info', { msg: 'World Saved' });
-                return res.redirect('/server/'+req.user.servers[0]+'/worlds/send/'+req.params.world_coords+'/to/'+req.params.world_coords);
+                return res.redirect('/server/'+req.user.server+'/worlds/send/'+req.params.world_coords+'/to/'+req.params.world_coords);
               });
             });
           });
         }else{
           req.flash('errors', { msg: 'Error: '+err });
-          return res.redirect('/server/'+req.user.servers[0]+'/worlds');
+          return res.redirect('/server/'+req.user.server+'/worlds');
         }
       }else{
         exec(command, function (error, stdout, stderr) {
           console.log( stdout );
           new_world.save(function(err) {
             req.flash('success', { msg: 'World Save Record Created' });
-            return res.redirect('/server/'+req.user.servers[0]+'/worlds/send/'+req.params.world_coords+'/to/'+req.params.world_coords);
+            return res.redirect('/server/'+req.user.server+'/worlds/send/'+req.params.world_coords+'/to/'+req.params.world_coords);
           });
         });
       }
@@ -73,9 +73,9 @@ exports.sendWorld = function(req, res, next) {
 exports.viewTargetWorlds = function(req, res) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
-    api.dropletGet( req.user.servers[0] , function (err, droplet) {
+    api.dropletGet( req.user.server , function (err, droplet) {
       if (err) return err;
-      if( _.contains( user.servers, parseInt( req.user.servers[0] ) ) ) {
+      if( user.server == parseInt( req.user.server ) ) {
         var commandstar = 'http://' + droplet.ip_address + '/server/worlds';
         if( droplet.id === 1216418 ) {
           commandstar = 'http://' + droplet.ip_address + '/status/server/worlds';
@@ -98,9 +98,9 @@ exports.viewTargetWorlds = function(req, res) {
 exports.viewWorlds = function(req, res) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
-    api.dropletGet( req.user.servers[0] , function (err, droplet) {
+    api.dropletGet( req.user.server , function (err, droplet) {
       if (err) return err;
-      if( _.contains( user.servers, parseInt( req.user.servers[0] ) ) ) {
+      if( user.server == parseInt( req.user.server ) ) {
         var commandstar = 'http://' + droplet.ip_address + '/server/worlds';
         if( droplet.id === 1216418 ) {
           commandstar = 'http://' + droplet.ip_address + '/status/server/worlds';
