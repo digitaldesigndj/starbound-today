@@ -87,7 +87,7 @@ app.post('/gumroad', function( req, res ) {
         console.log( 'User being credited' );
         console.log(req.body.full_name);
         // user.profile.name = req.body.full_name;
-        user.server_tokens = parseFloat(Math.round(10*user.server_tokens)/10)+(req.body.price/50);
+        user.server_tokens = +user.server_tokens + ( +req.body.price / 50 );
         purchase.claimed = true;
         purchase.save(function(err) {
           if (err) { return err; }
