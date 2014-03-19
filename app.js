@@ -85,19 +85,13 @@ app.use(express.session({
     auto_reconnect: true
   })
 }));
-  
 app.use(express.csrf());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
-  var whitelist = [
-    '/secret'
-  ];
-  if (whitelist.indexOf(req.url) !== -1) {
-    res.locals.user = req.user;
-    res.locals.token = req.csrfToken();
-    res.locals.secrets = secrets;
-  }
+  res.locals.user = req.user;
+  res.locals.token = req.csrfToken();
+  res.locals.secrets = secrets;
   next();
 });
 app.use(flash());
