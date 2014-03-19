@@ -4,11 +4,11 @@ var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitaloce
 var request = require('request');
 var _ = require('underscore');
 /**
- * GET /
- * Home page.
+ * GET /arcade, /monthly, /pricing
+ * Pricing Page
  */
 
-exports.getPricing = function(req, res) {
+exports.getArcadePricing = function(req, res) {
   var url = 'https://api.digitalocean.com/sizes/?client_id='
     +secrets.digitalocean.client_id
     +'&api_key='
@@ -17,7 +17,7 @@ exports.getPricing = function(req, res) {
     if (!error && response.statusCode == 200) {
       console.log( body );
       res.render('pricing', {
-        title: 'Fair Pricing',
+        title: 'Arcade Pricing',
         sizes: JSON.parse(body).sizes
       });
     }

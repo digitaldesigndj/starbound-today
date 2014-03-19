@@ -116,7 +116,9 @@ app.use(express.errorHandler());
  * Application routes.
  */
 
-app.get('/pricing', pricingController.getPricing);
+app.get('/pricing', function(req, res){ res.redirect('/arcade') });
+app.get('/monthly', function(req, res){ res.redirect('/arcade') });
+app.get('/arcade', pricingController.getArcadePricing);
 
 app.get('/', homeController.index);
 app.get('/login', userController.getLogin);
