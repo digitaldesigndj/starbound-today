@@ -32,7 +32,6 @@ var calcDropletStats = function(droplet,hourly_price,seconds_per_token,used_toke
 }
 
 exports.getDropletStats = function(user,droplet) {
-  // 
   var stats = {};
   if ( droplet.size_id == 62 ) { //2GB
     stats = calcDropletStats(droplet,0.02976,43200,user.current_server_used_tokens);

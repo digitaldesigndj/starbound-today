@@ -27,7 +27,7 @@ var checkServers = function () {
         data.id = droplet.id;
         data.time = new Date();
         console.log( data );
-        if ( consumed_tokens >= used_tokens ) {
+        if ( data.consumed_tokens >= data.used_tokens ) {
           dropletUtils.dropletDestroy( user, droplet, function( event ) {
             fs.appendFile('./server-monitor.log', JSON.stringify(data)+"\n"+"SERVER_DESTROYED "+JSON.stringify(event)+"\n", function (err) {
               console.log( 'log written' );
