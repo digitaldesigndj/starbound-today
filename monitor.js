@@ -25,7 +25,7 @@ var checkServers = function () {
         data.id = droplet.id;
         data.time = new Date();
         console.log( data );
-        if( data.current < 0 ) {
+        if( data.current <= 0 ) {
           // Save a billing entry here -- and delete in manage-server js too...
           var created_time = new Date(droplet.created_at).getTime()/1000;
           var current_time = new Date().getTime()/1000;
