@@ -75,10 +75,10 @@ block content
               i.fa.fa-repeat
               | Start CommandStar (5-10s)
       if stats 
-        p=JSON.stringify(stats)
+        //- p=JSON.stringify(stats)
         p#countdown Time Left: 0d, #{stats.time_left}
-        p Tokens Burned so far: #{stats.consumed_tokens}
-        p Tokens Spent: #{user.current_server_used_tokens}
+        //- p Tokens Burned so far: #{stats.consumed_tokens}
+        p Tokens Spent: #{user.current_server_used_tokens} (#{Math.round(100*(user.current_server_used_tokens-stats.consumed_tokens))/100} credits/#{stats.consumed_tokens} burned)
         if user.server_tokens-user.used_tokens == 0
           p You have run out of tokens... 
             a(href="http://gum.co/sbtokens", target="_blank") Get more here
@@ -133,9 +133,9 @@ block content
         if droplet.size_id === 61 
           p 8 Core, 16GB RAM, SSD Server Created #{new Date(droplet.created_at)}
         if droplet.image_id === 2661158
-          p Image: Starbound/CommandStar 15.04.2015
+          p Image: Starbound/CommandStar 15.04.2014
         if droplet.image_id === 2629230
-          p Image: Starbound with htop 13.04.2015 (CommandStar Upgrade)
+          p Image: Starbound with htop 13.04.2014 (CommandStar Upgrade)
 
       h3.page-header Password
       p Make your friends type something in.

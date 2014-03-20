@@ -23,22 +23,17 @@ var checkServers = function () {
         if (err) return err;
         console.log( droplet.name, droplet.id, user.server_tokens );
         var data = dropletUtils.getDropletStats( user, droplet );
-
-        // data.current = Math.round(100*(user.server_tokens-data.tokens))/100;;
-        data.current = 100;
         data.name = droplet.name;
         data.id = droplet.id;
         data.time = new Date();
         console.log( data );
-        if( data.current <= 0 ) {
-          //dropletUtils.dropletDestroy( user, droplet, function( event ) {
-            var event = {};
-            console.log( 'ATTEMPTED DESTORY' );
+        if ( consumed_tokens >= used_tokens ) {
+          dropletUtils.dropletDestroy( user, droplet, function( event ) {
             fs.appendFile('./server-monitor.log', JSON.stringify(data)+"\n"+"SERVER_DESTROYED "+JSON.stringify(event)+"\n", function (err) {
               console.log( 'log written' );
             });
-          // });
-        }else{
+          });
+        } else {
           fs.appendFile('./server-monitor.log', JSON.stringify(data)+"\n", function (err) {
             console.log( 'log written' );
           });
