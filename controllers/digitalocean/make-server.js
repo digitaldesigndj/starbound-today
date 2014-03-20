@@ -32,6 +32,21 @@ exports.postMakeServer = function (req, res) {
     // 62 = 2GB
     // 65 = 8GB
     // 61 = 16GB
+    var used_tokens = 1;
+    switch(req.body.size) {
+      case 62: // 2GB
+          used_tokens = 1;
+        break;
+      case 65: // 8GB
+          used_tokens = 2;
+        break;
+      case 61: // 16 GB 
+          used_tokens = 4;
+        break;
+      default:
+        console.log('Unknown droplet size')
+    }
+    user.used_tokens = (Math.round(user.used_tokens*100)/100) + used_tokens;
     api.dropletNew( req.user.email.replace('@','-at-'), size, image, 4, {'ssh_key_ids': '87061,69732,93888'}, function ( err, response ){
       if( err ) { console.log( err ); res.send( err ); }
       api.eventGet(response.event_id, function ( error, event ) {
