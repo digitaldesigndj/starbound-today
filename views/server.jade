@@ -85,7 +85,7 @@ block content
         else
           p Token Balance: #{user.server_tokens-user.used_tokens}
           p
-            form(action='/server/#{droplet.id}/token', method='POST')
+            form(action='/server/#{droplet.id}/addtokens/1', method='POST')
               input(type='hidden', name='_csrf', value=token)
               button.btn.btn-info(type='submit')
                 i.fa.fa-plus

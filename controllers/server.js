@@ -6,6 +6,24 @@ var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitaloce
 var _ = require('underscore');
 var request = require('request');
 
+exports.addtokens = function(req, res) {
+  console.log( req.params.tokens );
+  User.findById(req.user.id, function (err, user) {
+    if (err) return err;
+    if( (user.server_tokens-req.params.tokens) > 0 ) {
+      user.server_tokens = user.server_tokens-req.params.tokens;
+      user.current_server_used_tokens = +user.current_server_used_tokens + +req.params.tokens
+      req.flash('success', { msg: req.params.tokens + ' Tokens Added' });
+    }else{
+      req.flash('danger', { msg: 'You don\'t have ' + req.params.tokens + ' tokens to add.' });
+    }
+    user.save(function (err) {
+      if (err) return next(err);
+      res.redirect('/');
+    });
+  });
+};
+
 exports.getServer = function(req, res) {
   console.log( req.params.id );
   User.findById(req.user.id, function (err, user) {

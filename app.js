@@ -148,6 +148,7 @@ app.get('/server/:id/players', passportConf.isAuthenticated, playerManager.viewP
 
 app.post('/server/boot', passportConf.isAuthenticated, doMakeServer.postMakeServer);
 app.get('/server/:id', passportConf.isAuthenticated, serverController.getServer);
+app.post('/server/:id/addtokens/:tokens', passportConf.isAuthenticated, serverController.addtokens);
 app.get('/server/:id/poweroff', passportConf.isAuthenticated, doManageServer.dropletPowerOff);
 
 app.post('/server/:id/runscript', passportConf.isAuthenticated, scriptController.postScript);
