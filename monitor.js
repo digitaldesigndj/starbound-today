@@ -13,7 +13,7 @@ var _ = require('underscore');
 
 var checkServers = function () {
   console.log( '| Doing Server Check' );
-  fs.appendFile('./server-monitor.log', "Check at "+new Date()+"\n", function (err) {
+  fs.appendFile('./server-monitor.log', "Checked at "+new Date()+"\n", function (err) {
     console.log( 'log written' );
   });
   User.find(  { server: { $gt: 1 } }, function(err,users) {
@@ -21,19 +21,23 @@ var checkServers = function () {
     _.each( users, function( user ) {
       api.dropletGet( user.server, function ( err, droplet ) {
         if (err) return err;
-        console.log( droplet.name, droplet.id, user.server_tokens);
-        var data = dropletUtils.getDropletStats( droplet );
-        data.current = Math.round(100*(user.server_tokens-data.tokens))/100;;
+        console.log( droplet.name, droplet.id, user.server_tokens );
+        var data = dropletUtils.getDropletStats( user, droplet );
+
+        // data.current = Math.round(100*(user.server_tokens-data.tokens))/100;;
+        data.current = 100;
         data.name = droplet.name;
         data.id = droplet.id;
         data.time = new Date();
         console.log( data );
         if( data.current <= 0 ) {
-          dropletUtils.dropletDestroy( user, droplet, function( event ) {
+          //dropletUtils.dropletDestroy( user, droplet, function( event ) {
+            var event = {};
+            console.log( 'ATTEMPTED DESTORY' );
             fs.appendFile('./server-monitor.log', JSON.stringify(data)+"\n"+"SERVER_DESTROYED "+JSON.stringify(event)+"\n", function (err) {
               console.log( 'log written' );
             });
-          });
+          // });
         }else{
           fs.appendFile('./server-monitor.log', JSON.stringify(data)+"\n", function (err) {
             console.log( 'log written' );

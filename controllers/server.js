@@ -25,7 +25,7 @@ exports.getServer = function(req, res) {
                 droplet: droplet,
                 user: req.user,
                 status: JSON.parse(body),
-                stats: dropletUtils.getDropletStats(droplet)
+                stats: dropletUtils.getDropletStats(user,droplet)
               });
             }
             else{
@@ -34,7 +34,7 @@ exports.getServer = function(req, res) {
                 droplet: droplet,
                 user: req.user,
                 status: false,
-                stats: dropletUtils.getDropletStats(droplet)
+                stats: dropletUtils.getDropletStats(user,droplet)
               });
             }
           });
