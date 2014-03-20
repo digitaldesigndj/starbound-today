@@ -64,7 +64,7 @@ app.post('/gumroad', function( req, res ) {
       from: 'tdy721@gmail.com',
       subject: 'Thanks for your purchase',
       text: 'http://starbound.today/purchase/' + hash,
-      html: fs.readFileSync('./public/email/purchase_thanks.html').replace(/\{\{code\}\}/g, hash)
+      html: fs.readFileSync('./public/email/purchase_thanks.html').toString().replace(/\{\{code\}\}/g, hash)
     };
     // This is a purchase 
     var purchase = new Purchase({
