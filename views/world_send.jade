@@ -4,7 +4,7 @@ block content
 
   a(href='/server/#{user.server}/worlds') &laquo; Return to All Worlds
   if world
-    //- p=JSON.stringify(world, null, 2)
+    p=JSON.stringify(world, null, 2)
     //- h2 Here's all the saves we have for world #{world.world_coords}
     h2 Send a world from StarryDex into the Server Universe
     p From: #{params.world_coords}
@@ -15,14 +15,12 @@ block content
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='restore_world')
           input(type='hidden', name='timestamp', value=save.timestamp)
-          if world.satellite != null
-             input(type='hidden', name='world_coords', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
-          else
-             input(type='hidden', name='world_coords', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          input(type='hidden', name='world_coords', value='#{world.world_coords}')
+          input(type='hidden', name='target_world_coords', value='#{params.target_world_coords}')
           button.btn.btn-success(type='submit')
             i.fa.fa-download
             | Restore Planet Save #{new Date(save.timestamp*1000)}
     p To: #{params.target_world_coords}
   else
     h2 This world has never been saved into StarryDex
-    p There's saved world in StarryDex to send o.O
+    p There's no saved world in StarryDex to send o.O

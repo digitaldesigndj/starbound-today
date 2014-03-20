@@ -39,14 +39,17 @@ exports.postScript = function (req, res) {
       if (err) return next(err);
       if( script === 'restore_world' ) {
         command = 'scp /var/www/starrydex/public/'+req.body.timestamp+'_'+req.body.world_coords+
-        ' root@'+droplet.ip_address+':/root/starbound/universe/'+req.body.world_coords;
+        ' root@'+droplet.ip_address+':/root/starbound/universe/'+req.body.target_world_coords;
+        console.log( command );
         exec(command, function (error, stdout, stderr) { 
+          console.log(error, stdout, stderr);
           req.flash('success', { msg: 'World Restored' });
           res.redirect("/server/"+droplet.id+"/worlds/");
         });
       }
       if( script === 'download_world' ) {
         command = "bash " + secrets.server_script_path + "/remote.sh root@" + droplet.ip_address + " 'cp /root/starbound/universe/"+req.body.worldfile+" /root/commandstar/public/css'";
+        console.log( command );
         exec(command, function (error, stdout, stderr) { 
           if( droplet.id === 1216418 ) {
             res.redirect("http://"+droplet.ip_address+"/status/css/"+req.body.worldfile);
