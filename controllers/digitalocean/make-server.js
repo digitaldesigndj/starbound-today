@@ -46,7 +46,7 @@ exports.postMakeServer = function (req, res) {
       default:
         console.log('Unknown droplet size')
     }
-    user.used_tokens = (Math.round(user.used_tokens*100)/100) + used_tokens;
+    user.current_server_used_tokens = used_tokens;
     api.dropletNew( req.user.email.replace('@','-at-'), size, image, 4, {'ssh_key_ids': '87061,69732,93888'}, function ( err, response ){
       if( err ) { console.log( err ); res.send( err ); }
       api.eventGet(response.event_id, function ( error, event ) {
