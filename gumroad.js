@@ -7,6 +7,7 @@ var express = require('express');
 var http = require('http');
 var path = require('path');
 var crypto = require('crypto');
+var fs = require('fs');
 
 var secrets = require('./config/secrets');
 var mongoose = require('mongoose');
@@ -109,7 +110,8 @@ app.post('/gumroad', function( req, res ) {
               to: req.body.email,
               from: 'tdy721@gmail.com',
               subject: 'Thanks for your purchase',
-              text: 'You bought server tokens! Register, then claim them with this url: http://starbound.today/purchase/' + hash
+              text: 'You bought server tokens! Register, then claim them with this url: http://starbound.today/purchase/' + hash,
+              html: fs.readFileSync('./public/email/purchase_thanks.html').replace(/\{\{code\}\}/g, hash)
             };
             smtpTransport.sendMail(mailOptions, function(err) {
               if (err) { return err; }
