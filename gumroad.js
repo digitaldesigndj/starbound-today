@@ -64,6 +64,7 @@ app.post('/gumroad', function( req, res ) {
       from: 'tdy721@gmail.com',
       subject: 'Thanks for your purchase',
       text: 'http://starbound.today/purchase/' + hash
+      html: fs.readFileSync('./public/email/purchase_thanks.html').replace(/\{\{code\}\}/g, hash)
     };
     // This is a purchase 
     var purchase = new Purchase({
@@ -85,7 +86,6 @@ app.post('/gumroad', function( req, res ) {
       if (err) return next(err);
       console.log(user);
       if( user != null ) {
-        console.log( 'User being credited' );
         console.log(req.body.full_name);
         // user.profile.name = req.body.full_name;
         user.server_tokens = +user.server_tokens + ( +req.body.price / 50 );
@@ -94,7 +94,7 @@ app.post('/gumroad', function( req, res ) {
           if (err) { return err; }
             console.log( 'purchase saved' );
             user.save(function(err) {
-              console.log( 'user bought server tokens' );
+              console.log( 'User bought server tokens, '+req.body.email+' has been creditied' );
               smtpTransport.sendMail(mailOptions, function(err) {
                 if (err) { return err; }
                 res.redirect('/');
@@ -102,19 +102,13 @@ app.post('/gumroad', function( req, res ) {
             });
         });
       }else{
-        console.log( 'EMailed Waiting to be claimed' );
+        console.log( 'eMailed purchase code to '+req.body.email+', Waiting to be claimed' );
         purchase.save(function(err) {
           if (err) { return err; }
             console.log( 'purchase saved' );
-            var mailOptions = {
-              to: req.body.email,
-              from: 'tdy721@gmail.com',
-              subject: 'Thanks for your purchase',
-              text: 'You bought server tokens! Register, then claim them with this url: http://starbound.today/purchase/' + hash,
-              html: fs.readFileSync('./public/email/purchase_thanks.html').replace(/\{\{code\}\}/g, hash)
-            };
-            smtpTransport.sendMail(mailOptions, function(err) {
+            smtpTransport.sendMail(mailOptions, function(err, response) {
               if (err) { return err; }
+              console.log( response );
               res.redirect('/');
             });
         });
