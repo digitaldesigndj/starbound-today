@@ -1,6 +1,17 @@
 extends ../layout
 
 block content
+
+  if player
+    .page-header
+      h3 Linked StarryDex Player Account
+    h4=player.profile.player
+  else
+    .page-header
+      h3 No Player Profile Found
+    p You need to create an account on StarryDex.com with the same email address as this account.
+    p That will enable you to save Worlds to StarryDex, Get your Worlds promoted to BoundStar, and publicly post your your work online.
+
   .page-header
     h3 Profile Information
 

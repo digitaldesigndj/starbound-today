@@ -4,6 +4,7 @@ var crypto = require('crypto');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
+var Player = require('../models/Player');
 var secrets = require('../config/secrets');
 
 /**
@@ -118,9 +119,22 @@ exports.postSignup = function(req, res, next) {
  */
 
 exports.getAccount = function(req, res) {
-  res.render('account/profile', {
-    title: 'Account Management'
+  Player.findOne({ email: req.user.email }, function(err, player) {
+    if( err ) {
+      console.log(err);
+      res.render('account/profile', {
+        title: 'Account Management'
+      });
+    }else{
+      console.log(player);
+      res.render('account/profile', {
+        title: 'Account Management',
+        player: player
+      });
+    }
   });
+
+  
 };
 
 /**
