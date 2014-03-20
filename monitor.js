@@ -1,5 +1,5 @@
 var secrets = require('./config/secrets');
-var getDropletStats = require('./droplet_stats');
+var dropletUtils = require('./droplet_utils');
 var User = require('./models/User');
 
 var mongoose = require('mongoose');
@@ -13,35 +13,25 @@ var _ = require('underscore');
 
 var checkServers = function () {
   console.log( '| Doing Server Check' );
+  fs.appendFile('./server-monitor.log', "Check at "+new Date()+"\n", function (err) {
+    console.log( 'log written' );
+  });
   User.find(  { server: { $gt: 1 } }, function(err,users) {
     if (err) return err;
     _.each( users, function( user ) {
       api.dropletGet( user.server, function ( err, droplet ) {
         if (err) return err;
         console.log( droplet.name, droplet.id, user.server_tokens);
-        var data = getDropletStats( droplet );
+        var data = dropletUtils.getDropletStats( droplet );
         data.current = Math.round(100*(user.server_tokens-data.tokens))/100;;
         data.name = droplet.name;
         data.id = droplet.id;
         data.time = new Date();
         console.log( data );
         if( data.current <= 0 ) {
-          // Save a billing entry here -- and delete in manage-server js too...
-          var created_time = new Date(droplet.created_at).getTime()/1000;
-          var current_time = new Date().getTime()/1000;
-          var server_lifetime =  current_time - created_time;
-          console.log( 'Server Destroyed' );
-          console.log( created_time, current_time, server_lifetime );
-          user.destoryed_servers.push(user.server);
-          user.billed_seconds = +user.billed_seconds + server_lifetime;
-          user.server = 0;
-          console.log( 'Destroying a droplet' );
-          api.dropletDestroy( droplet.id, function ( err, event ) {
-            user.save( function(err) {
-              if (err) return err;
-              fs.appendFile('./server-monitor.log', "SERVER_DESTROYED "+JSON.stringify(event)+"\n", function (err) {
-                console.log( 'log written' );
-              });
+          dropletUtils.dropletDestroy( user, droplet, function( event ) {
+            fs.appendFile('./server-monitor.log', JSON.stringify(data)+"\n"+"SERVER_DESTROYED "+JSON.stringify(event)+"\n", function (err) {
+              console.log( 'log written' );
             });
           });
         }else{
@@ -49,7 +39,6 @@ var checkServers = function () {
             console.log( 'log written' );
           });
         }
-
       });
     });
   });

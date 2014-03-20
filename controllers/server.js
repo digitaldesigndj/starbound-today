@@ -1,5 +1,5 @@
 var secrets = require('../config/secrets');
-var getDropletStats = require('../droplet_stats')
+var dropletUtils = require('../droplet_utils')
 var User = require('../models/User');
 var DigitalOceanAPI = require('digitalocean-api');
 var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitalocean.api_key);
@@ -25,7 +25,7 @@ exports.getServer = function(req, res) {
                 droplet: droplet,
                 user: req.user,
                 status: JSON.parse(body),
-                stats: getDropletStats(droplet)
+                stats: dropletUtils.getDropletStats(droplet)
               });
             }
             else{
@@ -34,7 +34,7 @@ exports.getServer = function(req, res) {
                 droplet: droplet,
                 user: req.user,
                 status: false,
-                stats: getDropletStats(droplet)
+                stats: dropletUtils.getDropletStats(droplet)
               });
             }
           });

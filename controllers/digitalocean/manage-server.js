@@ -1,4 +1,5 @@
 var secrets = require('../../config/secrets');
+var dropletUtils = require('../../droplet_utils');
 var DigitalOceanAPI = require('digitalocean-api');
 var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitalocean.api_key);
 
@@ -83,28 +84,12 @@ exports.dropletSnapshot = function(req, res) {
 
 exports.dropletDestroy = function(req, res) {
   User.findById(req.user.id, function (err, user) {
-    if (err) return next(err);
+    if (err) return err;
     api.dropletGet( req.params.id, function (err, droplet) {
       if (err) return err;
-      // Save a billing entry here -- and monitor js too...
-      var created_time = new Date(droplet.created_at).getTime()/1000;
-      var current_time = new Date().getTime()/1000;
-      var server_lifetime =  current_time - created_time;
-      console.log( 'Server Destroyed' );
-      console.log( created_time, current_time, server_lifetime );
-      user.destoryed_servers.push(user.server);
-      user.destoryed_servers.push(user.server);
-      user.billed_seconds = +user.billed_seconds + server_lifetime;
-      user.server = 0;
-      api.dropletDestroy( req.params.id, function (err, event) {
-        if (err) return err;
-        req.params.id = '';
-        user.billed_seconds = Math.round(user.billed_seconds) + Math.round(server_lifetime);
-        user.save(function (err) {
-          if (err) return next(err);
-          req.flash('warning', { msg: "SERVER DESTROYED" });
-          res.redirect('/');
-        });
+      dropletUtils.dropletDestroy( user, droplet, function( event ) {
+        req.flash('warning', { msg: "SERVER DESTROYED" });
+        res.redirect('/');
       });
     });
   });
