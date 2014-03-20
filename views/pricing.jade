@@ -8,7 +8,6 @@ block content
     p We're a completely custom, made for StarBound Hosting Service.
     //- p During the alpha version, all servers will be publicly listed and only monthly plans will be available.
     //- p We are offering 2 tokens to anyone that creates an account to try our service. Get connected to your own VPS in under 5 min! We have lots more features in mind if we can generate some interest and/or more free time.
-    h2.page-header Arcade Pricing! Tokens are $0.50
     p 
     each size in sizes
       if size.id == '62' || size.id == '65' || size.id == '61'
@@ -53,7 +52,7 @@ block content
               //- ul
                 li #{size.cpu} Server Image Slots
                 li (coming soon)
-          p
+          //- p
             form(action='/server/boot', method='POST')
               input(type='hidden', name='_csrf', value=token)
               if size.id == '62'
@@ -69,12 +68,15 @@ block content
                 button.btn.btn-info(type='submit' disabled)
                   i.fa.fa-keyboard-o
                   | Coming Soon
-              
-
-    p.col-sm-12
-    p.col-sm-12
-    p.col-sm-12
-    p.col-sm-12
+    .clearfix
+      h2.page-header Arcade Pricing! Tokens are $0.50
+      .col-sm-12
+        p Get started now, your own Starbound VPS provisioned and playing about 3 min.
+      .col-sm-4
+        a.btn.btn-success.btn-lg(href='/signup') Signup for an Account
+      .col-sm-4
+        a.btn.btn-info.btn-lg(href='http://gum.co/sbtokens') Get some Tokens
+    br
 
     .col-sm-4
       h2.page-header Easy server tools
@@ -113,6 +115,6 @@ block content
     h2.page-header(style='clear:both') Great Servers
     p All of our servers are 
       a(href='http://digitalocean.com/pricing') Digital Ocean Based
-      //- | . We charge thier rate +25% for our StarBound servers.
-    p We tested many VPS hosts including GoDaddy, Linode and DigitalOcean. We Found DigitalOcean has the best performance/cost balance.
+      //- | . We charge thier rate +~25% for our StarBound servers.
+    p We tested many VPS hosts including GoDaddy, Linode and DigitalOcean. We Found DigitalOcean has the best performance/cost balance while enabling our unique hourly pricing model.
     //- p With 80% of what you pay us going directly to Digital Ocean, we less of a business and more a service to StarBound players. You can dontate to BoundStar if you want to help out.

@@ -12,13 +12,13 @@ exports.index = function(req, res) {
       if( req.user.server != 0 ) {
         res.redirect('/server/'+req.user.server);
       }else{
-        res.render('home',{title: 'Coming Soon' });   
+        res.render('home',{title: 'Starbound Today' });   
       }
     }else{
-      res.render('home',{title: 'Coming Soon' });   
+      res.render('home',{title: 'Starbound Today' });   
     }
   }
   else {
-    res.render( 'home', { title: 'Coming Soon' });
+    res.render( 'home', { title: 'Starbound Today' });
   }
 };
