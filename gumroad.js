@@ -89,11 +89,12 @@ app.post('/gumroad', function( req, res ) {
         console.log(req.body.full_name);
         // user.profile.name = req.body.full_name;
         var total = req.body.price;
-        if( req.body.offer_code == 'boundstar') {
-          total = +req.body.price + 100;
-          console.log( 'added boundstar credit ' );
+        if( user.special_redeemed != false ){
+          if( req.body.offer_code == 'boundstar') {
+            total = +req.body.price + 100;
+            user.special_redeemed = true;
+          }
         }
-        console.log( total );
         user.server_tokens = +user.server_tokens + ( +total / 50 );
         purchase.claimed = true;
         purchase.save(function(err) {
