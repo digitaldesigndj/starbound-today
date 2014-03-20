@@ -17,30 +17,36 @@ block content
           //- p=size.id
           //- p=JSON.stringify(size)
           if size.id == '62'
-            h2.page-header Dual Core
+            h2.page-header.text-success Dual Core
+            p.text-danger 1 Token Minimum
+            p.text-danger +12 hrs. per Token
           if size.id == '65'
-            h2.page-header Quad Core
+            h2.page-header.text-primary Quad Core
+            p.text-danger 2 Tokens Minimum
+            p.text-danger +3 hrs. per Token
           if size.id == '61'
-            h2.page-header Octo Core
+            h2.page-header.text-info Octo Core
+            p.text-danger 4 Tokens Minimum
+            p.text-danger +1.5 hrs. per Token
           ul
-            if size.id == '62'
-              li Good for 4+ players
-              li Can do about 10 players
-              li 1 Token to start - 12hrs
-              li additional tokens - 12hrs
-            if size.id == '65'
-              li Good for 10+ players
-              li Can do 20+ players
-              li 2 Tokens to start - 6hrs
-              li additional tokens - 3hrs
-            if size.id == '61'
-              li Good for 20+ players
-              li Can do 40+ players
-              li 4 Tokens to start - 6hrs
-              li additional tokens - 1.5hrs
-            li #{size.name} memory
-            li #{size.cpu} cores
-            li #{size.disk}GB SSD
+          if size.id == '62'
+            li Good for 4+ players
+            li Can do about 10 players
+            li 1 Token to start - 12hrs
+            li additional tokens - 12hrs
+          if size.id == '65'
+            li Good for 10+ players
+            li Can do 20+ players
+            li 2 Tokens to start - 6hrs
+            li additional tokens - 3hrs
+          if size.id == '61'
+            li Good for 20+ players
+            li Can do 40+ players
+            li 4 Tokens to start - 6hrs
+            li additional tokens - 1.5hrs
+          li #{size.name} memory
+          li #{size.cpu} cores
+          li #{size.disk}GB SSD
             //- li Per Hour: $#{Math.round(1000*((size.cost_per_hour*0.25)+ +size.cost_per_hour))/1000}
             //- li Minimum Charge: $#{(Math.round(1000*((size.cost_per_month*0.25)+ +size.cost_per_month))/1000)/100}
             //- li Per Month: $#{Math.round(1000*((size.cost_per_month*0.25)+ +size.cost_per_month))/1000}
@@ -49,16 +55,21 @@ block content
                 li (coming soon)
           p
             form(action='/server/boot', method='POST')
-              if size.id == '65' || size.id == '61'
-                button.btn.btn-success(type='submit' disabled)
-                  i.fa.fa-keyboard-o
-                  | Coming Soon
-              else
-                input(type='hidden', name='_csrf', value=token)
+              input(type='hidden', name='_csrf', value=token)
+              if size.id == '62'
                 input(type='hidden', name='size', value='62')
                 button.btn.btn-success(type='submit')
                   i.fa.fa-keyboard-o
                   | Start this server
+              if size.id == '65'
+                button.btn.btn-primary(type='submit' disabled)
+                  i.fa.fa-keyboard-o
+                  | Coming Soon
+              if size.id == '61'
+                button.btn.btn-info(type='submit' disabled)
+                  i.fa.fa-keyboard-o
+                  | Coming Soon
+              
 
     p.col-sm-12
     p.col-sm-12

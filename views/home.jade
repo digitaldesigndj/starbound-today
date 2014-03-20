@@ -3,11 +3,35 @@ extends layout
 block content
 
   if !user
-    h1=title
-    img(src="/img/StarboundToday.svg" style="max-width:96%;")
+    //- h1=title
+    .col-sm-8
+      img(src="/img/StarboundToday.svg" style="width:100%;")
+    .col-sm-4
+      img(src="/img/StarboundTodayTokens.svg" style="width:100%;")
     br
     br
-    h1 On Demand Starbound Servers
+    .clearfix
+      br
+      br
+      h1.page-header On Demand Starbound Servers
+      br
+      br
+      .col-sm-4
+        img(src="/img/StarryDexBall.svg" style="width:100%;")
+      .col-sm-8
+        p(style='font-size: 18px; color: white;') Save, Download, Clone and Restore your worlds with StarryDex. Unique to Starbound Today, StarryDex is a place for server admins to save planets even when they aren't running a server. This means you only need a server while you are constructing your world!
+         p(style='font-size: 18px; color: white;') StarryDex is still in Alpha, but if you sign up for Starbound Today, we will send you an invite code.
+    br
+    br
+    h1.page-header Get started now
+    p Get your own Starbound VPS provisioned and playing about 3 min.
+    .clearfix
+      .col-sm-6
+        a.btn.btn-success.btn-lg(href='/signup') Signup for an Account
+      .col-sm-6
+        a.btn.btn-info.btn-lg(href='http://gum.co/sbtokens') Get some Tokens
+    br
+    br
   else
     if user.server
       h2.page-header Starbound Today Alpha Preview
