@@ -27,7 +27,7 @@ exports.postMakeServer = function (req, res) {
     console.log("Creating Server");
     // size_id 66 = 512MB, 62 = 2GB
     // res.send( req.body );
-    var image = req.body.image || '2661158';
+    var image = req.body.image || '2737973';
     var size = req.body.size || '62';
     // 62 = 2GB
     // 65 = 8GB

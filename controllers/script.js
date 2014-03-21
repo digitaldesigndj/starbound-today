@@ -61,6 +61,26 @@ exports.postScript = function (req, res) {
         });
       }
 
+      if( script === 'restart_starrypy3k' ) {
+        command = command =  'ssh root@' + droplet.ip_address + ' "pkill python;bash start_starrypy3k.sh"';
+        console.log( command );
+        exec(command, function (error, stdout, stderr) { 
+          // req.flash('success', { msg: 'stdout: ' + stdout });
+          req.flash('success', { msg: 'StarryPy3K Restarted' });
+          res.redirect("/");
+        });
+      }
+
+      if( script === 'soft_restart' ) {
+        command = command =  'ssh root@' + droplet.ip_address + ' "shutdown -r now"';
+        // console.log( command );
+        exec(command, function (error, stdout, stderr) { 
+          // req.flash('success', { msg: 'stdout: ' + stdout });
+          req.flash('success', { msg: 'Server Restarted from the command line.' });
+          res.redirect("/");
+        });
+      }
+
       if( script === 'restart' ) {
         command = "bash " + secrets.server_script_path + "/remote.sh root@" + droplet.ip_address + " 'restart starbound'";
         console.log( command );
@@ -107,6 +127,7 @@ exports.postScript = function (req, res) {
         User.findById( req.user.id, function (err, user) {
           if (err) return next(err);
           user.starbound_password = req.body.starbound_password || '';
+          user.starrypy = req.body.starrypy || false;
           user.save(function (err) {
             if (err) return next(err);
             exec(command, function (error, stdout, stderr) { 
@@ -117,9 +138,11 @@ exports.postScript = function (req, res) {
                 //req.flash('errors', { msg: 'stderr: ' + stderr });
               }
               //req.flash('success', { msg: 'stdout: ' + stdout });
-              req.flash('success', { msg: 'password set, starbound restarted' });
+              req.flash('info', { msg: 'Starbound has been reconfigured' });
               if( req.body.starrypy == 'true' ) {
-                req.flash('success', { msg: 'StarryPy3k Started' });
+                req.flash('success', { msg: 'StarryPy3k Starting' });
+              }else{
+                req.flash('success', { msg: 'Vanilla Starbound Starting' });
               }
               res.redirect('/server/'+req.params.id);
             });

@@ -51,8 +51,6 @@ block content
 
 
     if droplet && droplet.status == 'active'
-
-
       if status 
         h3.page-header 
           a(href='http://#{droplet.ip_address}', target="_blank") Your Server is UP - #{droplet.ip_address}
@@ -77,27 +75,8 @@ block content
               i.fa.fa-repeat
               | Start CommandStar (5-10s)
 
-      if true
-        .page-header
-          h3 Vanilla Starbound
-        p You are running Vanilla Starbound.
-        p We also offer StarryPy3k. It is a server wrapper that offers management commands like /help, /ban, /protect, /who, /give, and more!
-        p This will configure and restart StarBound and StarryPy3k.
-        p 
-          form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
-            input(type='hidden', name='_csrf', value=token)
-            input(type='hidden', name='script', value='password')
-            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
-            input(type='hidden', name='starrypy', value='true')
-            input(type='hidden', name='starbound_password', value='#{user.starbound_password}')
-            .form-group
-              .col-sm-4
-                button.btn.btn-success(type='submit')
-                  i.fa.fa-cogs
-                  | Start StarryPy3k Server Wrapper
-
       if stats
-        .page-header
+        //- .page-header
           h3 Your Server
         //- p=JSON.stringify(stats)
         p#countdown Time Left: 0d, #{stats.time_left}
@@ -111,7 +90,7 @@ block content
           p
             form(action='/server/#{droplet.id}/addtokens/1', method='POST')
               input(type='hidden', name='_csrf', value=token)
-              button.btn.btn-info(type='submit')
+              button.btn.btn-success(type='submit')
                 i.fa.fa-plus
                 if droplet.size_id === 62 
                   | Insert 1 Token (+12 Hrs)
@@ -119,15 +98,6 @@ block content
                   | Insert 1 Token (+3 Hrs)
                 if droplet.size_id === 61 
                   | Insert 1 Token (+1.5 Hrs)
-          //- p Tokens: #{user.server_tokens-stats.spent} 
-        //- stats.life
-        //- stats.tokens
-        //- stats.spent
-        //- stats.cost
-        //- stats.seconds_left
-        //- stats.time_left
-
-        
 
         script.
           function pad(n) {
@@ -161,28 +131,81 @@ block content
         if droplet.image_id === 2629230
           p Image: Starbound with htop 13.04.2014 (CommandStar Upgrade)
 
+
+      if user.starrypy
+        p Server Wrapper: 
+          strong StarryPy3k
+        p 
+          form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
+            input(type='hidden', name='_csrf', value=token)
+            input(type='hidden', name='script', value='password')
+            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+            input(type='hidden', name='starrypy', value='false')
+            input(type='hidden', name='starbound_password', value='#{user.starbound_password}')
+            .form-group
+              .col-sm-4
+                button.btn.btn-success(type='submit')
+                  i.fa.fa-cogs
+                  | Revert to Vanilla Starbound
+      else
+        p You are running Vanilla Starbound.
+        .page-header
+          h3 StarryPy3k Server Wrapper
+        p We also offer StarryPy3k. It is a server wrapper that offers management commands like /help, /ban, /protect, /who, /give, and more!
+        p This will restart Starbound
+        p 
+          form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
+            input(type='hidden', name='_csrf', value=token)
+            input(type='hidden', name='script', value='password')
+            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+            input(type='hidden', name='starrypy', value='true')
+            input(type='hidden', name='starbound_password', value='#{user.starbound_password}')
+            .form-group
+              .col-sm-4
+                button.btn.btn-success(type='submit')
+                  i.fa.fa-cogs
+                  | Start StarryPy3k Server Wrapper
+
       h3.page-header Password
       p Make your friends type something in.
-      p Only 1 server password for now. Option for more to be added later.
-      p This sets your server password, leave blank to make public, this will restart StarBound.
+      //- p Only 1 server password for now. Option for more to be added later.
+      p This sets your server password, leave blank to make public, this will restart StarBound &amp; StarryPy
         form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='password')
           input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
-          input(type='hidden', name='starrypy', value='false')
+          input(type='hidden', name='starrypy', value='#{user.starrypy}')
           .form-group
-            label.col-sm-4.control-label(for='starbound_password') Starbound Server Password
             .col-sm-4
-              input.form-control(name='starbound_password', value='#{user.starbound_password}')
+              input.form-control(name='starbound_password', value='#{user.starbound_password}', placeholder='server password (blank)')
           .form-group
-            .col-sm-offset-4.col-sm-4
-              button.btn.btn-success(type='submit')
+            .col-sm-4
+              button.btn.btn-primary(type='submit')
                 i.fa.fa-cogs
                 | Set Password
+      .page-header
+        h3 Troubleshoot
+      p Having trouble connecting? We've been there.
 
-      h3.page-header Troubleshoot
-      p Restart StarBound first, then try doing the Hardware Reboot.
-      p Step 1
+      p Sometimes the client just does not work or randomly crashes. If this happens, just restart Starbound and try again. If you get the same issue after restarting we need to do some investigation.
+
+      if user.starrypy
+        p Since you are running StarryPy, things are more complicated. We need to figure out if the issue is with StarryPy3k or Starbound. The normal Starbound port is 21025, but when we run StarryPy3k, this is changed to 21024. When the wrapper is working, users connect to StarryPy3k on 21025 and the wrapper communicates with the server on 21024.
+        p Try connecting to 
+          strong.text-info #{droplet.ip_address}:21024 
+        p If you can connect to #{droplet.ip_address}:21024 that means that Starbound is running, but StarryPy is not. Restart StarryPy, wait ~1min for it to load and try again.
+        p
+          form(action='/server/#{droplet.id}/runscript', method='POST')
+            input(type='hidden', name='_csrf', value=token)
+            input(type='hidden', name='script', value='restart_starrypy3k')
+            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+            button.btn.btn-info(type='submit')
+              i.fa.fa-repeat
+              | Restart StarryPy3k Process
+      else
+        p Restart StarBound first, then try doing the Hardware Reboot.
+      if user.starrypy
+        p If you cannot connect on port 21024, then Starbound is not running and you should Restart the Starbound Process. We can't tell if StarryPy3k is working until Starbound starts.
       p
         form(action='/server/#{droplet.id}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
@@ -191,24 +214,32 @@ block content
           button.btn.btn-info(type='submit')
             i.fa.fa-repeat
             | Restart Starbound Process
-
-      if droplet && droplet.status == 'active'
-        p Step 2
-        p
-          a(href='/server/#{droplet.id}/powercycle')
-            button.btn.btn-warning
-              i.fa.fa-undo
-              |  Hardware Reboot
-
-
-      h3.page-header Image or Stop the Server
+      p If all else fails, restart the server.
+      p
+        form(action='/server/#{droplet.id}/runscript', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='script', value='soft_restart')
+          input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+          button.btn.btn-warning(type='submit')
+            i.fa.fa-repeat
+            | Soft Server Restart
+    
+    if droplet && droplet.status == 'active'
+      h3.page-header Server Hardware
+      p You should never really need this, but here it is just in case. Use the Soft Server Retstart instead.
+      p
+        a(href='/server/#{droplet.id}/powercycle')
+          button.btn.btn-danger
+            i.fa.fa-undo
+            |  Hardware Reboot
       p There are some things that can only be done after the server has been powered off.
       p
         a(href='/server/#{droplet.id}/poweroff')
-          button.btn.btn-warning 
+          button.btn.btn-danger 
             i.fa.fa-caret-square-o-down 
             | Power Off Server
-
+      br
+      br
     //- if droplet
     //-   h3.page-header Server Image (Your Backup Slot)
     //- if user.server.image
