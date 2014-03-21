@@ -7,12 +7,18 @@ var _ = require('underscore');
 var User = require('../../models/User');
 
 exports.dropletPowerCycle = function(req, res) {
-  console.log( req.params.id );
-  api.dropletPowerCycle( req.params.id, function (err, event) {
-    if (err) return err;
-    req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, refresh the page in 10 seconds" });
-    res.redirect('/server/'+req.params.id);
-    // res.redirect('/hosting/event?id='+event);
+  User.findById(req.user.id, function (err, user) {
+    if (err) return next(err);
+    user.starrypy = false; 
+    user.save( function (err) {
+      console.log( req.params.id );
+      api.dropletPowerCycle( req.params.id, function (err, event) {
+        if (err) return err;
+        req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, refresh the page in 10 seconds" });
+        res.redirect('/server/'+req.params.id);
+        // res.redirect('/hosting/event?id='+event);
+      });
+    });
   });
 };
 
@@ -29,11 +35,17 @@ exports.dropletPowerCycle = function(req, res) {
 exports.dropletPowerOff = function(req, res) {
   console.log( req.user );
   console.log( req.params.id );
-  api.dropletPowerOff( req.params.id, function (err, event) {
-    if (err) return err;
-    req.flash('success', { msg: JSON.stringify(event) + " POWEROFF - Takes about 10 Seconds" });
-    res.redirect('/server/'+req.params.id);
-    // res.redirect('/hosting/event?id='+event);
+  User.findById(req.user.id, function (err, user) {
+    if (err) return next(err);
+    user.starrypy = false; 
+    user.save( function (err) {
+      api.dropletPowerOff( req.params.id, function (err, event) {
+        if (err) return err;
+        req.flash('success', { msg: JSON.stringify(event) + " POWEROFF - Takes about 10 Seconds" });
+        res.redirect('/server/'+req.params.id);
+        // res.redirect('/hosting/event?id='+event);
+      });
+    });
   });
 };
 
@@ -88,7 +100,7 @@ exports.dropletDestroy = function(req, res) {
     api.dropletGet( req.params.id, function (err, droplet) {
       if (err) return err;
       dropletUtils.dropletDestroy( user, droplet, function( event ) {
-        req.flash('warning', { msg: "SERVER DESTROYED" });
+        req.flash('warning', { msg: "Server Destroyed" });
         res.redirect('/');
       });
     });

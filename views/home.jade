@@ -50,10 +50,10 @@ block content
         li {domain}.starboundtoday.com
 
     else
-      if user.server_tokens
+      if user.server_tokens-user.used_tokens > 0
         h2.page-header To Get Started, Create a Server.
         p
-          strong #{user.server_tokens} Tokens Remaining
+          strong #{user.server_tokens-user.used_tokens} Tokens Remaining
         p 
           form(action='/server/boot', method='POST')
             input(type='hidden', name='_csrf', value=token)
@@ -101,7 +101,7 @@ block content
       else
         h2.page-header You need some more tokens!
         p
-          strong #{user.server_tokens} Tokens Remaining
+          strong #{user.server_tokens-user.used_tokens} Tokens Remaining
         p
           a(href='http://gum.co/sbtokens') Get more tokens
 

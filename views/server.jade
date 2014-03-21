@@ -166,7 +166,26 @@ block content
                   i.fa.fa-cogs
                   | Start StarryPy3k Server Wrapper
 
-      h3.page-header Password
+      if user.starrypy
+        .page-header
+          h3 Set Owner
+        p This sets the StarryPy3k server owner. Login first and do /whoami, then put your UUID here. This will restart StarryPy3k and make you the server owner.
+          form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
+            input(type='hidden', name='_csrf', value=token)
+            input(type='hidden', name='script', value='set_owner')
+            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+            //- input(type='hidden', name='starrypy', value='#{user.starrypy}')
+            .form-group
+              .col-sm-4
+                input.form-control(name='uuid', value='#{user.uuid}', placeholder='Owner UUID')
+            .form-group
+              .col-sm-4
+                button.btn.btn-primary(type='submit')
+                  i.fa.fa-cogs
+                  | Set Owner
+
+      .page-header
+        h3 Password
       p Make your friends type something in.
       //- p Only 1 server password for now. Option for more to be added later.
       p This sets your server password, leave blank to make public, this will restart StarBound &amp; StarryPy
