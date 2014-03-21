@@ -37,6 +37,7 @@ exports.postScript = function (req, res) {
     console.log( droplet );
     User.findById(req.user.id, function (err, user) {
       if (err) return next(err);
+
       if( script === 'restore_world' ) {
         command = 'scp /var/www/starrydex/public/'+req.body.timestamp+'_'+req.body.world_coords+
         ' root@'+droplet.ip_address+':/root/starbound/universe/'+req.body.target_world_coords;
@@ -47,6 +48,7 @@ exports.postScript = function (req, res) {
           res.redirect("/server/"+droplet.id+"/worlds/");
         });
       }
+
       if( script === 'download_world' ) {
         command = "bash " + secrets.server_script_path + "/remote.sh root@" + droplet.ip_address + " 'cp /root/starbound/universe/"+req.body.worldfile+" /root/commandstar/public/css'";
         console.log( command );
@@ -74,6 +76,7 @@ exports.postScript = function (req, res) {
           res.redirect('/server/'+req.params.id);
         });
       }
+
       if( script === 'web' ) {
         // forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee
         command =  'ssh root@' + droplet.ip_address + ' "export PATH=$PATH:/root/.nvm/v0.10.16/bin;cd /root/commandstar;forever stopall;forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee;sleep 2"';
@@ -91,9 +94,16 @@ exports.postScript = function (req, res) {
       }
       if( script === 'password' ) {
         starboundConfig.serverPasswords = [req.body.starbound_password];
-        // console.log( starboundConfig )
+        if( req.body.starrypy == 'true' ) {
+          starboundConfig.gamePort = 21024;
+        }
+        console.log( starboundConfig, req.body );
         fs.writeFileSync( secrets.server_script_path + '/starbound.config', JSON.stringify( starboundConfig , null, 2 ) );
         command = 'scp ' + secrets.server_script_path + '/starbound.config root@' + droplet.ip_address + ':/root/starbound/starbound.config;bash ' + secrets.server_script_path + '/remote.sh root@' + droplet.ip_address + " 'service starbound restart'";
+        if( req.body.starrypy == 'true' ) {
+          command += ';ssh root@' + droplet.ip_address + ' "pkill python;bash start_starrypy3k.sh"'
+        }
+        console.log( command );
         User.findById( req.user.id, function (err, user) {
           if (err) return next(err);
           user.starbound_password = req.body.starbound_password || '';
@@ -108,6 +118,9 @@ exports.postScript = function (req, res) {
               }
               //req.flash('success', { msg: 'stdout: ' + stdout });
               req.flash('success', { msg: 'password set, starbound restarted' });
+              if( req.body.starrypy == 'true' ) {
+                req.flash('success', { msg: 'StarryPy3k Started' });
+              }
               res.redirect('/server/'+req.params.id);
             });
           });

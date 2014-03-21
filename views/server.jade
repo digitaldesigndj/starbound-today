@@ -23,7 +23,7 @@ block content
   else
     
     if droplet && droplet.status == 'off'
-      h3.page-header Server Powered Off, Still provisioned &amp; billing.
+      h3.page-header Server Powered Off, Still using tokens.
       if stats
         p Tokens Used so far: #{stats.spent}
       p 
@@ -47,6 +47,8 @@ block content
           button.btn.btn-danger(type='submit')
             i.fa.fa-fire
             | Destroy Server
+
+
 
     if droplet && droplet.status == 'active'
 
@@ -74,7 +76,29 @@ block content
             button.btn.btn-success(type='submit')
               i.fa.fa-repeat
               | Start CommandStar (5-10s)
-      if stats 
+
+      if true
+        .page-header
+          h3 Vanilla Starbound
+        p You are running Vanilla Starbound.
+        p We also offer StarryPy3k. It is a server wrapper that offers management commands like /help, /ban, /protect, /who, /give, and more!
+        p This will configure and restart StarBound and StarryPy3k.
+        p 
+          form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
+            input(type='hidden', name='_csrf', value=token)
+            input(type='hidden', name='script', value='password')
+            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+            input(type='hidden', name='starrypy', value='true')
+            input(type='hidden', name='starbound_password', value='#{user.starbound_password}')
+            .form-group
+              .col-sm-4
+                button.btn.btn-success(type='submit')
+                  i.fa.fa-cogs
+                  | Start StarryPy3k Server Wrapper
+
+      if stats
+        .page-header
+          h3 Your Server
         //- p=JSON.stringify(stats)
         p#countdown Time Left: 0d, #{stats.time_left}
         //- p Tokens Burned so far: #{stats.consumed_tokens}
@@ -145,6 +169,7 @@ block content
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='password')
           input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+          input(type='hidden', name='starrypy', value='false')
           .form-group
             label.col-sm-4.control-label(for='starbound_password') Starbound Server Password
             .col-sm-4
