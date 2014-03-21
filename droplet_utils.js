@@ -52,35 +52,6 @@ exports.dropletDestroy = function(user, droplet, callback) {
   var current_time = new Date().getTime()/1000;
   var server_lifetime =  current_time - created_time;
   user.destoryed_servers.push(user.server);
-  // Check minimums and adjust
-  // switch(droplet.size_id) {
-  //   case 62: // 2GB
-  //     if( server_lifetime <= 43200) {
-  //       // server_lifetime = 43200;
-  //       // used_tokens = 1;
-  //     // } else {
-  //       used_tokens = Math.round(100*((server_lifetime-43200)/43200))/100
-  //     }
-  //     break;
-  //   case 65: // 8GB
-  //     if( server_lifetime <= 21600) {
-  //       // server_lifetime = 21600;
-  //       // used_tokens = 2;
-  //     // } else {
-  //       used_tokens = Math.round(100*((server_lifetime-10800)/10800))/100
-  //     }
-  //     break;
-  //   case 61: // 16 GB 
-  //     if( server_lifetime <= 10800) {
-  //       // server_lifetime = 10800;
-  //       // used_tokens = 4;
-  //     // } else {
-  //       used_tokens = Math.round(100*((server_lifetime-5400))/5400))/100
-  //     }
-  //     break;
-  //   default:
-  //     console.log('Unknown droplet size')
-  // }
   user.used_tokens = user.used_tokens + user.current_server_used_tokens;
   user.billed_seconds = Math.round(user.billed_seconds) + Math.round(server_lifetime);
   user.current_server_used_tokens = 0;
