@@ -28,7 +28,7 @@ exports.getServer = function(req, res) {
   console.log( req.params.id );
   User.findById(req.user.id, function (err, user) {
     if (err) return err;
-    api.dropletGet( req.params.id , function (err, droplet) {
+    api.dropletGet( user.server , function (err, droplet) {
       if (err) return err;
       if( user.server != 0 ) {
         if( droplet.status === 'active' ) {
@@ -41,7 +41,7 @@ exports.getServer = function(req, res) {
               res.render('server', {
                 title: 'Manage Server ' + droplet.ip_address,
                 droplet: droplet,
-                user: req.user,
+                user: user,
                 status: JSON.parse(body),
                 stats: dropletUtils.getDropletStats(user,droplet)
               });
@@ -50,7 +50,7 @@ exports.getServer = function(req, res) {
               res.render('server', {
                 title: 'Manage Server ' + droplet.ip_address,
                 droplet: droplet,
-                user: req.user,
+                user: user,
                 status: false,
                 stats: dropletUtils.getDropletStats(user,droplet)
               });
@@ -61,7 +61,7 @@ exports.getServer = function(req, res) {
           res.render('server', {
             title: 'Manage Server ' + droplet.ip_address,
             droplet: droplet,
-            user: req.user,
+            user: user,
             status: false
           });
         }
@@ -85,7 +85,7 @@ exports.postUpdateServer = function(req, res, next) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
     console.log( req.body );
-    api.dropletGet( req.body.id, function (err, droplet) {
+    api.dropletGet( user.server, function (err, droplet) {
       user.server_id = droplet.id || '';
       user.server_tokens = req.body.tokens || '';
       user.save(function (err) {

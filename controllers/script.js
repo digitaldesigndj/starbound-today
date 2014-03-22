@@ -14,9 +14,14 @@ var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitaloce
  */
 
 exports.postScript = function (req, res) {
-  //req.body.script
-  //perhaps req.body.password
-  //parhaps req.body.worldfile
+  // req.body.script
+  // perhaps req.body.starbound_password
+  // perhaps req.body.worldfile
+  // perhaps req.body.timestamp
+  // perhaps req.body.target_world_coords
+  // perhaps req.body.world_coords
+  // perhaps req.body.starrypy
+  // perhaps req.body.uuid
   req.assert('script', 'BAD BAD BAD BAD NO! Choose a script to run').notEmpty();
   if( req.body.starbound_password !== undefined && req.body.starbound_password !== '' ) {
     req.assert('starbound_password', 'Server Password must be letters only').isAlpha();
