@@ -133,23 +133,23 @@ block content
 
 
       if user.starrypy
-        p Server Wrapper: 
-          strong StarryPy3k
-        p 
-          form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
-            input(type='hidden', name='_csrf', value=token)
-            input(type='hidden', name='script', value='password')
-            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
-            input(type='hidden', name='starrypy', value='false')
-            input(type='hidden', name='starbound_password', value='#{user.starbound_password}')
-            .form-group
-              .col-sm-4
-                button.btn.btn-success(type='submit')
-                  i.fa.fa-cogs
-                  | Revert to Vanilla Starbound
-      else
-        if user.port == '20124'
-          p Your server is configured for StarryPy3k, but the wrapper is not running. You will not be able to connect, please start StarryPy3k or revert to Vanilla Starbound.
+        if user.port == '20125'
+          p Server Wrapper: 
+            strong StarryPy3k
+          p 
+            form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
+              input(type='hidden', name='_csrf', value=token)
+              input(type='hidden', name='script', value='password')
+              input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+              input(type='hidden', name='starrypy', value='false')
+              input(type='hidden', name='starbound_password', value='#{user.starbound_password}')
+              .form-group
+                .col-sm-4
+                  button.btn.btn-success(type='submit')
+                    i.fa.fa-cogs
+                    | Revert to Vanilla Starbound
+        else // user.port == '20124'
+          p Your server is configured for StarryPy3k, but the wrapper is not running. You will not be able to connect. Please start StarryPy3k or revert to Vanilla Starbound.
           p 
             form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
               input(type='hidden', name='_csrf', value=token)
@@ -174,24 +174,24 @@ block content
                   button.btn.btn-success(type='submit')
                     i.fa.fa-cogs
                     | Revert to Vanilla Starbound
-        else
-          p You are running Vanilla Starbound.
-          .page-header
-            h3 StarryPy3k Server Wrapper
-          p We also offer StarryPy3k. It is a server wrapper that offers management commands like /help, /ban, /protect, /who, /give, and more!
-          p This will restart Starbound
-          p 
-            form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
-              input(type='hidden', name='_csrf', value=token)
-              input(type='hidden', name='script', value='password')
-              input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
-              input(type='hidden', name='starrypy', value='true')
-              input(type='hidden', name='starbound_password', value='#{user.starbound_password}')
-              .form-group
-                .col-sm-4
-                  button.btn.btn-success(type='submit')
-                    i.fa.fa-cogs
-                    | Start StarryPy3k Server Wrapper
+      else
+        p You are running Vanilla Starbound.
+        .page-header
+          h3 StarryPy3k Server Wrapper
+        p We also offer StarryPy3k. It is a server wrapper that offers management commands like /help, /ban, /protect, /who, /give, and more!
+        p This will restart Starbound
+        p 
+          form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
+            input(type='hidden', name='_csrf', value=token)
+            input(type='hidden', name='script', value='password')
+            input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
+            input(type='hidden', name='starrypy', value='true')
+            input(type='hidden', name='starbound_password', value='#{user.starbound_password}')
+            .form-group
+              .col-sm-4
+                button.btn.btn-success(type='submit')
+                  i.fa.fa-cogs
+                  | Start StarryPy3k Server Wrapper
 
       if user.starrypy
         .page-header
