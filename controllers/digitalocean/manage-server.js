@@ -2,8 +2,6 @@ var secrets = require('../../config/secrets');
 var dropletUtils = require('../../droplet_utils');
 var DigitalOceanAPI = require('digitalocean-api');
 var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitalocean.api_key);
-
-var _ = require('underscore');
 var User = require('../../models/User');
 
 exports.dropletPowerCycle = function(req, res) {
@@ -17,16 +15,6 @@ exports.dropletPowerCycle = function(req, res) {
     });
   });
 };
-
-// exports.dropletShutdown = function(req, res) {
-//   console.log( user.server );
-//   api.dropletShutdown( user.server, function (err, event) {
-//     if (err) return err;
-//     req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, refresh the page in 10 seconds" });
-//     res.redirect('/server/'+user.server);
-//     // res.redirect('/hosting/event?id='+event);
-//   });
-// };
 
 exports.dropletPowerOff = function(req, res) {
   User.findById(req.user.id, function (err, user) {
@@ -66,6 +54,19 @@ exports.dropletSnapshot = function(req, res) {
   });
 };
 
+exports.dropletDestroy = function(req, res) {
+  User.findById(req.user.id, function (err, user) {
+    if (err) return err;
+    api.dropletGet( user.server, function (err, droplet) {
+      if (err) return err;
+      dropletUtils.dropletDestroy( user, droplet, function( event ) {
+        req.flash('warning', { msg: "Server Destroyed" });
+        res.redirect('/');
+      });
+    });
+  });
+};
+
 // exports.dropletRestore = function(req, res) {
 //   console.log( req.user.server.image );
 
@@ -87,19 +88,6 @@ exports.dropletSnapshot = function(req, res) {
 //   });
 // };
 
-exports.dropletDestroy = function(req, res) {
-  User.findById(req.user.id, function (err, user) {
-    if (err) return err;
-    api.dropletGet( user.server, function (err, droplet) {
-      if (err) return err;
-      dropletUtils.dropletDestroy( user, droplet, function( event ) {
-        req.flash('warning', { msg: "Server Destroyed" });
-        res.redirect('/');
-      });
-    });
-  });
-};
-
 // exports.selectImage = function (req, res) {
 //   // size_id 66 = 512MB
 //   api.imageGetAll(function (error, images) {
@@ -108,5 +96,15 @@ exports.dropletDestroy = function(req, res) {
 //       'tagline': 'Pick an Image to rebuild from',
 //       'images': images
 //     });
+//   });
+// };
+
+// exports.dropletShutdown = function(req, res) {
+//   console.log( user.server );
+//   api.dropletShutdown( user.server, function (err, event) {
+//     if (err) return err;
+//     req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, refresh the page in 10 seconds" });
+//     res.redirect('/server/'+user.server);
+//     // res.redirect('/hosting/event?id='+event);
 //   });
 // };
