@@ -7,11 +7,15 @@ var User = require('../../models/User');
 exports.dropletPowerCycle = function(req, res) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
-    api.dropletPowerCycle( user.server, function (err, event) {
+    user.starrypy = false;
+    user.save( function (err) {
       if (err) return err;
-      req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, refresh the page in 10 seconds" });
-      res.redirect('/server/'+user.server);
-      // res.redirect('/hosting/event?id='+event);
+      api.dropletPowerCycle( user.server, function (err, event) {
+        if (err) return err;
+        req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, refresh the page in 10 seconds" });
+        res.redirect('/server/'+user.server);
+        // res.redirect('/hosting/event?id='+event);
+      });
     });
   });
 };
@@ -19,11 +23,15 @@ exports.dropletPowerCycle = function(req, res) {
 exports.dropletPowerOff = function(req, res) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
-    api.dropletPowerOff( user.server, function (err, event) {
+    user.starrypy = false;
+    user.save( function (err) {
       if (err) return err;
-      req.flash('success', { msg: JSON.stringify(event) + " POWEROFF - Takes about 10 Seconds" });
-      res.redirect('/server/'+user.server);
-      // res.redirect('/hosting/event?id='+event);
+      api.dropletPowerOff( user.server, function (err, event) {
+        if (err) return err;
+        req.flash('success', { msg: JSON.stringify(event) + " POWEROFF - Takes about 10 Seconds" });
+        res.redirect('/server/'+user.server);
+        // res.redirect('/hosting/event?id='+event);
+      });
     });
   });
 };
