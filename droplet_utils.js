@@ -58,6 +58,7 @@ exports.dropletDestroy = function(user, droplet, callback) {
   user.server = 0;
   user.starrypy = false;
   user.port = 21025;
+  user.uuid = '';
   console.log( created_time, current_time, server_lifetime );
   console.log( 'Destroying droplet', droplet.id );
   api.dropletDestroy( droplet.id, function ( err, event ) {
