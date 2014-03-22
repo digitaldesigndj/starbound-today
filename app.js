@@ -159,7 +159,7 @@ app.get('/server/:id/poweron', passportConf.isAuthenticated, doManageServer.drop
 app.post('/server/:id/snapshot', passportConf.isAuthenticated, doManageServer.dropletSnapshot);
 // app.get('/server/:id/restore', passportConf.isAuthenticated, doManageServer.dropletRestore);
 // app.post('/server/rebuild', passportConf.isAuthenticated, doManageServer.dropletRestore);
-app.get('/server/:id/rebuild', passportConf.isAuthenticated, doManageServer.selectImage);
+// app.get('/server/:id/rebuild', passportConf.isAuthenticated, doManageServer.selectImage);
 // app.post('/server/rebuild', passportConf.isAuthenticated, doManageServer.dropletRebuild);
 app.get('/server/:id/destroy', passportConf.isAuthenticated, doManageServer.dropletDestroy);
 
