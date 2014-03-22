@@ -88,6 +88,7 @@ exports.postScript = function (req, res) {
         })
       }
 
+      // Restarts Starbound
       if( script === 'restart' ) {
         command = "bash " + secrets.server_script_path + "/remote.sh root@" + droplet.ip_address + " 'restart starbound'";
         console.log( command );
@@ -119,11 +120,16 @@ exports.postScript = function (req, res) {
           res.redirect('/server/'+req.params.id);
         });
       }
+
       if( script === 'password' ) {
         starboundConfig.serverPasswords = [req.body.starbound_password];
-        starboundConfig.gamePort = 21025;
         if( req.body.starrypy == 'true' ) {
           starboundConfig.gamePort = 21024;
+          user.port = 21024;
+        }
+        else {
+          starboundConfig.gamePort = 21025;
+          user.port = 21025;
         }
         fs.writeFileSync( secrets.server_script_path + '/starbound.config', JSON.stringify( starboundConfig , null, 2 ) );
         command = 'scp ' + secrets.server_script_path + '/starbound.config root@' + droplet.ip_address + ':/root/starbound/starbound.config;bash ' + secrets.server_script_path + '/remote.sh root@' + droplet.ip_address + " 'service starbound restart;pkill python'";

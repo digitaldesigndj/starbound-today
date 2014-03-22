@@ -37,7 +37,7 @@ exports.dropletPowerOff = function(req, res) {
   console.log( req.params.id );
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
-    user.starrypy = false; 
+    user.starrypy = false;
     user.save( function (err) {
       api.dropletPowerOff( req.params.id, function (err, event) {
         if (err) return err;
