@@ -86,7 +86,7 @@ block content
           p You have run out of tokens... 
             a(href="http://gum.co/sbtokens", target="_blank") Get more here
         else
-          p Token Balance: #{user.server_tokens-user.used_tokens}
+          p Token Balance: #{user.server_tokens-user.used_tokens-user.current_server_used_tokens}
           p
             form(action='/server/#{droplet.id}/addtokens/1', method='POST')
               input(type='hidden', name='_csrf', value=token)
