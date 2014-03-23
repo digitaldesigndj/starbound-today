@@ -112,7 +112,7 @@ exports.postScript = function (req, res) {
 
       if( script === 'web' ) {
         // forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee
-        command =  'ssh root@' + droplet.ip_address + ' "export PATH=$PATH:/root/.nvm/v0.10.16/bin;cd /root/commandstar;forever stopall;forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee;sleep 2"';
+        command =  'ssh root@' + droplet.ip_address + ' "export PATH=$PATH:/root/.nvm/v0.10.16/bin;cd /root/commandstar;forever stopall;forever start ./node_modules/coffee-script/bin/coffee lib/commandstar.coffee;sleep 4"';
         // console.log( command );
         exec(command, function (error, stdout, stderr) { 
           if (error !== null) {
@@ -159,7 +159,7 @@ exports.postScript = function (req, res) {
               //req.flash('success', { msg: 'stdout: ' + stdout });
               req.flash('info', { msg: 'Starbound has been reconfigured' });
               if( req.body.starrypy == 'true' ) {
-                req.flash('success', { msg: 'StarryPy3k Starting' });
+                req.flash('success', { msg: 'StarryPy3k Starting, wait about 15 seconds before you connect.' });
               }else{
                 req.flash('success', { msg: 'Vanilla Starbound Starting' });
               }
@@ -189,7 +189,7 @@ exports.postScript = function (req, res) {
               console.log(error, stdout, stderr);
               //req.flash('success', { msg: 'stdout: ' + stdout });
               req.flash('info', { msg: 'StarryPy3k has been reconfigured' });
-              req.flash('success', { msg: 'StarryPy3k Starting' });
+              req.flash('success', { msg: 'StarryPy3k Starting, wait about 15 seconds before you connect.' });
               res.redirect('/server/'+req.params.id);
             });
           });
