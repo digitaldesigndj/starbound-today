@@ -48,7 +48,20 @@ app.post('/secret', function( req, res ) {
   console.log( 'Webhook!', req.body );
   res.set('Content-Type', 'text/plain');
   //" + req.header('host') + "
-  return res.send("http://starbound.today/signup?email=" + req.body.email + "&name=" + req.body.full_name);
+  User.findOne({ email: req.body.email }, function(err, user) {
+    if (err) {
+      console.log( err );
+      if( req.body.full_name != undefined ) {
+        return res.send("http://starbound.today/signup?email=" + req.body.email + "&name=" + req.body.full_name );
+      }
+      else {
+        return res.send("http://starbound.today/signup?email=" + req.body.email );
+      }
+    }
+    else{
+      return res.send("http://starbound.today/login?email=" + req.body.email );
+    }
+  });
 });
 
 app.post('/gumroad', function( req, res ) {
