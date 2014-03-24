@@ -67,6 +67,7 @@ app.post('/gumroad', function( req, res ) {
       // , html: fs.readFileSync('./public/email/purchase_thanks.html').toString().replace(/\{\{code\}\}/g, hash)
     };
     // This is a purchase 
+    console.log( req.body );
     var purchase = new Purchase({
       url_hash: hash,
       seller_id: req.body.seller_id,
@@ -80,7 +81,7 @@ app.post('/gumroad', function( req, res ) {
       order_number: req.body.order_number,
       full_name: req.body.full_name || '',
       test: req.body.test || false,
-      offer: req.body.offer || false
+      offer_code: req.body.offer_code || false
     });
 
     User.findOne({ email: req.body.email }, function(err, user) {
