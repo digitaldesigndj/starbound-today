@@ -14,15 +14,15 @@ block content
           if query.email
             input.form-control(type='email', name='email', id='email', placeholder='Email', value='#{query.email}')
           else
-            input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus)
+            input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus=true)
         else
-          input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus)
+          input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus=true)
     .form-group
       label.col-sm-3.control-label(for='password') Password
       .col-sm-7
         if query
           if query.email
-            input.form-control(type='password', name='password', id='password', placeholder='Password', autofocus)
+            input.form-control(type='password', name='password', id='password', placeholder='Password', autofocus=true)
           else
             input.form-control(type='password', name='password', id='password', placeholder='Password')
         else

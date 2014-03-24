@@ -8,10 +8,22 @@ block content
       if secrets.localAuth
         .form-group
           label.control-label(for='email') Email
-          input.form-control(type='text', name='email', id='email', placeholder='Email', autofocus=true)
+          if query
+            if query.email
+              input.form-control(type='text', name='email', id='email', placeholder='Email', value='#{query.email}')
+            else
+              input.form-control(type='text', name='email', id='email', placeholder='Email', autofocus=true)
+          else
+            input.form-control(type='text', name='email', id='email', placeholder='Email', autofocus=true)
         .form-group
           label.control-label(for='password') Password
-          input.form-control(type='password', name='password', id='password', placeholder='Password')
+          if query
+            if query.email
+              input.form-control(type='password', name='password', id='password', placeholder='Password', autofocus=true)
+            else
+              input.form-control(type='password', name='password', id='password', placeholder='Password')
+          else
+            input.form-control(type='password', name='password', id='password', placeholder='Password')
         .form-group
           button.btn.btn-primary(type='submit')
             i.fa.fa-unlock-alt
