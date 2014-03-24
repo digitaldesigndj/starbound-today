@@ -1,5 +1,5 @@
 var secrets = require('../config/secrets');
-var transients = require('../transients');
+var transients = require('transients');
 
 var price_url = 'https://api.digitalocean.com/sizes/?client_id='
     +secrets.digitalocean.client_id

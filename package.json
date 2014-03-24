@@ -45,7 +45,8 @@
     "underscore": "~1.6.0",
     "uglify-js": "~2.4.12",
     "validator": "~3.4.0",
-    "digitalocean-api": "~0.1.1"
+    "digitalocean-api": "~0.1.1",
+    "transients": "~0.1.1"
   },
   "devDependencies": {
     "mocha": "~1.17.1",
