@@ -6,7 +6,6 @@ module.exports = function( req, res ) {
     if (err) return next(err);
     if( purchase != null ) {
       console.log( purchase );
-      console.log( purchase.claimed );
       if( purchase.claimed ) {
         res.send('This purchased has been redeemed to ' + purchase.email + '. Thanks!');
       }
@@ -15,8 +14,8 @@ module.exports = function( req, res ) {
           User.findById(req.user.id, function (err, user) {
             if (err) return next(err);
             var bonus = 0;
-            if( user.special_redeemed != false ){
-              if( purchase.offer_code === 'boundstar') {
+            if( user.special_redeemed != true ) {
+              if( purchase.offer_code == 'boundstar') {
                 bonus = 2;
                 user.special_redeemed = true;
               }
