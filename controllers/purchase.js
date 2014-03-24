@@ -14,10 +14,13 @@ module.exports = function( req, res ) {
           User.findById(req.user.id, function (err, user) {
             if (err) return next(err);
             var bonus = 0;
-            if( user.special_redeemed != true ) {
-              if( purchase.offer_code == 'boundstar') {
+            if( purchase.offer_code == 'boundstar') {
+              if( user.special_redeemed != true ) {
                 bonus = 2;
                 user.special_redeemed = true;
+              }
+              else {
+                 req.flash('info', { msg: 'Sorry, you have already recieved your allotment of free tokens, you cannot use that offer twice.' });
               }
             }
             user.server_tokens = parseInt(user.server_tokens) + ( parseInt(purchase.price) / 50 ) + parseInt(bonus);
