@@ -6,10 +6,10 @@ Add your secrets... get an example from hackathon starter if you need to.
 
 @todo, note secrets additions
 
-git clone https://github.com/digitaldesigndj/starbound-today
-cd starbound-today
-git clone https://github.com/digitaldesigndj/starrydex-models models
-touch server-monitor.log
+	git clone https://github.com/digitaldesigndj/starbound-today
+	cd starbound-today
+	git clone https://github.com/digitaldesigndj/starrydex-models models
+	touch server-monitor.log
 
 ### Start the applications
 
