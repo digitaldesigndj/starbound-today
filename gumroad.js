@@ -79,7 +79,8 @@ app.post('/gumroad', function( req, res ) {
       currency: req.body.currency,
       order_number: req.body.order_number,
       full_name: req.body.full_name || '',
-      test: req.body.test || false
+      test: req.body.test || false,
+      offer: req.body.offer || false
     });
 
     User.findOne({ email: req.body.email }, function(err, user) {
