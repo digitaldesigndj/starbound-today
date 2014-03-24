@@ -10,7 +10,13 @@ block content
       img(src="/img/StarboundTodayTokens.svg" style="width:100%;")
     br
     br
-    .clearfix
+    .page-header.clearfix
+      br
+      br
+      h1 StarryPy3k
+    p We're the only host offering StarryPy3k on our Servers! The StarryPy3k server wrapper enables commands like /give, /protect, /ban and many more!
+
+    //- .clearfix
       br
       br
       h1.page-header On Demand Starbound Servers
@@ -20,10 +26,9 @@ block content
         img(src="/img/StarryDexBall.svg" style="width:100%;")
       .col-sm-8
         p(style='font-size: 18px; color: white;') Save, Download, Clone and Restore your worlds with StarryDex. Unique to Starbound Today, StarryDex is a place for server admins to save planets even when they aren't running a server. This means you only need a server while you are constructing your world!
-         p(style='font-size: 18px; color: white;') StarryDex is still in Alpha, but if you sign up for Starbound Today, we will send you an invite code.
-    br
-    br
-    h1.page-header Get started now
+        p(style='font-size: 18px; color: white;') StarryDex is still in Alpha, but if you sign up for Starbound Today, we will send you an invite code.
+    .page-header
+      h1 Get started now
     p Get your own Starbound VPS provisioned and playing about 3 min.
     .clearfix
       .col-sm-4
@@ -32,81 +37,65 @@ block content
         a.btn.btn-info.btn-lg(href='http://gum.co/sbtokens') Get some Tokens
     br
     br
+
   else
-    if user.server
-      h2.page-header Starbound Today Alpha Preview
-      p You have 1 server
-      form(action='/server/#{user.server}', method='GET')
-        button.btn.btn-primary(type='submit') manage your server here
-      br
-      //- p Good job creating that server. Right now, if you look at the management console, you are going to see a cool loading effect background and a bit of information. Be Patient! It takes 55 - 90 seconds to create a server.
-
-      //- p Free BYOD DNS Setup, Free Sub-Domains
-      //- ul
-        li {domain}.starbound.today
-        li {domain}.collegiate.bike
-        li {domain}.boundstar.com
-        li {domain}.hyprtext.com
-        li {domain}.starboundtoday.com
-
+    if user.server_tokens-user.used_tokens > 0
+      h2.page-header To Get Started, Create a Server.
+      p You're about 2 minutes away from playing Starbound on your very own server!
+      p
+        strong #{user.server_tokens-user.used_tokens} Tokens Remaining
+      p 
+        form(action='/server/boot', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='size', value='62')
+          //- input(type='hidden', name='image', value='2737973')
+          button.btn.btn-primary(type='submit')
+            i.fa.fa-circle
+            | 1 Token
+            i.fa.fa-rocket(style='margin-left: 7px')
+            | 2 Core
+            i.fa.fa-tachometer(style='margin-left: 7px')
+            | 2GB Memory
+            i.fa.fa-users(style='margin-left: 7px')
+            | ~4 Players
+        p Starts with 12 hrs server time
+      p 
+        form(action='/server/boot', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='size', value='65')
+          button.btn.btn-primary(type='submit')
+            i.fa.fa-circle
+            | 2 Tokens
+            i.fa.fa-rocket(style='margin-left: 7px')
+            | 4 Core
+            i.fa.fa-tachometer(style='margin-left: 7px')
+            | 8GB Memory
+            i.fa.fa-users(style='margin-left: 7px')
+            | ~8 Players
+        p Starts with 6 hrs server time
+      p 
+        form(action='/server/boot', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          input(type='hidden', name='size', value='61')
+          button.btn.btn-primary(type='submit' disabled)
+            i.fa.fa-circle
+            | 4 Tokens
+            i.fa.fa-rocket(style='margin-left: 7px')
+            | 8 Core
+            i.fa.fa-tachometer(style='margin-left: 7px')
+            | 16GB Memory
+            i.fa.fa-users(style='margin-left: 7px')
+            | ~16 Players
+        p coming soon
+      p Creating a server takes 55-120 seconds.
     else
-      if user.server_tokens-user.used_tokens > 0
-        h2.page-header To Get Started, Create a Server.
-        p
-          strong #{user.server_tokens-user.used_tokens} Tokens Remaining
-        p 
-          form(action='/server/boot', method='POST')
-            input(type='hidden', name='_csrf', value=token)
-            input(type='hidden', name='size', value='62')
-            //- input(type='hidden', name='image', value='2737973')
-            button.btn.btn-primary(type='submit')
-              i.fa.fa-circle
-              | 1 Token
-              i.fa.fa-rocket(style='margin-left: 7px')
-              | 2 Core
-              i.fa.fa-tachometer(style='margin-left: 7px')
-              | 2GB Memory
-              i.fa.fa-users(style='margin-left: 7px')
-              | ~4 Players
-          p Starts with 12 hrs server time
-        p 
-          form(action='/server/boot', method='POST')
-            input(type='hidden', name='_csrf', value=token)
-            input(type='hidden', name='size', value='65')
-            button.btn.btn-primary(type='submit')
-              i.fa.fa-circle
-              | 2 Tokens
-              i.fa.fa-rocket(style='margin-left: 7px')
-              | 4 Core
-              i.fa.fa-tachometer(style='margin-left: 7px')
-              | 8GB Memory
-              i.fa.fa-users(style='margin-left: 7px')
-              | ~8 Players
-          p Starts with 6 hrs server time
-        p 
-          form(action='/server/boot', method='POST')
-            input(type='hidden', name='_csrf', value=token)
-            input(type='hidden', name='size', value='61')
-            button.btn.btn-primary(type='submit' disabled)
-              i.fa.fa-circle
-              | 4 Tokens
-              i.fa.fa-rocket(style='margin-left: 7px')
-              | 8 Core
-              i.fa.fa-tachometer(style='margin-left: 7px')
-              | 16GB Memory
-              i.fa.fa-users(style='margin-left: 7px')
-              | ~16 Players
-          p coming soon
-        p Creating a server takes 55-120 seconds.
-      else
-        h2.page-header You need some more tokens!
-        p
-          strong #{user.server_tokens-user.used_tokens} Tokens Remaining
-        p
-          a(href='http://gum.co/sbtokens') Get more tokens
+      h2.page-header You need some more tokens!
+      p
+        strong #{user.server_tokens-user.used_tokens} Tokens Remaining
+      p
+        a(href='http://gum.co/sbtokens') Get more tokens
 
-
-      //- p http://localhost:3000/server/#{user.server}
-      //- script.
-        window.location = 'http://localhost:3000/server/#{user.server}';
+    //- p http://localhost:3000/server/#{user.server}
+    //- script.
+      window.location = 'http://localhost:3000/server/#{user.server}';
 
