@@ -252,7 +252,7 @@ block content
       else
         p Restart StarBound first, then try doing the Hardware Reboot.
       if user.starrypy
-        p If you cannot connect on port 21024, then Starbound is not running and you should Restart the Starbound Process. We can't tell if StarryPy3k is working until Starbound starts.
+        p If you cannot connect on port 21024, then Starbound is not running and you should Restart the Starbound Process. We can't tell if StarryPy3k is working until Starbound is up and running.
       p
         form(action='/server/#{droplet.id}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
