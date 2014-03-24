@@ -16,6 +16,7 @@ var api = new DigitalOceanAPI(secrets.digitalocean.client_id, secrets.digitaloce
 exports.postScript = function (req, res) {
   // req.body.script
   // perhaps req.body.starbound_password
+  // perhaps req.body.starbound_maxplayers
   // perhaps req.body.worldfile
   // perhaps req.body.timestamp
   // perhaps req.body.target_world_coords
@@ -25,6 +26,9 @@ exports.postScript = function (req, res) {
   req.assert('script', 'BAD BAD BAD BAD NO! Choose a script to run').notEmpty();
   if( req.body.starbound_password !== undefined && req.body.starbound_password !== '' ) {
     req.assert('starbound_password', 'Server Password must be letters only').isAlpha();
+  }
+  if( req.body.starbound_maxplayers !== undefined && req.body.starbound_maxplayers !== '' ) {
+    req.assert('starbound_maxplayers', 'Max server players must be a number, 3 digits max').len(1,3).isInt();
   }
   var errors = req.validationErrors();
   if (errors) {
@@ -128,6 +132,10 @@ exports.postScript = function (req, res) {
 
       if( script === 'password' ) {
         starboundConfig.serverPasswords = [req.body.starbound_password];
+        starboundConfig.maxPlayers = 8;
+        if( req.body.starbound_maxplayers != undefined ) {
+          starboundConfig.maxPlayers = req.body.starbound_maxplayers;
+        }
         if( req.body.starrypy == 'true' ) {
           starboundConfig.gamePort = 21024;
           user.port = 21024;
@@ -146,6 +154,7 @@ exports.postScript = function (req, res) {
           if (err) return next(err);
           user.starbound_password = req.body.starbound_password || '';
           user.starrypy = req.body.starrypy || false;
+          user.starbound_maxplayers = req.body.starbound_maxplayers || 8;
           user.save(function (err) {
             if (err) return next(err);
             exec(command, function (error, stdout, stderr) { 

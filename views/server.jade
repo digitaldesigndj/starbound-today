@@ -213,8 +213,8 @@ block content
                   | Set Owner
 
       .page-header
-        h3 Password
-      p Make your friends type something in.
+        h3 Starbound Configuration
+      //- p Make your friends type something in.
       //- p Only 1 server password for now. Option for more to be added later.
       p This sets your server password, leave blank to make public, this will restart StarBound &amp; StarryPy
         form.form-horizontal(action='/server/#{droplet.id}/runscript', method='POST')
@@ -222,14 +222,19 @@ block content
           input(type='hidden', name='script', value='password')
           input(type='hidden', name='ip_address', value='#{droplet.ip_address}')
           input(type='hidden', name='starrypy', value='#{user.starrypy}')
+          p Maximum Players
           .form-group
-            .col-sm-4
+            .col-sm-2
+              input.form-control(type='number', name='starbound_maxplayers', value='#{user.starbound_maxplayers}', placeholder='maxplayers')
+          p Server Password
+          .form-group
+            .col-sm-3
               input.form-control(name='starbound_password', value='#{user.starbound_password}', placeholder='server password (blank)')
           .form-group
-            .col-sm-4
+            .col-sm-3
               button.btn.btn-primary(type='submit')
                 i.fa.fa-cogs
-                | Set Password
+                | Configure and Restart Starbound
       .page-header
         h3 Troubleshoot
       p Having trouble connecting? We've been there.
