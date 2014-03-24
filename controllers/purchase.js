@@ -28,7 +28,7 @@ module.exports = function( req, res ) {
               purchase.save(function(err) {
                 if (err) { return err; }
                 console.log( 'purchase claimed' );
-                req.flash('success', { msg: 'Redeemed '+( parseInt(purchase.price) / 50 ) + parseInt(bonus) + ' tokens to account ' + purchase.email + '. Thanks!'});
+                req.flash('success', { msg: 'Redeemed '+ parseInt( ( parseInt(purchase.price) / 50 ) + parseInt(bonus) ) + ' tokens to account ' + purchase.email + '. Thanks!'});
                 res.redirect('/');
               });
             });
