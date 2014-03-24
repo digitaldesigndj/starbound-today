@@ -28,49 +28,54 @@ exports.getServer = function(req, res) {
   console.log( req.params.id );
   User.findById(req.user.id, function (err, user) {
     if (err) return err;
-    api.dropletGet( user.server , function (err, droplet) {
-      if (err) return err;
-      if( user.server != 0 ) {
-        if( droplet.status === 'active' ) {
-          var commandstar = 'http://' + droplet.ip_address + '/server/status';
-          if( droplet.id === 1216418 ) {
-            commandstar = 'http://' + droplet.ip_address + '/status/server/status';
+    if ( user.server != 0 ){
+      api.dropletGet( user.server , function (err, droplet) {
+        if (err) return err;
+        if( user.server != 0 ) {
+          if( droplet.status === 'active' ) {
+            var commandstar = 'http://' + droplet.ip_address + '/server/status';
+            if( droplet.id === 1216418 ) {
+              commandstar = 'http://' + droplet.ip_address + '/status/server/status';
+            }
+            request( { url: commandstar, timeout: 500 } , function (error, response, body) {
+              if (!error && response.statusCode == 200) {
+                res.render('server', {
+                  title: 'Manage Server ' + droplet.ip_address,
+                  droplet: droplet,
+                  user: user,
+                  status: JSON.parse(body),
+                  stats: dropletUtils.getDropletStats(user,droplet)
+                });
+              }
+              else{
+                res.render('server', {
+                  title: 'Manage Server ' + droplet.ip_address,
+                  droplet: droplet,
+                  user: user,
+                  status: false,
+                  stats: dropletUtils.getDropletStats(user,droplet)
+                });
+              }
+            });
           }
-          request( { url: commandstar, timeout: 500 } , function (error, response, body) {
-            if (!error && response.statusCode == 200) {
-              res.render('server', {
-                title: 'Manage Server ' + droplet.ip_address,
-                droplet: droplet,
-                user: user,
-                status: JSON.parse(body),
-                stats: dropletUtils.getDropletStats(user,droplet)
-              });
-            }
-            else{
-              res.render('server', {
-                title: 'Manage Server ' + droplet.ip_address,
-                droplet: droplet,
-                user: user,
-                status: false,
-                stats: dropletUtils.getDropletStats(user,droplet)
-              });
-            }
-          });
+          else{
+            res.render('server', {
+              title: 'Manage Server ' + droplet.ip_address,
+              droplet: droplet,
+              user: user,
+              status: false
+            });
+          }
         }
-        else{
-          res.render('server', {
-            title: 'Manage Server ' + droplet.ip_address,
-            droplet: droplet,
-            user: user,
-            status: false
-          });
+        else {
+          req.flash('error', { msg: 'Server ' + req.params.id + ' not found' });
+          res.redirect('/');
         }
-      }
-      else {
-        req.flash('error', { msg: 'Server ' + req.params.id + ' not found' });
-        res.redirect('/');
-      }
-    });
+      });
+    }
+    else {
+      res.redirect('/');
+    }
   });
 };
 
