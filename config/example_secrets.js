@@ -1,4 +1,4 @@
-// Copy this into secrets.js and add your own info. None of the auth routes are actually required, but the other stuff is essential.
+// Rename this to secrets.js and add your own info. None of the auth routes are actually required, but the other stuff is essential.
 module.exports = {
   db: process.env.MONGODB || 'mongodb://localhost:27017/databaseName',
 
