@@ -58,7 +58,7 @@ exports.postMakeServer = function (req, res) {
           user.save(function (err) {
             if (err) return next(err);
             console.log("Made Server", droplet.ip_address);
-            req.flash('success', { msg: 'We\'re Booting Up a server at: '+droplet.ip_address });
+            req.flash('success', { msg: 'We\'re Booting Up a server for you right now.' });
             res.redirect('/');
           });
         });
