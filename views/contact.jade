@@ -2,7 +2,9 @@ extends layout
 
 block content
   .page-header
-    h3 Contact Form
+    h3 Contact Us
+
+  p Hello! We would love to hear from you.
 
   form.form-horizontal(role='form', method='POST')
     input(type='hidden', name='_csrf', value=token)
@@ -23,3 +25,7 @@ block content
         button.btn.btn-default(type='submit')
           i.fa.fa-mail-forward
           | Send
+
+  p You can reach out to us about your server, questions about our service, or just about anything...
+
+  p We are interested in finding people interested in testing a monthly service starting at $25/month for full time 24x7 VPS.

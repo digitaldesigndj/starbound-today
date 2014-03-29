@@ -22,3 +22,7 @@ exports.index = function(req, res) {
     res.render( 'home', { title: 'Starbound Today' });
   }
 };
+
+exports.terms  = function(req, res) {
+  res.render( 'terms', { title: 'Terms of Use & Privacy Policy' });
+};
