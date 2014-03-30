@@ -51,6 +51,7 @@ exports.postMakeServer = function (req, res) {
       if( err ) { console.log( err ); res.send( err ); }
       api.eventGet(response.event_id, function ( error, event ) {
         if( err ) { res.send( err ); }
+        console.log( event );
         api.dropletGet( event.droplet_id, function (err, droplet) {
           if( err ) { res.send( err ); }
           console.log( droplet );
