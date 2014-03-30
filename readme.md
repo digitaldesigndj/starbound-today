@@ -2,7 +2,7 @@
 
 ### Get Started
 
-Add your secrets... get an example from hackathon starter if you need to.
+Add your secrets... use the example from /sahat/hackathon-starter
 
 @todo, note secrets additions
 
@@ -18,7 +18,3 @@ Add your secrets... get an example from hackathon starter if you need to.
 	forever start gumroad.js - port 3002
 	forever start monitor.js
 
-On shutdown, make sure user gets minimum token amount deducted.
-Put shutdown server tasks into seperate module for use by the monitor and user destroy process.
-Streamline users introduction to the service.
-Cache DO API request for the pricing page, develop system to cache commandstar results.
