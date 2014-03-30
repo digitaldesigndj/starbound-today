@@ -11,11 +11,15 @@ block content
         img(src="/img/StarboundTodayTokens.svg" style="width:100%;")
     br
     br
-    .page-header.clearfix
-      br
-      br
-      h1 StarryPy3k
-    p We're the only host offering StarryPy3k on our Servers! The StarryPy3k server wrapper enables commands like /give, /protect, /ban and many more!
+    .clearfix
+    .col-sm-4
+      .page-header
+        h1 StarryPy3k
+        p We're the only host offering StarryPy3k on our Servers! The StarryPy3k server wrapper enables commands like /give, /protect, /ban and many more!
+    .col-sm-4
+      .page-header
+        h1 Free Image Storage!
+        p Free Server Image! From now through the end of June 2014 you can keep an image of your server for free. This means that you can keep your exact VPS in the cloud, deactivated (destroyed) and spin it up only when you need to!
 
     //- .clearfix
       br
@@ -28,6 +32,7 @@ block content
       .col-sm-8
         p(style='font-size: 18px; color: white;') Save, Download, Clone and Restore your worlds with StarryDex. Unique to Starbound Today, StarryDex is a place for server admins to save planets even when they aren't running a server. This means you only need a server while you are constructing your world!
         p(style='font-size: 18px; color: white;') StarryDex is still in Alpha, but if you sign up for Starbound Today, we will send you an invite code.
+    .clearfix
     .page-header
       h1 Get started now
     p Get your own Starbound VPS provisioned and playing about 3 min.
@@ -40,8 +45,20 @@ block content
     br
 
   else
+    if user.destroyed_servers != '[]'
+      .page-header
+        h2 Snapshots
+      p You might have a snapshot from which you can resume from your last session.
+      a(href='/snapshots')
+        button.btn.btn-primary(type='submit')
+          i.fa.fa-save
+          | Browse Snapshots
+    else
+      .page-header
+        h2 You have no snapshots yet.
     if user.server_tokens-user.used_tokens > 0
-      h2.page-header To Get Started, Create a Server.
+      .page-header
+        h2 To Get Started, Create a Server.
       p You're about 2 minutes away from playing Starbound on your very own server!
       p
         strong #{user.server_tokens-user.used_tokens} Tokens Remaining
@@ -90,7 +107,8 @@ block content
         p coming soon
       p Creating a server takes 55-120 seconds.
     else
-      h2.page-header You need some more tokens!
+      .page-header
+        h2 You need some more tokens!
       p
         strong #{user.server_tokens-user.used_tokens} Tokens Remaining
       p

@@ -1,0 +1,17 @@
+extends layout
+
+block content
+
+  if event
+    p=JSON.stringify(event)
+    h2 Your event is #{event.action_status}
+    p Event Type #{event.event_type_id}
+    div.progress
+      div.progress-bar.progress-bar-success(role='progressbar' aria-valuenow='#{event.percentage}' aria-valuemin='0' aria-valuemax='100' style='width: #{event.percentage}%;')
+      | #{event.percentage}%
+    script.
+      window.setInterval(function(){
+        location.reload();
+      }, 5000);
+  else
+    p Sorry, we can't find that event.

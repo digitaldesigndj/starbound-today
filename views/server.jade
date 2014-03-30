@@ -28,10 +28,30 @@ block content
         p Tokens Used so far: #{stats.spent}
       p 
         //- strong #{stats.tokens} Tokens Remaining
-      p The Server Image Option Is Not Available Yet
-      p
-        form(action='#later', method='GET')
-          button.btn.btn-warning(type='submit', disabled)
+      if droplet.snapshots != '[]'
+        p Restoring a sever will overwrite the current state of the server and restore it to exactly how it was when you took the image.
+        //- p=JSON.stringify(droplet.snapshots)
+        each snapshot, index in droplet.snapshots
+          p id: #{snapshot.id} - timestamp: #{snapshot.name.replace(/[\.A-Za-z$-]/g, "")}
+          p
+            form(action='/server/#{droplet.id}/snapshot/#{snapshot.id}/restore', method='POST')
+              input(type='hidden', name='_csrf', value=token)
+              button.btn.btn-default(type='submit')
+                i.fa.fa-lightbulb-o
+                | Restore Server Image 
+                //- (3-5+min)
+          p
+            form(action='/server/#{droplet.id}/snapshot/#{snapshot.id}/erase', method='POST')
+              input(type='hidden', name='_csrf', value=token)
+              button.btn.btn-default(type='submit')
+                i.fa.fa-eraser 
+                | Erase Image
+      else
+        p You do not have a snapshot yet.
+      p The Server Image option is free right now!
+        form(action='/server/#{droplet.id}/snapshot', method='POST')
+          input(type='hidden', name='_csrf', value=token)
+          button.btn.btn-warning(type='submit')
             i.fa.fa-lightbulb-o
             | Take Server Image (3-5+min)
       p

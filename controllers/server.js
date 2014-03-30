@@ -14,7 +14,8 @@ exports.addtokens = function(req, res) {
       user.server_tokens = user.server_tokens-req.params.tokens;
       user.current_server_used_tokens = +user.current_server_used_tokens + +req.params.tokens
       req.flash('success', { msg: req.params.tokens + ' Tokens Added' });
-    }else{
+    }
+    else {
       req.flash('danger', { msg: 'You don\'t have ' + req.params.tokens + ' tokens to add.' });
     }
     user.save(function (err) {
@@ -34,9 +35,6 @@ exports.getServer = function(req, res) {
         if( user.server != 0 ) {
           if( droplet.status === 'active' ) {
             var commandstar = 'http://' + droplet.ip_address + '/server/status';
-            if( droplet.id === 1216418 ) {
-              commandstar = 'http://' + droplet.ip_address + '/status/server/status';
-            }
             request( { url: commandstar, timeout: 500 } , function (error, response, body) {
               if (!error && response.statusCode == 200) {
                 res.render('server', {
@@ -47,7 +45,7 @@ exports.getServer = function(req, res) {
                   stats: dropletUtils.getDropletStats(user,droplet)
                 });
               }
-              else{
+              else {
                 res.render('server', {
                   title: 'Manage Server ' + droplet.ip_address,
                   droplet: droplet,
@@ -58,7 +56,7 @@ exports.getServer = function(req, res) {
               }
             });
           }
-          else{
+          else {
             res.render('server', {
               title: 'Manage Server ' + droplet.ip_address,
               droplet: droplet,

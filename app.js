@@ -158,13 +158,18 @@ app.get('/server/:id/powercycle', passportConf.isAuthenticated, doManageServer.d
 
 app.get('/server/:id/poweron', passportConf.isAuthenticated, doManageServer.dropletPowerOn);
 app.post('/server/:id/snapshot', passportConf.isAuthenticated, doManageServer.dropletSnapshot);
+
+app.get('/snapshots', passportConf.isAuthenticated, doManageServer.getSnapshots);
+app.post('/server/:id/snapshot/:snapshot_id/erase', passportConf.isAuthenticated, doManageServer.snapshotErase);
+app.post('/server/:id/snapshot/:snapshot_id/restore', passportConf.isAuthenticated, doManageServer.dropletRestoreSnapshot);
+
 // app.get('/server/:id/restore', passportConf.isAuthenticated, doManageServer.dropletRestore);
 // app.post('/server/rebuild', passportConf.isAuthenticated, doManageServer.dropletRestore);
 // app.get('/server/:id/rebuild', passportConf.isAuthenticated, doManageServer.selectImage);
 // app.post('/server/rebuild', passportConf.isAuthenticated, doManageServer.dropletRebuild);
 app.get('/server/:id/destroy', passportConf.isAuthenticated, doManageServer.dropletDestroy);
 
-
+app.get('/server/:id/event/:event_id', passportConf.isAuthenticated, doManageServer.getEvent);
 
 /**
  * OAuth routes for sign-in.
