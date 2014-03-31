@@ -99,7 +99,7 @@ exports.postScript = function (req, res) {
 
       // Restarts Starbound
       if( script === 'restart' ) {
-        command = "bash " + secrets.server_script_path + "/remote.sh root@" + droplet.ip_address + " 'restart starbound'";
+        command = "ssh root@" + droplet.ip_address + ' "source /root/sb-utils/starbound.sh; sbrestart"';
         console.log( command );
         exec(command, function (error, stdout, stderr) { 
           if (error !== null) {
