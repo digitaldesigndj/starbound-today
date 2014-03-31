@@ -1,5 +1,5 @@
 var sys = require('sys');
-var fs = require('fs')
+var fs = require('fs');
 var exec = require('child_process').exec;
 var starboundConfig = require('../config/starbound');
 var starrypyConfig = require('../config/starrypy3k');
