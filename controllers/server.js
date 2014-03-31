@@ -10,13 +10,12 @@ exports.addtokens = function(req, res) {
   console.log( req.params.tokens );
   User.findById(req.user.id, function (err, user) {
     if (err) return err;
-    if( (user.server_tokens-req.params.tokens) > 0 ) {
-      user.server_tokens = user.server_tokens-req.params.tokens;
+    if( (((user.server_tokens-user.used_tokens)-user.current_server_used_tokens)-req.params.tokens) > 0 ) {
       user.current_server_used_tokens = +user.current_server_used_tokens + +req.params.tokens
       req.flash('success', { msg: req.params.tokens + ' Tokens Added' });
     }
     else {
-      req.flash('danger', { msg: 'You don\'t have ' + req.params.tokens + ' tokens to add.' });
+      req.flash('errors', { msg: 'You don\'t have ' + req.params.tokens + ' tokens to add.' });
     }
     user.save(function (err) {
       if (err) return next(err);
