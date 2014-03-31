@@ -50,7 +50,7 @@ exports.postScript = function (req, res) {
 
       if( script === 'restore_world' ) {
         command = 'scp /var/www/starrydex/public/'+req.body.timestamp+'_'+req.body.world_coords+
-        ' root@'+droplet.ip_address+':/root/starbound/universe/'+req.body.target_world_coords;
+        ' root@'+droplet.ip_address+':/root/starbound/universe/'+req.body.target_world_coords+';ssh root@' + droplet.ip_address + ' "source /root/sb-utils/starbound.sh; sbrestart"';
         console.log( command );
         exec(command, function (error, stdout, stderr) { 
           console.log(error, stdout, stderr);
@@ -99,7 +99,7 @@ exports.postScript = function (req, res) {
 
       // Restarts Starbound
       if( script === 'restart' ) {
-        command = "ssh root@" + droplet.ip_address + ' "source /root/sb-utils/starbound.sh; sbrestart"';
+        command = 'ssh root@' + droplet.ip_address + ' "source /root/sb-utils/starbound.sh; sbrestart"';
         console.log( command );
         exec(command, function (error, stdout, stderr) { 
           if (error !== null) {
