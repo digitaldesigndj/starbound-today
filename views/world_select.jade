@@ -2,26 +2,25 @@ extends layout
 
 block content
 
-  //- p=JSON.stringify(worlds)
-  a(href='/server/#{user.server}/worlds') &laquo; Return to World Manager
-
-  h1=title
-
-  h2 Send a world from StarryDex into the Server Universe
-  p From: #{params.world_coords}
-  p To world:
-  p
-    each world in worlds
-      p=JSON.stringify(world)
-      if world.numLoads != 0
-        p
-          if world.satellite != null
-            a(href='/server/#{user.server}/worlds/send/#{params.world_coords}/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+  p lkajs;dfkjal;ksdjfkl;
+  a(href='/server/#{user.server}/worlds') &laquo; Return to All Worlds
+  if worlds
+    //- p=JSON.stringify(world, null, 2)
+    //- h2 Here's all the saves we have for world #{world.world_coords}
+    .page-header
+      h2 Send a world from StarryDex into the Server Universe
+    p To: #{params.world_coords}
+    p From: Select below
+    each world, index in worlds
+      if world.nickname != ''
+        //- p=JSON.stringify(world)
+        .page-header
+          h3 #{world.nickname}
+        p=world.owner
+        if world.numLoads != 0
+          p
+            a(href='/server/#{user.server}/worlds/send/#{world.world_coords}/to/#{params.world_coords}')
               button.btn.btn-primary
                 i.fa.fa-eye
-                | #{params.world_coords}/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world
-          else
-            a(href='/server/#{user.server}/worlds/send/#{params.world_coords}/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
-              button.btn.btn-primary
-                i.fa.fa-eye
-                | #{params.world_coords}/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world
+                //- #{params.world_coords}/to/
+                | #{world.world_coords}

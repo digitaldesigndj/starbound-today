@@ -77,16 +77,16 @@ exports.viewTargetWorlds = function(req, res) {
       if (err) return err;
       if( user.server == parseInt( req.user.server ) ) {
         var commandstar = 'http://' + droplet.ip_address + '/server/worlds';
-        if( droplet.id === 1216418 ) {
-          commandstar = 'http://' + droplet.ip_address + '/status/server/worlds';
-        }
         request( commandstar, function (error, response, body) {
           if (!error && response.statusCode == 200) {
-            var worlds = _.sortBy(JSON.parse(body), function(o) { return o.numLoads; }).reverse();
-            res.render('world_select', {
-              title: 'Select a target world',
-              params: req.params,
-              worlds: worlds
+            World.find('', function ( err,worlds ) {
+              var local_worlds = _.sortBy(JSON.parse(body), function(o) { return o.numLoads; }).reverse();
+              res.render('world_select', {
+                title: 'Select a target world',
+                params: req.params,
+                local_worlds: local_worlds,
+                worlds: worlds
+              });
             });
           }
         });
@@ -95,16 +95,13 @@ exports.viewTargetWorlds = function(req, res) {
   });
 };
 
-exports.viewWorlds = function(req, res) {
+exports.manageWorlds = function(req, res) {
   User.findById(req.user.id, function (err, user) {
     if (err) return next(err);
     api.dropletGet( req.user.server , function (err, droplet) {
       if (err) return err;
       if( user.server == parseInt( req.user.server ) ) {
         var commandstar = 'http://' + droplet.ip_address + '/server/worlds';
-        if( droplet.id === 1216418 ) {
-          commandstar = 'http://' + droplet.ip_address + '/status/server/worlds';
-        }
         request( commandstar, function (error, response, body) {
           if (!error && response.statusCode == 200) {
             var worlds = _.sortBy(JSON.parse(body), function(o) { return o.numLoads; }).reverse();
@@ -118,3 +115,13 @@ exports.viewWorlds = function(req, res) {
     });
   });
 };
+
+exports.viewWorlds = function ( req, res ) {
+  World.find('', function ( err,worlds ) {
+    res.render('dex_worlds', {
+      title: 'StarryDex Worlds',
+      worlds: worlds
+    });
+  });
+};
+

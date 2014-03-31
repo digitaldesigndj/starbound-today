@@ -1,0 +1,53 @@
+extends layout
+
+block content
+
+  if world
+    h3.page-header Edit World Log Info
+    //- p=JSON.stringify(world)
+    p
+      form.form-horizontal(action='/world/update/#{world.world_coords}', method='POST')
+        input(type='hidden', name='_csrf', value=token)
+        .form-group
+          label.col-sm-3.control-label(for='world_coords') Coordinates
+          .col-sm-9
+            input.form-control(type='world_coords', world_coords='world_coords', id='world_coords', value='#{world.world_coords}', disabled)
+        .form-group
+          label.col-sm-3.control-label(for='owner') Owner
+          .col-sm-2
+            input.form-control(type='owner', name='owner', id='owner', value='#{world.owner}')
+        .form-group
+          label.col-sm-3.control-label(for='saves') Saves
+          .col-sm-1
+            input.form-control(type='saves', name='saves', id='saves', value='#{world.saves.length}', disabled) 
+        .form-group
+          label.col-sm-3.control-label(for='name') Name
+          .col-sm-4
+            input.form-control(type='name', name='name', id='name', value='#{world.name}')
+        .form-group
+          label.col-sm-3.control-label(for='nickname') Nickname
+          .col-sm-4
+            input.form-control(type='nickname', name='nickname', id='nickname', value='#{world.nickname}')
+        .form-group
+          label.col-sm-3.control-label(for='address') Address
+          .col-sm-9
+            input.form-control(type='address', name='address', id='address', value='#{world.address}')
+        .form-group
+          label.col-sm-3.control-label(for='description') Description
+          .col-sm-9
+            textarea.form-control(type='description', name='description', id='description', style='height: 140px;') #{world.description}
+        .form-group
+          .col-sm-offset-3.col-sm-9
+            button.btn.btn.btn-primary(type='submit')
+              i.fa.fa-save
+              | Save World Info
+    br
+    br
+    //- p
+      form.form-horizontal(action='/world/delete/#{world.world_coords}', method='POST')
+        input(type='hidden', name='_csrf', value=token)
+        .form-group
+          .col-sm-offset-3.col-sm-4
+            button.btn.btn.btn-danger(type='submit')
+              i.fa.fa-save
+              | Destroy World

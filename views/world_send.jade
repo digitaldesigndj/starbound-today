@@ -9,7 +9,7 @@ block content
     h2 Send a world from StarryDex into the Server Universe
     p From: #{params.world_coords}
     each save, index in world.saves
-      //- p=JSON.stringify(save)
+      p=JSON.stringify(save)
       p 
         form(action='/server/#{user.server}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)

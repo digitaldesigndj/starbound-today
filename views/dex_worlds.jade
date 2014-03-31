@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  .page-header
+    h2 Worlds
+  each world in worlds
+    .col-sm-6
+      //- p!=JSON.stringify(world)
+      h3 #{world.nickname}
+      p #{world.name}
+      p #{world.system}
+      p #{world.owner}
+      p #{world.description}
+      p
+        a(href='/world/#{world.world_coords}')
+          span.label.label-warning #{world.world_coords}
+      p
+      if world.saves
+        p.text-warning 
+          span.badge #{world.saves.length}
+          if world.saves.length == '1'
+            |  Restore Point
+          else
+            |  Restore Points 
+
+      if world.server == '1294343'
+        p Server: ApeFlu
+      if world.server == '1216418'
+        p Server: Boundstar
+        //- each save in world.saves
+          p #{new Date(save.timestamp*1000)}
+      //- p #{world.address}
+      //- p #{world.ip_address}

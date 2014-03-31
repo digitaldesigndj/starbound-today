@@ -23,6 +23,8 @@ var pricingController = require('./controllers/pricing');
 
 var playerManager  = require('./controllers/players');
 var worldManager  = require('./controllers/worlds');
+var worldController = require('./controllers/world');
+
 
 var scriptController  = require('./controllers/script');
 var serverController  = require('./controllers/server');
@@ -142,7 +144,11 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 
 app.get('/purchase/:hash', require('./controllers/purchase.js') );
 
-app.get('/server/:id/worlds', passportConf.isAuthenticated, worldManager.viewWorlds);
+app.get('/world/:coords', passportConf.isAuthenticated, worldController.getWorldInfo);
+app.post('/world/update/:coords', passportConf.isAuthenticated, worldController.postUpdateWorldInfo);
+
+app.get('/worlds', passportConf.isAuthenticated, worldManager.viewWorlds);
+app.get('/server/:id/worlds', passportConf.isAuthenticated, worldManager.manageWorlds);
 app.get('/server/:id/worlds/send/:world_coords', passportConf.isAuthenticated, worldManager.viewTargetWorlds);
 app.get('/server/:id/worlds/send/:world_coords/to/:target_world_coords', passportConf.isAuthenticated, worldManager.sendWorld);
 app.get('/server/:id/worlds/save/:world_coords', passportConf.isAuthenticated, worldManager.saveWorld);
