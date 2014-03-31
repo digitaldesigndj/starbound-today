@@ -111,6 +111,8 @@ app.use(function(req, res) {
 });
 app.use(express.errorHandler());
 
+var redirectHome = function (req,res) { res.redirect('/') }
+
 /**
  * Application routes.
  */
@@ -147,20 +149,26 @@ app.get('/server/:id/worlds/save/:world_coords', passportConf.isAuthenticated, w
 
 app.get('/server/:id/players', passportConf.isAuthenticated, playerManager.viewPlayers);
 
+app.get('/server', redirectHome);
 app.post('/server/boot', passportConf.isAuthenticated, doMakeServer.postMakeServer);
 app.get('/server/:id', passportConf.isAuthenticated, serverController.getServer);
+app.get('/server/:id/addtokens/:tokens', redirectHome);
 app.post('/server/:id/addtokens/:tokens', passportConf.isAuthenticated, serverController.addtokens);
 app.get('/server/:id/poweroff', passportConf.isAuthenticated, doManageServer.dropletPowerOff);
 
+app.get('/server/:id/runscript', redirectHome);
 app.post('/server/:id/runscript', passportConf.isAuthenticated, scriptController.postScript);
 app.get('/server/:id/powercycle', passportConf.isAuthenticated, doManageServer.dropletPowerCycle);
 // app.get('/server/:id/shutdown', passportConf.isAuthenticated, doManageServer.dropletShutdown);
 
 app.get('/server/:id/poweron', passportConf.isAuthenticated, doManageServer.dropletPowerOn);
+app.get('/server/:id/snapshot', redirectHome);
 app.post('/server/:id/snapshot', passportConf.isAuthenticated, doManageServer.dropletSnapshot);
 
 app.get('/snapshots', passportConf.isAuthenticated, doManageServer.getSnapshots);
+app.get('/server/:id/snapshot/:snapshot_id/erase', redirectHome);
 app.post('/server/:id/snapshot/:snapshot_id/erase', passportConf.isAuthenticated, doManageServer.snapshotErase);
+app.get('/server/:id/snapshot/:snapshot_id/restore', redirectHome);
 app.post('/server/:id/snapshot/:snapshot_id/restore', passportConf.isAuthenticated, doManageServer.dropletRestoreSnapshot);
 
 // app.get('/server/:id/restore', passportConf.isAuthenticated, doManageServer.dropletRestore);
