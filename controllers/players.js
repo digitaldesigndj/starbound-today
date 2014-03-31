@@ -17,9 +17,6 @@ exports.viewPlayers = function(req, res) {
       if (err) return err;
       if( user.server == parseInt( req.user.server ) ) {
         var commandstar = 'http://' + droplet.ip_address + '/server/players';
-        if( droplet.id === 1216418 ) {
-          commandstar = 'http://' + droplet.ip_address + '/status/server/players';
-        }
         request( commandstar, function (error, response, body) {
           if (!error && response.statusCode == 200) {
             var players = _.sortBy(JSON.parse(body), function(o) { return o.numLogins; }).reverse();
