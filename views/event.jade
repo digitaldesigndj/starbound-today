@@ -3,9 +3,21 @@ extends layout
 block content
 
   if event
-    p=JSON.stringify(event)
-    h2 Your event is #{event.action_status}
-    p Event Type #{event.event_type_id}
+    //- p=JSON.stringify(event)
+    h2 Your 
+      case event.event_type_id
+        when 5
+          | Hardware Reboot
+        when 8
+          | Take Snapshot
+        when 17
+          | Restore Image
+        when 18
+          | Power On
+        when 19
+          | Power Off
+      |  event is processing.
+    p Event Type ID: #{event.event_type_id}
     div.progress
       div.progress-bar.progress-bar-success(role='progressbar' aria-valuenow='#{event.percentage}' aria-valuemin='0' aria-valuemax='100' style='width: #{event.percentage}%;')
       | #{event.percentage}%

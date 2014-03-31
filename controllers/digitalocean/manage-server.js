@@ -16,6 +16,7 @@ exports.snapshotErase = function( req, res ) {
     api.dropletGet( user.server, function ( err, droplet ) {
       if( droplet.snapshots != '[]' ) {
         api.imageDestroy( req.params.snapshot_id, function( err, event ) {
+          console.log( event );
           res.redirect('/server/'+req.params.id+'/event/'+event);
         });
       }
@@ -59,7 +60,7 @@ exports.dropletPowerCycle = function(req, res) {
       if (err) return err;
       api.dropletPowerCycle( user.server, function (err, event) {
         if (err) return err;
-        req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, refresh the page in 10 seconds" });
+        // req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, refresh the page in 10 seconds" });
         res.redirect('/server/'+req.params.id+'/event/'+event);
         // res.redirect('/hosting/event?id='+event);
       });
@@ -76,7 +77,7 @@ exports.dropletPowerOff = function(req, res) {
       api.dropletPowerOff( user.server, function (err, event) {
         if (err) return err;
         console.log( event );
-        req.flash('success', { msg: JSON.stringify(event) + " POWEROFF - Takes about 10 Seconds" });
+        // req.flash('success', { msg: JSON.stringify(event) + " POWEROFF - Takes about 10 Seconds" });
         res.redirect('/server/'+req.params.id+'/event/'+event);
         // res.redirect('/hosting/event?id='+event);
       });
@@ -88,7 +89,7 @@ exports.getEvent = function(req, res) {
   api.eventGet( req.params.event_id, function (err, event) {
     if (err) return err;
     if( event.action_status == 'done' ) {
-      req.flash('success', { msg: JSON.stringify(event) + " Event Complete!" });
+      // req.flash('success', { msg: JSON.stringify(event) + " Event Complete!" });
       res.redirect('/server/'+req.params.id);
     }
     else {
@@ -108,8 +109,8 @@ exports.dropletPowerOn = function(req, res) {
     api.dropletPowerOn( user.server, function (err, event) {
       if (err) return err;
       console.log( event );
-      req.flash('success', { msg: JSON.stringify(event) + " POWERON - Takes about 20 Seconds, then another 30 for StarBound to start." });
-      res.redirect('/server/'+user.server+'/event/'+event.event_id);
+      // req.flash('success', { msg: JSON.stringify(event) + " POWERON - Takes about 20 Seconds, then another 30 for StarBound to start." });
+      res.redirect('/server/'+user.server+'/event/'+event);
       // res.redirect('/hosting/event?id='+event);
     });
   });
@@ -123,9 +124,9 @@ exports.dropletSnapshot = function(req, res) {
       api.eventGet(event_id, function ( error, event ) {
         if (err) return err;
         console.log( event );
-        req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, this can take up to 10 min, but usually 3-5." });
+        // req.flash('success', { msg: JSON.stringify(event) + " - your event is processing, this can take up to 10 min, but usually 3-5." });
         // res.redirect( '/server' );
-        res.redirect('/server/'+user.server+'/event/'+event.event_id);
+        res.redirect('/server/'+user.server+'/event/'+event.id);
       });
     });
   });

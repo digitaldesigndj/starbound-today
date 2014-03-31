@@ -25,7 +25,7 @@ block content
     script.
       $(function(){
         $("form").submit(function () {
-          $(this).find("[type=submit]").attr("disabled", "disabled");
+          $(this).find("[type=submit]").attr("disabled", "disabled").text("Working...").val("Working...");
         });
       });
 
