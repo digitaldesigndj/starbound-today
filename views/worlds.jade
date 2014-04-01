@@ -3,52 +3,68 @@ extends layout
 block content
 
   //- p=JSON.stringify(worlds)
+
+  //- p=JSON.stringify(server_world)
   a(href='/server/#{user.server}') &laquo; Return to Server Manager
-  each world in worlds
-    //- p=JSON.stringify(world)
-    if world.numLoads 
-      if world.satellite != null
-        h3.page-header #{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world
-      else
-        h3.page-header #{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world
-      p Number of Loads: #{world.numLoads}
-      p Coordinates: #{world.sector}, x:#{world.x}, y:#{world.y}, z:#{world.z}, planet #{world.planet}
-        if world.satellite != null
-          span , satellite #{world.satellite}
-      if world.lastUnloaded != null
-        p Last Unloaded: #{new Date(world.lastUnloaded)}
-      if world.lastLoaded != null
-        p Last Loaded: #{new Date(world.lastLoaded)}
+  each server_world in server_worlds
+    //- p=JSON.stringify(server_world)
+    if server_world.numLoads 
+
+      - var server_world_coords = server_world.sector+'_'+server_world.x+'_'+server_world.y+'_'+server_world.z+'_'+server_world.planet+'_'+server_world.satellite+'.world'
+      if server_world.satellite == null
+        - var server_world_coords = server_world.sector+'_'+server_world.x+'_'+server_world.y+'_'+server_world.z+'_'+server_world.planet+'.world'
+
+      each world in worlds
+        if world.world_coords = server_world_coords
+          h1 WORLD IN STARRYDEX
+          
+        //- p=JSON.stringify(world)
+        p=world.nickname
+        p=world.world_coords
+        p=world.owner
+
+        //- p=server_world.sector+'_'+server_world.x+'_'+server_world.y+'_'+server_world.z+'_'+server_world.planet+'_'+server_world.satellite'.world'
+
+      .page-header
+        h3 #{server_world_coords}
+      p Number of Loads: #{server_world.numLoads}
+      p Coordinates: #{server_world.sector}, x:#{server_world.x}, y:#{server_world.y}, z:#{server_world.z}, planet #{server_world.planet}
+        if server_world.satellite != null
+          span , satellite #{server_world.satellite}
+      if server_world.lastUnloaded != null
+        p Last Unloaded: #{new Date(server_world.lastUnloaded)}
+      if server_world.lastLoaded != null
+        p Last Loaded: #{new Date(server_world.lastLoaded)}
       p
-        if world.satellite != null
-          a(href='/server/#{user.server}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+        if server_world.satellite != null
+          a(href='/server/#{user.server}/worlds/send/#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}_#{server_world.satellite}.world/to/#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}_#{server_world.satellite}.world')
             button.btn.btn-primary
               i.fa.fa-eye
               | View World Saves/Restore Old Version
         else
-          a(href='/server/#{user.server}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world/to/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          a(href='/server/#{user.server}/worlds/send/#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}.world/to/#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}.world')
             button.btn.btn-primary
               i.fa.fa-eye
               | View World Saves/Restore Old Version
       p
-        if world.satellite != null
-          a(href='/server/#{user.server}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+        if server_world.satellite != null
+          a(href='/server/#{user.server}/worlds/send/#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}_#{server_world.satellite}.world')
             button.btn.btn-warning
               i.fa.fa-crosshairs
               | Target Restore (Clone) StarryDex World Save
         else
-          a(href='/server/#{user.server}/worlds/send/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          a(href='/server/#{user.server}/worlds/send/#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}.world')
             button.btn.btn-warning
               i.fa.fa-crosshairs
               | Target Restore (Clone) StarryDex World Save
       p
-        if world.satellite != null
-          a(href='/server/#{user.server}/worlds/save/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+        if server_world.satellite != null
+          a(href='/server/#{user.server}/worlds/save/#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}_#{server_world.satellite}.world')
             button.btn.btn-success
               i.fa.fa-save
               | Save World to StarryDex
         else
-          a(href='/server/#{user.server}/worlds/save/#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+          a(href='/server/#{user.server}/worlds/save/#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}.world')
             button.btn.btn-success
               i.fa.fa-save
               | Save World to StarryDex
@@ -56,10 +72,10 @@ block content
         form(action='/server/#{user.server}/runscript', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='download_world')
-          if world.satellite != null
-            input(type='hidden', name='worldfile', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+          if server_world.satellite != null
+            input(type='hidden', name='worldfile', value='#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}_#{server_world.satellite}.world')
           else
-            input(type='hidden', name='worldfile', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+            input(type='hidden', name='worldfile', value='#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}.world')
           button.btn.btn-info(type='submit')
             i.fa.fa-download
             | Download World
@@ -67,10 +83,10 @@ block content
         form(action='/server/#{user.server}/destory', method='POST')
           input(type='hidden', name='_csrf', value=token)
           input(type='hidden', name='script', value='download_world')
-          if world.satellite != null
-            input(type='hidden', name='worldfile', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}_#{world.satellite}.world')
+          if server_world.satellite != null
+            input(type='hidden', name='worldfile', value='#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}_#{server_world.satellite}.world')
           else
-            input(type='hidden', name='worldfile', value='#{world.sector}_#{world.x}_#{world.y}_#{world.z}_#{world.planet}.world')
+            input(type='hidden', name='worldfile', value='#{server_world.sector}_#{server_world.x}_#{server_world.y}_#{server_world.z}_#{server_world.planet}.world')
           button.btn.btn-danger(type='submit' disabled)
             i.fa.fa-eraser
             | Destroy World

@@ -104,10 +104,13 @@ exports.manageWorlds = function(req, res) {
         var commandstar = 'http://' + droplet.ip_address + '/server/worlds';
         request( commandstar, function (error, response, body) {
           if (!error && response.statusCode == 200) {
-            var worlds = _.sortBy(JSON.parse(body), function(o) { return o.numLoads; }).reverse();
-            res.render('worlds', {
-              title: 'Manage Worlds ' + droplet.ip_address,
-              worlds: worlds
+            World.find('', function ( err,worlds ) {
+              var server_worlds = _.sortBy(JSON.parse(body), function(o) { return o.numLoads; }).reverse();
+              res.render('worlds', {
+                title: 'Manage Worlds ' + droplet.ip_address,
+                server_worlds: server_worlds,
+                worlds: worlds
+              });
             });
           }
         });
