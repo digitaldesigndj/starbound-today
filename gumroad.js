@@ -102,7 +102,7 @@ app.post('/gumroad', function( req, res ) {
       console.log(user);
       if( user != null ) {
         console.log(req.body.full_name);
-        // user.profile.name = req.body.full_name;
+        // user.name = req.body.full_name;
         var total = req.body.price;
         if( user.special_redeemed != false ){
           if( req.body.offer_code == 'boundstar') {

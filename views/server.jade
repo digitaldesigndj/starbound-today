@@ -331,7 +331,7 @@ block content
     //- p
       form(action='/server/#{droplet.id}/snapshot', method='POST')
         input(type='hidden', name='_csrf', value=token)
-        //- input(type='hidden', name='name', value='#{user.profile.name}')
+        //- input(type='hidden', name='name', value='#{user.name}')
         //- input(type='hidden', name='image', value='#{user.server.image}')
         button.btn.btn-info(type='submit')
           i.fa.fa-save
@@ -343,7 +343,7 @@ block content
         h3 Restore Your Server Image - #{user.server.image}
       form(action='/server/#{droplet.id}/boot', method='POST')
         input(type='hidden', name='_csrf', value=token)
-        input(type='hidden', name='name', value='#{user.profile.domain}')
+        input(type='hidden', name='name', value='#{user.domain}')
         input(type='hidden', name='image', value='#{user.server.image}')
         button.btn.btn-primary(type='submit')
           i.fa.fa-cogs
@@ -363,7 +363,7 @@ block content
       h3 Start A Brand New Image on a Brand New Server
     //- form(action='/server/#{droplet.id}/boot', method='POST')
       input(type='hidden', name='_csrf', value=token)
-      input(type='hidden', name='name', value='#{user.profile.domain}')
+      input(type='hidden', name='name', value='#{user.domain}')
       button.btn.btn-primary(type='submit')
         i.fa.fa-cogs
         |  Start New Server

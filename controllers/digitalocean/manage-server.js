@@ -119,7 +119,7 @@ exports.dropletPowerOn = function(req, res) {
 exports.dropletSnapshot = function(req, res) {
   User.findById( req.user.id, function (err, user) {
     if (err) return next(err);
-    api.dropletSnapshot( user.server, { name: user.profile.domain }, function (err, event_id) {
+    api.dropletSnapshot( user.server, { name: user.domain }, function (err, event_id) {
       if (err) return err;
       api.eventGet(event_id, function ( error, event ) {
         if (err) return err;

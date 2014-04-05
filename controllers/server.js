@@ -110,12 +110,12 @@ exports.postUpdateServer = function(req, res, next) {
 //     User.findById(req.user.id, function (err, user) {
 //       if (err) return next(err);
 //       // user.email = req.body.email || '';
-//       // user.profile.name = req.body.name || '';
-//       // user.profile.player = req.body.player || '';
-//       // user.profile.steam = req.body.steam || '';
-//       // user.profile.gender = req.body.gender || '';
-//       // user.profile.location = req.body.location || '';
-//       // user.profile.website = req.body.website || '';
+//       // user.name = req.body.name || '';
+//       // user.player = req.body.player || '';
+//       // user.steam = req.body.steam || '';
+//       // user.gender = req.body.gender || '';
+//       // user.location = req.body.location || '';
+//       // user.website = req.body.website || '';
 
 //       user.server.token = req.body.token || '';
 //       user.server.size = req.body.size || '';
