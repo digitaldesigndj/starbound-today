@@ -150,6 +150,7 @@ app.post('/gumroad', function( req, res ) {
         console.log(player);
         if( player != null ) {
           var total = req.body.price;
+          player.rank = "Member";
           player.donations.push( req.body.order_number );
           player.donation_amount = +player.donation_amount + +req.body.price;
           purchase.save(function(err) {
