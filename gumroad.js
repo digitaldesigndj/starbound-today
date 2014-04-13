@@ -141,8 +141,8 @@ app.post('/gumroad', function( req, res ) {
     }
     else {
 
-      mailOptions.subject: 'Thanks for your donation to Boundstar',
-      mailOptions.text: 'Your donation code is ' + hash
+      mailOptions.subject= 'Thanks for your donation to Boundstar';
+      mailOptions.text= 'Your donation code is ' + hash;
       // This is a donation
       Player.findOne({ email: req.body.email }, function(err, player) {
         if (err) return next(err);
