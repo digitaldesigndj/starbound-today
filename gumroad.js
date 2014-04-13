@@ -168,7 +168,7 @@ app.post('/gumroad', function( req, res ) {
           purchase.save(function(err) {
             if (err) { return err; }
               console.log( 'purchase saved' );
-              mailOptions.text: 'Your donation code is ' + hash + '. We could not find an account with your email address, please contact a Boundstar admin with your code or forward this email to tdy721@gmail.com'
+              mailOptions.text= 'Your donation code is ' + hash + '. We could not find an account with your email address, please contact a Boundstar admin with your code or forward this email to tdy721@gmail.com'
               smtpTransport.sendMail(mailOptions, function(err, response) {
                 if (err) { return err; }
                 console.log( response );
