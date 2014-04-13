@@ -23,6 +23,7 @@ var smtpTransport = nodemailer.createTransport('SMTP', {
 
 var Purchase = require('./models/Purchase');
 var User = require('./models/User');
+var Player = require('./models/Player');
 
 var app = express();
 
